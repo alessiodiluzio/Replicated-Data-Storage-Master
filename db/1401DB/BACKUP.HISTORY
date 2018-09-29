@@ -1,0 +1,1846 @@
+Sat Sep 29 16:58:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:05 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:05 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:05 CEST 2018:Backup completed, log instant at (1,14506) 
+
+Sat Sep 29 16:58:15 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:15 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:15 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:15 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:15 CEST 2018:Backup completed, log instant at (1,14720) 
+
+Sat Sep 29 16:58:26 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:26 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:26 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:26 CEST 2018:Backup completed, log instant at (1,14934) 
+
+Sat Sep 29 16:58:36 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:36 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:36 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:36 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:37 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:37 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:37 CEST 2018:Backup completed, log instant at (1,15148) 
+
+Sat Sep 29 16:58:47 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:47 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:47 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:47 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:47 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:47 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:47 CEST 2018:Backup completed, log instant at (1,15362) 
+
+Sat Sep 29 16:58:57 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:58:57 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:57 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:58:57 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:58:57 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:58:57 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:58:57 CEST 2018:Backup completed, log instant at (1,15576) 
+
+Sat Sep 29 16:59:07 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 16:59:07 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:59:07 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 16:59:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 16:59:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 16:59:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 16:59:08 CEST 2018:Backup completed, log instant at (1,15790) 
+
+Sat Sep 29 17:00:37 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:00:37 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:37 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:00:38 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:00:38 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:00:38 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:38 CEST 2018:Backup completed, log instant at (2,168) 
+
+Sat Sep 29 17:00:48 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:00:48 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:48 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:00:48 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:00:48 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:00:48 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:48 CEST 2018:Backup completed, log instant at (2,415) 
+
+Sat Sep 29 17:00:58 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:00:58 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:58 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:00:59 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:00:59 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:00:59 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:00:59 CEST 2018:Backup completed, log instant at (2,629) 
+
+Sat Sep 29 17:01:09 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:01:09 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:09 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:01:09 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:01:09 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:01:09 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:09 CEST 2018:Backup completed, log instant at (2,843) 
+
+Sat Sep 29 17:01:19 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:01:19 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:19 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:01:20 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:01:20 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:01:20 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:20 CEST 2018:Backup completed, log instant at (2,1057) 
+
+Sat Sep 29 17:01:30 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:01:30 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:30 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:01:30 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:01:30 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:01:30 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:01:30 CEST 2018:Backup completed, log instant at (2,1271) 
+
+Sat Sep 29 17:04:39 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:04:39 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:04:39 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:04:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:04:40 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:04:40 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:04:40 CEST 2018:Backup completed, log instant at (3,168) 
+
+Sat Sep 29 17:04:50 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:04:50 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:04:50 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:04:50 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:04:50 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:04:50 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:04:50 CEST 2018:Backup completed, log instant at (3,415) 
+
+Sat Sep 29 17:05:00 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:00 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:00 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:01 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:01 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:01 CEST 2018:Backup completed, log instant at (3,629) 
+
+Sat Sep 29 17:05:11 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:11 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:11 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:11 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:11 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:11 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:11 CEST 2018:Backup completed, log instant at (3,843) 
+
+Sat Sep 29 17:05:21 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:21 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:21 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:22 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:22 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:22 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:22 CEST 2018:Backup completed, log instant at (3,1057) 
+
+Sat Sep 29 17:05:32 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:32 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:32 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:32 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:32 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:32 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:32 CEST 2018:Backup completed, log instant at (3,1271) 
+
+Sat Sep 29 17:05:42 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:42 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:42 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:43 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:43 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:43 CEST 2018:Backup completed, log instant at (3,1485) 
+
+Sat Sep 29 17:05:53 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:05:53 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:53 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:05:53 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:05:53 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:05:53 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:05:53 CEST 2018:Backup completed, log instant at (3,1699) 
+
+Sat Sep 29 17:06:03 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:03 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:03 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:03 CEST 2018:Backup completed, log instant at (3,1913) 
+
+Sat Sep 29 17:06:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:14 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:14 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:14 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:14 CEST 2018:Backup completed, log instant at (3,2127) 
+
+Sat Sep 29 17:06:24 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:24 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:24 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:24 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:24 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:25 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:25 CEST 2018:Backup completed, log instant at (3,2341) 
+
+Sat Sep 29 17:06:35 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:35 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:35 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:35 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:35 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:35 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:35 CEST 2018:Backup completed, log instant at (3,2555) 
+
+Sat Sep 29 17:06:45 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:45 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:45 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:45 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:45 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:45 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:45 CEST 2018:Backup completed, log instant at (3,2769) 
+
+Sat Sep 29 17:06:56 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:06:56 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:56 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:06:56 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:06:56 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:06:56 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:06:56 CEST 2018:Backup completed, log instant at (3,2983) 
+
+Sat Sep 29 17:07:06 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:06 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:06 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:06 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:07 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:07 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:07 CEST 2018:Backup completed, log instant at (3,3197) 
+
+Sat Sep 29 17:07:17 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:17 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:17 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:17 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:17 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:17 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:17 CEST 2018:Backup completed, log instant at (3,3411) 
+
+Sat Sep 29 17:07:27 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:27 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:27 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:27 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:27 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:27 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:27 CEST 2018:Backup completed, log instant at (3,3625) 
+
+Sat Sep 29 17:07:37 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:37 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:37 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:38 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:38 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:38 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:38 CEST 2018:Backup completed, log instant at (3,3839) 
+
+Sat Sep 29 17:07:48 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:48 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:48 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:48 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:48 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:48 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:48 CEST 2018:Backup completed, log instant at (3,4053) 
+
+Sat Sep 29 17:07:59 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:07:59 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:59 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:07:59 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:07:59 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:07:59 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:07:59 CEST 2018:Backup completed, log instant at (3,4267) 
+
+Sat Sep 29 17:08:09 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:08:09 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:09 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:08:09 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:08:09 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:08:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:10 CEST 2018:Backup completed, log instant at (3,4481) 
+
+Sat Sep 29 17:08:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:08:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:08:20 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:08:20 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:08:20 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:20 CEST 2018:Backup completed, log instant at (3,4695) 
+
+Sat Sep 29 17:08:30 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:08:30 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:30 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:08:30 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:08:30 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:08:30 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:30 CEST 2018:Backup completed, log instant at (3,4909) 
+
+Sat Sep 29 17:08:40 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:08:40 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:40 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:08:41 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:08:41 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:08:41 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:41 CEST 2018:Backup completed, log instant at (3,5123) 
+
+Sat Sep 29 17:08:51 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:08:51 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:51 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:08:51 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:08:51 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:08:51 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:08:51 CEST 2018:Backup completed, log instant at (3,5337) 
+
+Sat Sep 29 17:09:01 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:01 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:01 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:02 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:02 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:02 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:02 CEST 2018:Backup completed, log instant at (3,5551) 
+
+Sat Sep 29 17:09:12 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:12 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:12 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:12 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:12 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:12 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:12 CEST 2018:Backup completed, log instant at (3,5765) 
+
+Sat Sep 29 17:09:22 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:22 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:22 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:23 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:23 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:23 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:23 CEST 2018:Backup completed, log instant at (3,5979) 
+
+Sat Sep 29 17:09:33 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:33 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:33 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:33 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:33 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:33 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:33 CEST 2018:Backup completed, log instant at (3,6193) 
+
+Sat Sep 29 17:09:43 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:43 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:43 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:43 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:43 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:43 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:43 CEST 2018:Backup completed, log instant at (3,6407) 
+
+Sat Sep 29 17:09:54 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:09:54 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:54 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:09:54 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:09:54 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:09:54 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:09:54 CEST 2018:Backup completed, log instant at (3,6621) 
+
+Sat Sep 29 17:10:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:04 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:04 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:04 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:04 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:04 CEST 2018:Backup completed, log instant at (3,6835) 
+
+Sat Sep 29 17:10:14 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:14 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:15 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:15 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:15 CEST 2018:Backup completed, log instant at (3,7049) 
+
+Sat Sep 29 17:10:25 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:25 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:25 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:26 CEST 2018:Backup completed, log instant at (3,7263) 
+
+Sat Sep 29 17:10:36 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:36 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:36 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:36 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:36 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:36 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:36 CEST 2018:Backup completed, log instant at (3,7477) 
+
+Sat Sep 29 17:10:46 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:46 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:46 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:47 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:47 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:47 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:47 CEST 2018:Backup completed, log instant at (3,7691) 
+
+Sat Sep 29 17:10:57 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:10:57 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:57 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:10:57 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:10:57 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:10:57 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:10:57 CEST 2018:Backup completed, log instant at (3,7905) 
+
+Sat Sep 29 17:11:07 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:07 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:07 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:11:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:11:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:11:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:08 CEST 2018:Backup completed, log instant at (3,8119) 
+
+Sat Sep 29 17:11:18 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:18 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:18 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:11:18 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:11:18 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:11:18 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:18 CEST 2018:Backup completed, log instant at (3,8333) 
+
+Sat Sep 29 17:11:28 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:28 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:28 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:11:28 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:11:28 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:11:29 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:29 CEST 2018:Backup completed, log instant at (3,8547) 
+
+Sat Sep 29 17:11:39 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:39 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:39 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:11:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:11:39 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:11:39 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:39 CEST 2018:Backup completed, log instant at (3,8761) 
+
+Sat Sep 29 17:11:49 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:49 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:49 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:11:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:11:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:11:49 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:49 CEST 2018:Backup completed, log instant at (3,8975) 
+
+Sat Sep 29 17:11:59 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:11:59 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:11:59 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:00 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:00 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:00 CEST 2018:Backup completed, log instant at (3,9189) 
+
+Sat Sep 29 17:12:10 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:12:10 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:10 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:10 CEST 2018:Backup completed, log instant at (3,9403) 
+
+Sat Sep 29 17:12:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:12:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:21 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:21 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:21 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:21 CEST 2018:Backup completed, log instant at (3,9617) 
+
+Sat Sep 29 17:12:31 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:12:31 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:31 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:31 CEST 2018:Backup completed, log instant at (3,9831) 
+
+Sat Sep 29 17:12:41 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:12:41 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:41 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:42 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:42 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:42 CEST 2018:Backup completed, log instant at (3,10045) 
+
+Sat Sep 29 17:12:52 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:12:52 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:52 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:12:52 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:12:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:12:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:12:52 CEST 2018:Backup completed, log instant at (3,10259) 
+
+Sat Sep 29 17:13:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:03 CEST 2018:Backup completed, log instant at (3,10473) 
+
+Sat Sep 29 17:13:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:13 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:13 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:13 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:13 CEST 2018:Backup completed, log instant at (3,10687) 
+
+Sat Sep 29 17:13:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:23 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:23 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:23 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:23 CEST 2018:Backup completed, log instant at (3,10901) 
+
+Sat Sep 29 17:13:33 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:33 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:33 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:34 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:34 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:34 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:34 CEST 2018:Backup completed, log instant at (3,11115) 
+
+Sat Sep 29 17:13:44 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:44 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:44 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:44 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:44 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:44 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:44 CEST 2018:Backup completed, log instant at (3,11329) 
+
+Sat Sep 29 17:13:55 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:13:55 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:55 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:13:55 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:13:55 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:13:55 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:13:55 CEST 2018:Backup completed, log instant at (3,11543) 
+
+Sat Sep 29 17:14:05 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:05 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:05 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:05 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:05 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:05 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:05 CEST 2018:Backup completed, log instant at (3,11757) 
+
+Sat Sep 29 17:14:15 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:15 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:16 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:16 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:16 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:16 CEST 2018:Backup completed, log instant at (3,11971) 
+
+Sat Sep 29 17:14:26 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:26 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:26 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:26 CEST 2018:Backup completed, log instant at (3,12185) 
+
+Sat Sep 29 17:14:36 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:36 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:36 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:37 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:37 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:37 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:37 CEST 2018:Backup completed, log instant at (3,12399) 
+
+Sat Sep 29 17:14:47 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:47 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:47 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:47 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:47 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:47 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:47 CEST 2018:Backup completed, log instant at (3,12613) 
+
+Sat Sep 29 17:14:57 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:14:57 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:57 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:14:58 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:14:58 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:14:58 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:14:58 CEST 2018:Backup completed, log instant at (3,12827) 
+
+Sat Sep 29 17:15:08 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:15:08 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:08 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:15:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:15:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:15:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:08 CEST 2018:Backup completed, log instant at (3,13041) 
+
+Sat Sep 29 17:15:18 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:15:18 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:18 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:15:18 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:15:18 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:15:19 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:19 CEST 2018:Backup completed, log instant at (3,13255) 
+
+Sat Sep 29 17:15:29 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:15:29 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:29 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:15:29 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:15:29 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:15:29 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:29 CEST 2018:Backup completed, log instant at (3,13469) 
+
+Sat Sep 29 17:15:39 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:15:39 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:39 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:15:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:15:39 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:15:39 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:39 CEST 2018:Backup completed, log instant at (3,13683) 
+
+Sat Sep 29 17:15:49 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:15:50 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:50 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:15:50 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:15:50 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:15:50 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:15:50 CEST 2018:Backup completed, log instant at (3,13897) 
+
+Sat Sep 29 17:16:00 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:00 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:00 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:00 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:00 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:00 CEST 2018:Backup completed, log instant at (3,14111) 
+
+Sat Sep 29 17:16:10 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:10 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:10 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:11 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:11 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:11 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:11 CEST 2018:Backup completed, log instant at (3,14325) 
+
+Sat Sep 29 17:16:21 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:21 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:21 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:21 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:21 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:21 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:21 CEST 2018:Backup completed, log instant at (3,14539) 
+
+Sat Sep 29 17:16:31 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:31 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:31 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:32 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:32 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:32 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:32 CEST 2018:Backup completed, log instant at (3,14753) 
+
+Sat Sep 29 17:16:42 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:42 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:42 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:42 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:42 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:42 CEST 2018:Backup completed, log instant at (3,14967) 
+
+Sat Sep 29 17:16:52 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:16:52 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:52 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:16:53 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:16:53 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:16:53 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:16:53 CEST 2018:Backup completed, log instant at (3,15181) 
+
+Sat Sep 29 17:17:03 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:03 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:03 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:03 CEST 2018:Backup completed, log instant at (3,15395) 
+
+Sat Sep 29 17:17:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:14 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:14 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:14 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:14 CEST 2018:Backup completed, log instant at (3,15609) 
+
+Sat Sep 29 17:17:24 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:24 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:24 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:24 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:24 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:24 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:24 CEST 2018:Backup completed, log instant at (3,15823) 
+
+Sat Sep 29 17:17:34 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:34 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:34 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:35 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:35 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:35 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:35 CEST 2018:Backup completed, log instant at (3,16037) 
+
+Sat Sep 29 17:17:45 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:45 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:45 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:45 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:45 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:45 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:45 CEST 2018:Backup completed, log instant at (3,16251) 
+
+Sat Sep 29 17:17:55 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:17:55 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:55 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:17:57 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:17:57 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:17:57 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:17:57 CEST 2018:Backup completed, log instant at (3,16465) 
+
+Sat Sep 29 17:18:07 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:18:07 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:07 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:18:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:18:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:18:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:08 CEST 2018:Backup completed, log instant at (3,16681) 
+
+Sat Sep 29 17:18:18 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:18:18 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:18 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:18:18 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:18:18 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:18:18 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:18 CEST 2018:Backup completed, log instant at (3,16897) 
+
+Sat Sep 29 17:18:28 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:18:28 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:28 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:18:29 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:18:29 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:18:29 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:29 CEST 2018:Backup completed, log instant at (3,17113) 
+
+Sat Sep 29 17:18:39 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:18:39 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:39 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:18:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:18:39 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:18:39 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:39 CEST 2018:Backup completed, log instant at (3,17329) 
+
+Sat Sep 29 17:18:49 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:18:49 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:49 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:18:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:18:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:18:50 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:18:50 CEST 2018:Backup completed, log instant at (3,17545) 
+
+Sat Sep 29 17:19:00 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:00 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:00 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:00 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:00 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:00 CEST 2018:Backup completed, log instant at (3,17761) 
+
+Sat Sep 29 17:19:10 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:10 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:10 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:11 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:11 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:11 CEST 2018:Backup completed, log instant at (3,17977) 
+
+Sat Sep 29 17:19:21 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:21 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:21 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:21 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:21 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:21 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:21 CEST 2018:Backup completed, log instant at (3,18193) 
+
+Sat Sep 29 17:19:31 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:31 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:31 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:31 CEST 2018:Backup completed, log instant at (3,18409) 
+
+Sat Sep 29 17:19:42 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:42 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:42 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:42 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:42 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:42 CEST 2018:Backup completed, log instant at (3,18625) 
+
+Sat Sep 29 17:19:52 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:19:52 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:52 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:19:52 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:19:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:19:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:19:52 CEST 2018:Backup completed, log instant at (3,18841) 
+
+Sat Sep 29 17:20:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:03 CEST 2018:Backup completed, log instant at (3,19057) 
+
+Sat Sep 29 17:20:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:13 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:13 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:13 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:13 CEST 2018:Backup completed, log instant at (3,19273) 
+
+Sat Sep 29 17:20:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:24 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:24 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:24 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:24 CEST 2018:Backup completed, log instant at (3,19489) 
+
+Sat Sep 29 17:20:34 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:34 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:34 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:34 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:34 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:34 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:34 CEST 2018:Backup completed, log instant at (3,19705) 
+
+Sat Sep 29 17:20:44 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:44 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:44 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:44 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:44 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:45 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:45 CEST 2018:Backup completed, log instant at (3,19921) 
+
+Sat Sep 29 17:20:55 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:20:55 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:55 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:20:55 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:20:55 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:20:55 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:20:55 CEST 2018:Backup completed, log instant at (3,20137) 
+
+Sat Sep 29 17:21:05 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:21:05 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:05 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:21:05 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:21:05 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:21:05 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:05 CEST 2018:Backup completed, log instant at (3,20353) 
+
+Sat Sep 29 17:21:15 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:21:15 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:21:16 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:21:16 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:21:16 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:16 CEST 2018:Backup completed, log instant at (3,20569) 
+
+Sat Sep 29 17:21:26 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:21:26 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:26 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:21:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:21:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:21:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:21:26 CEST 2018:Backup completed, log instant at (3,20785) 
+
+Sat Sep 29 17:29:19 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:29:19 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:19 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:29:19 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:29:19 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:29:19 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:19 CEST 2018:Backup completed, log instant at (4,168) 
+
+Sat Sep 29 17:29:29 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:29:29 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:29 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:29:30 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:29:30 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:29:30 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:30 CEST 2018:Backup completed, log instant at (4,415) 
+
+Sat Sep 29 17:29:40 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:29:40 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:40 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:29:40 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:29:40 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:29:40 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:40 CEST 2018:Backup completed, log instant at (4,629) 
+
+Sat Sep 29 17:29:50 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:29:50 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:50 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:29:51 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:29:51 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:29:51 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:29:51 CEST 2018:Backup completed, log instant at (4,843) 
+
+Sat Sep 29 17:30:01 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:01 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:01 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:01 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:01 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:01 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:01 CEST 2018:Backup completed, log instant at (4,1057) 
+
+Sat Sep 29 17:30:11 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:11 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:11 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:12 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:12 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:12 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:12 CEST 2018:Backup completed, log instant at (4,1271) 
+
+Sat Sep 29 17:30:22 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:22 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:22 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:22 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:22 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:22 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:22 CEST 2018:Backup completed, log instant at (4,1485) 
+
+Sat Sep 29 17:30:32 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:32 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:32 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:33 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:33 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:33 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:33 CEST 2018:Backup completed, log instant at (4,1699) 
+
+Sat Sep 29 17:30:43 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:43 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:43 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:43 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:43 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:43 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:43 CEST 2018:Backup completed, log instant at (4,1913) 
+
+Sat Sep 29 17:30:53 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:30:53 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:53 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:30:54 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:30:54 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:30:54 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:30:54 CEST 2018:Backup completed, log instant at (4,2127) 
+
+Sat Sep 29 17:31:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:04 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:04 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:04 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:04 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:04 CEST 2018:Backup completed, log instant at (4,2341) 
+
+Sat Sep 29 17:31:14 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:14 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:14 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:14 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:15 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:15 CEST 2018:Backup completed, log instant at (4,2555) 
+
+Sat Sep 29 17:31:25 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:25 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:25 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:25 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:25 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:25 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:25 CEST 2018:Backup completed, log instant at (4,2769) 
+
+Sat Sep 29 17:31:35 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:35 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:35 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:35 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:35 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:35 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:35 CEST 2018:Backup completed, log instant at (4,2983) 
+
+Sat Sep 29 17:31:45 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:45 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:46 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:46 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:46 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:46 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:46 CEST 2018:Backup completed, log instant at (4,3197) 
+
+Sat Sep 29 17:31:56 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:31:56 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:56 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:31:56 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:31:56 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:31:56 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:31:56 CEST 2018:Backup completed, log instant at (4,3411) 
+
+Sat Sep 29 17:32:06 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:06 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:06 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:07 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:07 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:07 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:07 CEST 2018:Backup completed, log instant at (4,3625) 
+
+Sat Sep 29 17:32:17 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:17 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:17 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:17 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:17 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:17 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:17 CEST 2018:Backup completed, log instant at (4,3839) 
+
+Sat Sep 29 17:32:27 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:27 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:28 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:28 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:28 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:28 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:28 CEST 2018:Backup completed, log instant at (4,4053) 
+
+Sat Sep 29 17:32:38 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:38 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:38 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:38 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:38 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:38 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:38 CEST 2018:Backup completed, log instant at (4,4267) 
+
+Sat Sep 29 17:32:48 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:48 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:48 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:49 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:49 CEST 2018:Backup completed, log instant at (4,4481) 
+
+Sat Sep 29 17:32:59 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:32:59 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:59 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:32:59 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:32:59 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:32:59 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:32:59 CEST 2018:Backup completed, log instant at (4,4695) 
+
+Sat Sep 29 17:33:09 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:33:09 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:09 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:33:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:33:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:33:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:10 CEST 2018:Backup completed, log instant at (4,4909) 
+
+Sat Sep 29 17:33:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:33:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:33:20 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:33:20 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:33:20 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:20 CEST 2018:Backup completed, log instant at (4,5123) 
+
+Sat Sep 29 17:33:30 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:33:30 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:30 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:33:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:33:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:33:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:31 CEST 2018:Backup completed, log instant at (4,5337) 
+
+Sat Sep 29 17:33:41 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:33:41 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:41 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:33:41 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:33:41 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:33:41 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:41 CEST 2018:Backup completed, log instant at (4,5551) 
+
+Sat Sep 29 17:33:51 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:33:51 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:51 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:33:52 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:33:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:33:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:33:52 CEST 2018:Backup completed, log instant at (4,5765) 
+
+Sat Sep 29 17:34:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:02 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:02 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:02 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:02 CEST 2018:Backup completed, log instant at (4,5979) 
+
+Sat Sep 29 17:34:12 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:12 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:12 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:13 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:13 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:13 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:13 CEST 2018:Backup completed, log instant at (4,6193) 
+
+Sat Sep 29 17:34:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:23 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:23 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:23 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:23 CEST 2018:Backup completed, log instant at (4,6407) 
+
+Sat Sep 29 17:34:33 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:33 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:33 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:33 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:33 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:33 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:33 CEST 2018:Backup completed, log instant at (4,6621) 
+
+Sat Sep 29 17:34:43 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:43 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:43 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:44 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:44 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:44 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:44 CEST 2018:Backup completed, log instant at (4,6835) 
+
+Sat Sep 29 17:34:54 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:34:54 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:54 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:34:54 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:34:54 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:34:54 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:34:54 CEST 2018:Backup completed, log instant at (4,7049) 
+
+Sat Sep 29 17:35:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:04 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:05 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:05 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:05 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:05 CEST 2018:Backup completed, log instant at (4,7263) 
+
+Sat Sep 29 17:35:15 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:15 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:15 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:15 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:15 CEST 2018:Backup completed, log instant at (4,7477) 
+
+Sat Sep 29 17:35:25 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:25 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:25 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:26 CEST 2018:Backup completed, log instant at (4,7691) 
+
+Sat Sep 29 17:35:36 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:36 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:36 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:36 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:36 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:36 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:36 CEST 2018:Backup completed, log instant at (4,7905) 
+
+Sat Sep 29 17:35:46 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:46 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:46 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:47 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:47 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:47 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:47 CEST 2018:Backup completed, log instant at (4,8119) 
+
+Sat Sep 29 17:35:57 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:35:57 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:57 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:35:57 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:35:57 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:35:57 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:35:57 CEST 2018:Backup completed, log instant at (4,8333) 
+
+Sat Sep 29 17:36:07 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:36:07 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:07 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:36:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:36:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:36:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:08 CEST 2018:Backup completed, log instant at (4,8547) 
+
+Sat Sep 29 17:36:18 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:36:18 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:18 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:36:18 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:36:18 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:36:18 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:18 CEST 2018:Backup completed, log instant at (4,8761) 
+
+Sat Sep 29 17:36:28 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:36:28 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:28 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:36:29 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:36:29 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:36:29 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:29 CEST 2018:Backup completed, log instant at (4,8975) 
+
+Sat Sep 29 17:36:39 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:36:39 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:39 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:36:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:36:39 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:36:39 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:39 CEST 2018:Backup completed, log instant at (4,9189) 
+
+Sat Sep 29 17:36:49 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:36:49 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:49 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:36:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:36:50 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:36:50 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:36:50 CEST 2018:Backup completed, log instant at (4,9403) 
+
+Sat Sep 29 17:37:00 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:00 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:00 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:00 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:00 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:00 CEST 2018:Backup completed, log instant at (4,9617) 
+
+Sat Sep 29 17:37:10 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:10 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:10 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:10 CEST 2018:Backup completed, log instant at (4,10027) 
+
+Sat Sep 29 17:37:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:21 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:21 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:21 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:21 CEST 2018:Backup completed, log instant at (4,10241) 
+
+Sat Sep 29 17:37:31 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:31 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:31 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:31 CEST 2018:Backup completed, log instant at (4,10455) 
+
+Sat Sep 29 17:37:41 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:41 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:41 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:42 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:42 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:42 CEST 2018:Backup completed, log instant at (4,10669) 
+
+Sat Sep 29 17:37:52 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:37:52 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:52 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:37:52 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:37:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:37:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:37:52 CEST 2018:Backup completed, log instant at (4,10883) 
+
+Sat Sep 29 17:38:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:03 CEST 2018:Backup completed, log instant at (4,11097) 
+
+Sat Sep 29 17:38:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:13 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:13 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:13 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:13 CEST 2018:Backup completed, log instant at (4,11311) 
+
+Sat Sep 29 17:38:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:24 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:24 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:24 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:24 CEST 2018:Backup completed, log instant at (4,11525) 
+
+Sat Sep 29 17:38:34 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:34 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:34 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:34 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:34 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:34 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:34 CEST 2018:Backup completed, log instant at (4,11739) 
+
+Sat Sep 29 17:38:44 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:44 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:45 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:45 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:45 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:45 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:45 CEST 2018:Backup completed, log instant at (4,11953) 
+
+Sat Sep 29 17:38:55 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:38:55 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:55 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:38:55 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:38:55 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:38:55 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:38:55 CEST 2018:Backup completed, log instant at (4,12167) 
+
+Sat Sep 29 17:39:05 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:05 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:05 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:06 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:06 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:06 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:06 CEST 2018:Backup completed, log instant at (4,12381) 
+
+Sat Sep 29 17:39:16 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:16 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:16 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:16 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:16 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:16 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:16 CEST 2018:Backup completed, log instant at (4,12595) 
+
+Sat Sep 29 17:39:26 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:26 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:26 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:27 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:27 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:27 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:27 CEST 2018:Backup completed, log instant at (4,12809) 
+
+Sat Sep 29 17:39:37 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:37 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:37 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:37 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:37 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:37 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:37 CEST 2018:Backup completed, log instant at (4,13023) 
+
+Sat Sep 29 17:39:47 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:47 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:47 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:48 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:48 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:48 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:48 CEST 2018:Backup completed, log instant at (4,13237) 
+
+Sat Sep 29 17:39:58 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:39:58 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:58 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:39:58 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:39:58 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:39:58 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:39:58 CEST 2018:Backup completed, log instant at (4,13451) 
+
+Sat Sep 29 17:40:08 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:40:08 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:08 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:40:09 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:40:09 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:40:09 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:09 CEST 2018:Backup completed, log instant at (4,13665) 
+
+Sat Sep 29 17:40:19 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:40:19 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:19 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:40:19 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:40:19 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:40:19 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:19 CEST 2018:Backup completed, log instant at (4,13879) 
+
+Sat Sep 29 17:40:29 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:40:29 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:29 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:40:30 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:40:30 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:40:30 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:30 CEST 2018:Backup completed, log instant at (4,14093) 
+
+Sat Sep 29 17:40:40 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:40:40 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:40 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:40:40 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:40:40 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:40:40 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:40 CEST 2018:Backup completed, log instant at (4,14307) 
+
+Sat Sep 29 17:40:50 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:40:50 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:50 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:40:51 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:40:51 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:40:51 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:40:51 CEST 2018:Backup completed, log instant at (4,14521) 
+
+Sat Sep 29 17:41:01 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:01 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:01 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:01 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:01 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:01 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:01 CEST 2018:Backup completed, log instant at (4,14735) 
+
+Sat Sep 29 17:41:11 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:11 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:11 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:12 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:12 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:12 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:12 CEST 2018:Backup completed, log instant at (4,14949) 
+
+Sat Sep 29 17:41:22 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:22 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:22 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:22 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:22 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:22 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:22 CEST 2018:Backup completed, log instant at (4,15163) 
+
+Sat Sep 29 17:41:32 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:32 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:32 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:33 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:33 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:33 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:33 CEST 2018:Backup completed, log instant at (4,15622) 
+
+Sat Sep 29 17:41:43 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:43 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:43 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:43 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:43 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:43 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:43 CEST 2018:Backup completed, log instant at (4,15836) 
+
+Sat Sep 29 17:41:53 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:41:53 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:53 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:41:54 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:41:54 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:41:54 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:41:54 CEST 2018:Backup completed, log instant at (4,16050) 
+
+Sat Sep 29 17:42:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:04 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:04 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:04 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:04 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:04 CEST 2018:Backup completed, log instant at (4,16264) 
+
+Sat Sep 29 17:42:14 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:14 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:14 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:14 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:14 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:15 CEST 2018:Backup completed, log instant at (4,16478) 
+
+Sat Sep 29 17:42:25 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:25 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:25 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:25 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:25 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:25 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:25 CEST 2018:Backup completed, log instant at (4,16694) 
+
+Sat Sep 29 17:42:35 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:35 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:35 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:35 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:35 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:35 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:35 CEST 2018:Backup completed, log instant at (4,16910) 
+
+Sat Sep 29 17:42:45 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:45 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:45 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:46 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:46 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:46 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:46 CEST 2018:Backup completed, log instant at (4,17126) 
+
+Sat Sep 29 17:42:56 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:42:56 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:56 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:42:56 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:42:56 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:42:56 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:42:56 CEST 2018:Backup completed, log instant at (4,17342) 
+
+Sat Sep 29 17:43:06 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:06 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:06 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:07 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:07 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:07 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:07 CEST 2018:Backup completed, log instant at (4,17558) 
+
+Sat Sep 29 17:43:17 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:17 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:17 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:17 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:17 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:17 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:17 CEST 2018:Backup completed, log instant at (4,17774) 
+
+Sat Sep 29 17:43:27 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:27 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:27 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:28 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:28 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:28 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:28 CEST 2018:Backup completed, log instant at (4,17990) 
+
+Sat Sep 29 17:43:38 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:38 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:38 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:38 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:38 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:38 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:38 CEST 2018:Backup completed, log instant at (4,18206) 
+
+Sat Sep 29 17:43:48 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:48 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:48 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:49 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:49 CEST 2018:Backup completed, log instant at (4,18422) 
+
+Sat Sep 29 17:43:59 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:43:59 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:59 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:43:59 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:43:59 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:43:59 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:43:59 CEST 2018:Backup completed, log instant at (4,18638) 
+
+Sat Sep 29 17:44:09 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:44:09 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:09 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:44:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:44:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:44:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:10 CEST 2018:Backup completed, log instant at (4,18854) 
+
+Sat Sep 29 17:44:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:44:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:44:20 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:44:20 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:44:20 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:20 CEST 2018:Backup completed, log instant at (4,19070) 
+
+Sat Sep 29 17:44:30 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:44:30 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:30 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:44:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:44:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:44:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:31 CEST 2018:Backup completed, log instant at (4,19286) 
+
+Sat Sep 29 17:44:41 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:44:41 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:41 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:44:41 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:44:41 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:44:41 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:41 CEST 2018:Backup completed, log instant at (4,19502) 
+
+Sat Sep 29 17:44:51 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:44:51 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:51 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:44:51 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:44:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:44:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:44:52 CEST 2018:Backup completed, log instant at (4,19718) 
+
+Sat Sep 29 17:45:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:02 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:02 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:02 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:02 CEST 2018:Backup completed, log instant at (4,19934) 
+
+Sat Sep 29 17:45:12 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:12 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:12 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:12 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:12 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:12 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:12 CEST 2018:Backup completed, log instant at (4,20150) 
+
+Sat Sep 29 17:45:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:23 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:23 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:23 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:23 CEST 2018:Backup completed, log instant at (4,20366) 
+
+Sat Sep 29 17:45:33 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:33 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:33 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:33 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:33 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:33 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:33 CEST 2018:Backup completed, log instant at (4,20582) 
+
+Sat Sep 29 17:45:43 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:43 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:43 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:44 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:44 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:44 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:44 CEST 2018:Backup completed, log instant at (4,20798) 
+
+Sat Sep 29 17:45:54 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:45:54 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:54 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:45:54 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:45:54 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:45:54 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:45:54 CEST 2018:Backup completed, log instant at (4,21014) 
+
+Sat Sep 29 17:46:04 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:04 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:04 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:05 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:05 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:05 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:05 CEST 2018:Backup completed, log instant at (4,21230) 
+
+Sat Sep 29 17:46:15 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:15 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:15 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:15 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:15 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:15 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:15 CEST 2018:Backup completed, log instant at (4,21446) 
+
+Sat Sep 29 17:46:25 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:25 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:25 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:26 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:26 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:26 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:26 CEST 2018:Backup completed, log instant at (4,21662) 
+
+Sat Sep 29 17:46:36 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:36 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:36 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:36 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:36 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:36 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:36 CEST 2018:Backup completed, log instant at (4,21878) 
+
+Sat Sep 29 17:46:46 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:46 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:46 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:47 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:47 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:47 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:47 CEST 2018:Backup completed, log instant at (4,22094) 
+
+Sat Sep 29 17:46:57 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:46:57 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:57 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:46:57 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:46:57 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:46:57 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:46:57 CEST 2018:Backup completed, log instant at (4,22310) 
+
+Sat Sep 29 17:47:07 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:47:07 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:07 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:47:08 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:47:08 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:47:08 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:08 CEST 2018:Backup completed, log instant at (4,22526) 
+
+Sat Sep 29 17:47:18 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:47:18 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:18 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:47:18 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:47:18 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:47:18 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:18 CEST 2018:Backup completed, log instant at (4,22742) 
+
+Sat Sep 29 17:47:28 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:47:28 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:28 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:47:28 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:47:28 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:47:28 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:28 CEST 2018:Backup completed, log instant at (4,22958) 
+
+Sat Sep 29 17:47:38 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:47:38 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:38 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:47:39 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:47:39 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:47:39 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:39 CEST 2018:Backup completed, log instant at (4,23174) 
+
+Sat Sep 29 17:47:49 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:47:49 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:49 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:47:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:47:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:47:50 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:47:50 CEST 2018:Backup completed, log instant at (4,23390) 
+
+Sat Sep 29 17:48:00 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:00 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:00 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:00 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:00 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:00 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:00 CEST 2018:Backup completed, log instant at (4,23606) 
+
+Sat Sep 29 17:48:10 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:10 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:10 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:10 CEST 2018:Backup completed, log instant at (4,23822) 
+
+Sat Sep 29 17:48:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:21 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:21 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:21 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:21 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:21 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:21 CEST 2018:Backup completed, log instant at (4,24038) 
+
+Sat Sep 29 17:48:31 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:31 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:31 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:31 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:31 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:31 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:31 CEST 2018:Backup completed, log instant at (4,24254) 
+
+Sat Sep 29 17:48:41 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:41 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:41 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:42 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:42 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:42 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:42 CEST 2018:Backup completed, log instant at (4,24470) 
+
+Sat Sep 29 17:48:52 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:48:52 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:52 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:48:52 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:48:52 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:48:52 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:48:52 CEST 2018:Backup completed, log instant at (4,24686) 
+
+Sat Sep 29 17:49:02 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:49:02 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:02 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:49:03 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:49:03 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:49:03 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:03 CEST 2018:Backup completed, log instant at (4,24902) 
+
+Sat Sep 29 17:49:13 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:49:13 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:13 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:49:13 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:49:13 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:49:13 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:13 CEST 2018:Backup completed, log instant at (4,25118) 
+
+Sat Sep 29 17:49:23 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:49:23 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:23 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:49:24 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:49:24 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:49:24 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:24 CEST 2018:Backup completed, log instant at (4,25334) 
+
+Sat Sep 29 17:49:34 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 17:49:34 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:34 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 17:49:34 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 17:49:34 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 17:49:34 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 17:49:34 CEST 2018:Backup completed, log instant at (4,25550) 
+
+Sat Sep 29 18:02:48 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 18:02:48 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:02:48 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 18:02:49 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 18:02:49 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 18:02:49 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:02:49 CEST 2018:Backup completed, log instant at (5,168) 
+
+Sat Sep 29 18:02:59 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 18:02:59 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:02:59 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 18:02:59 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 18:02:59 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 18:02:59 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:02:59 CEST 2018:Backup completed, log instant at (5,415) 
+
+Sat Sep 29 18:03:09 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 18:03:09 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:03:09 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 18:03:10 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 18:03:10 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 18:03:10 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:03:10 CEST 2018:Backup completed, log instant at (5,629) 
+
+Sat Sep 29 18:03:20 CEST 2018:Backup started for database located at C:\Users\aless\IdeaProjects\Master\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.
+Sat Sep 29 18:03:20 CEST 2018:Moved old backup copy from C:\Users\aless\IdeaProjects\Master\db\1401DB to C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:03:20 CEST 2018:Edited database service.properties to use default log device
+Sat Sep 29 18:03:20 CEST 2018:Backup of data segment to C:\Users\aless\IdeaProjects\Master\db\1401DB\seg0 completed. 
+Sat Sep 29 18:03:20 CEST 2018:Copied log directory from C:\Users\aless\IdeaProjects\Master\1401DB\log to C:\Users\aless\IdeaProjects\Master\db\1401DB\log
+Sat Sep 29 18:03:20 CEST 2018:Removed old backup copy at C:\Users\aless\IdeaProjects\Master\db\1401DB.OLD
+Sat Sep 29 18:03:20 CEST 2018:Backup completed, log instant at (5,843) 
+
