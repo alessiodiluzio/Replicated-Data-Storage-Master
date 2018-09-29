@@ -4,15 +4,12 @@ import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.DataNodeDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.DataNodeException;
-import com.sdcc_project.exception.FileNotFoundException;
-import com.sdcc_project.util.FileManager;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
+import com.sdcc_project.exception.FileNotFoundException;
+import com.sdcc_project.util.FileManager;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,7 +36,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static final Object dataNodeLock = new Object();
     private static int masterAddress;
     private static long milliseconds;
-    private static String serverName;
+    private static String completeName;
 
     private DataNode() throws RemoteException {
         super();
@@ -67,13 +64,12 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         file = new File(Integer.toString(registryPort) + ".txt");
 
         try {
-            serverName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
-
+            completeName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
             registry = createRegistry(REGISTRYPORT);
-            registry.rebind(serverName, dataNode);
+            registry.rebind(completeName, dataNode);
             System.out.println("DataNode Bound " + REGISTRYPORT);
         }
         catch (Exception e) {
@@ -359,14 +355,14 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
      */
     @Override
     public void killSignal() {
+        condition = false;
         try {
-            registry.unbind(serverName);
+            registry.unbind(completeName);
             UnicastRemoteObject.unexportObject(this, true);
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
-        condition = false;
-         {
+        {
             try {
                 statisticThread.join();
                 saveDBThread.join();
@@ -379,6 +375,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             }
         }
         System.out.println("SHUTDOWN");
+        System.exit(1);
     }
 
     /**
@@ -435,7 +432,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     @Override
     public void terminate() {
         try {
-            registry.unbind(serverName);
+            registry.unbind(completeName);
             UnicastRemoteObject.unexportObject(this, true);
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
