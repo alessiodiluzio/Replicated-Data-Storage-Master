@@ -134,10 +134,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 e.printStackTrace();
             }
 
-            // createShadowMaster(shadowMasterRegistryPort);
+            //createShadowMaster(shadowMasterRegistryPort);
 
-            // balancingThread.start();
-            // lifeThread.start();
+            balancingThread.start();
+            lifeThread.start();
 
         }
         else if (args[0].equals("Main")) {
@@ -169,11 +169,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 createDataNode();
             }
 
-            // createShadowMaster(Config.masterRegistryPort);
+            //createShadowMaster(Config.masterRegistryPort);
 
             balancingThread.start();
             lifeThread.start();
-
 
             //Quando il processo Master termina "uccide" anche i processi DataNode creati nel main.
             Runtime.getRuntime().addShutdownHook(
@@ -191,7 +190,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             }
                         }
                     });
-
         }
     }
 
@@ -239,14 +237,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         try {
             String os_name = System.getProperty("os.name");
             if(os_name.startsWith("Mac OS")){
-                cmd = Config.cmd_BestOS  + arguments;
+                cmd = Config.MAC_CREATE_DATANODE + arguments;
             }
             else if(os_name.startsWith("Windows")){
-                cmd = Config.cmd_WorstOS + arguments;
+                cmd = Config.WINDOWS_CREATE_DATANODE + arguments;
             }
             else {
-                cmd = Config.cmd_ThirdOS  + arguments;
-                System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.cmd_ThirdOS);
+                cmd = Config.OTHERS_CREATE_DATANODE + arguments;
+                System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.OTHERS_CREATE_DATANODE);
             }
 
             Process process = Runtime.getRuntime().exec(cmd);
@@ -280,14 +278,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         try {
             String os_name = System.getProperty("os.name");
             if(os_name.startsWith("Mac OS")){
-                cmd = Config.cmd_BestOS + "Master " + arguments;
+                cmd = Config.MAC_CREATE_SHADOW_MASTER + arguments;
             }
             else if(os_name.startsWith("Windows")){
-                cmd = Config.cmd_WorstOS + "Master " + arguments;
+                cmd = Config.WINDOWS_CREATE_SHADOW_MASTER + arguments;
             }
             else {
-                cmd = Config.cmd_ThirdOS + "Master " + arguments;
-                System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.cmd_ThirdOS);
+                cmd = Config.OTHERS_CREATE_SHADOW_MASTER + arguments;
+                System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.OTHERS_CREATE_SHADOW_MASTER);
             }
 
             Runtime.getRuntime().exec(cmd);
@@ -582,8 +580,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         public void run() {
 
             while (!exit) {
-                // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
                 /*
+                // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
                 try {
                     deleteEmptyDataNode();
                 }

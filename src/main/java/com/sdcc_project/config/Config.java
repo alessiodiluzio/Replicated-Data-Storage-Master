@@ -6,9 +6,14 @@ public class Config {
     public static final String masterServiceName = "MasterService";
     public static final int masterRegistryPort = 1099;
     public static final String registryHost = "localhost";
-    public static final String cmd_BestOS = "mvn exec:java@DataNode -Dexec.args=";
-    public static final String cmd_WorstOS = "cmd.exe /c mvn exec:java@DataNode -Dexec.args=" ;
-    public static final String cmd_ThirdOS = "mvn exec:java@DataNode -Dexec.args=" ;
+    // Per creare un DataNode:
+    public static final String MAC_CREATE_DATANODE = "mvn exec:java@DataNode -Dexec.args=";
+    public static final String WINDOWS_CREATE_DATANODE = "cmd.exe /c mvn exec:java@DataNode -Dexec.args=" ;
+    public static final String OTHERS_CREATE_DATANODE = "mvn exec:java@DataNode -Dexec.args=" ;
+    // Per creare uno Shadow Master:
+    public static final String MAC_CREATE_SHADOW_MASTER = "mvn exec:java@Master -Dexec.args=";
+    public static final String WINDOWS_CREATE_SHADOW_MASTER = "cmd.exe /c mvn exec:java@Master -Dexec.args=" ;
+    public static final String OTHERS_CREATE_SHADOW_MASTER = "mvn exec:java@Master -Dexec.args=" ;
     public static final int REPLICATION_FACTORY = 3;
     public static final int DATANODE_NUMBER = 4;
     public static final int dataNodeStartPort = 1400;
