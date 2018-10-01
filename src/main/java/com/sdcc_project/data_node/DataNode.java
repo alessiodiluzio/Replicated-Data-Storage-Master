@@ -6,13 +6,12 @@ import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.DataNodeException;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
-import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.FileManager;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import com.sdcc_project.exception.FileNotFoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,32 +21,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static java.rmi.registry.LocateRegistry.createRegistry;
 
 public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
     private static Registry registry;
     private static DataNodeDAO dataNodeDAO;
-    private static File file ;
+    private static File file;
     private static int registryPort;
     private static final Logger LOGGER = Logger.getLogger( DataNode.class.getName() );
     private static boolean condition = true;
     private static final Object dataNodeLock = new Object();
     private static int masterAddress;
     private static long milliseconds;
-    private static String completeName;
 
     private DataNode() throws RemoteException {
         super();
     }
 
-    public static void main(String Args[]){
+    public static void main(String args[]) {
+
+        if(args.length != 2){
+            System.out.println("Usage: DataNode <dataNode_address> <master_address>");
+            System.exit(1);
+        }
 
         Date time = new Date();
         milliseconds = time.getTime();
-        final int REGISTRYPORT = Integer.parseInt(Args[0]);
-        masterAddress = Config.masterRegistryPort;
+        final int REGISTRYPORT = Integer.parseInt(args[0]);
+        masterAddress = Integer.parseInt(args[1]);
         registryPort = REGISTRYPORT;
         String registryHost = Config.registryHost;
         String serviceName = Config.dataNodeServiceName;
@@ -64,13 +66,14 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         file = new File(Integer.toString(registryPort) + ".txt");
 
         try {
-            completeName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
+            String completeName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
             registry = createRegistry(REGISTRYPORT);
             registry.rebind(completeName, dataNode);
-            System.out.println("DataNode Bound " + REGISTRYPORT);
+            //System.out.println("DataNode Bound " + REGISTRYPORT);
+            writeOutput("DataNode lanciato sulla porta: " + REGISTRYPORT + " - Porta del Master: " + masterAddress);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +153,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
      * @return il nome file aggiornato
      */
     @Override
-    public String write(String data,String fileName, ArrayList<String> dataNodePorts, int version,String oldPort) throws DataNodeException,FileNotFoundException {
+    public String write(String data,String fileName, ArrayList<String> dataNodePorts, int version,String oldPort) throws DataNodeException, FileNotFoundException {
 
         String base64String ="";
         String dataString = "";
@@ -356,13 +359,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     @Override
     public void killSignal() {
         condition = false;
-        try {
-            registry.unbind(completeName);
-            UnicastRemoteObject.unexportObject(this, true);
-        } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
-        }
-        {
+         {
             try {
                 statisticThread.join();
                 saveDBThread.join();
@@ -404,7 +401,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     @Override
     public void changeMasterAddress(int newMasterAddress) {
 
-        writeOutput("\nMaster's Address Changed!\n");
+        writeOutput("\nCambiato indirizzo del Master! Old: " + masterAddress + " - New: " + newMasterAddress + "\n");
         masterAddress = newMasterAddress;
     }
 
@@ -431,12 +428,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
      */
     @Override
     public void terminate() {
-        try {
-            registry.unbind(completeName);
-            UnicastRemoteObject.unexportObject(this, true);
-        } catch (RemoteException | NotBoundException e) {
-            e.printStackTrace();
-        }
+
         writeOutput("Termination...");
         System.exit(0);
     }

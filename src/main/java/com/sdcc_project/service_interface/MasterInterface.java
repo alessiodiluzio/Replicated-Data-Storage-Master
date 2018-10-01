@@ -4,7 +4,6 @@ import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.entity.FileLocation;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.exception.MasterException;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -16,4 +15,5 @@ public interface MasterInterface extends Remote {
     void setStatistic(DataNodeStatistic dataNodeStatistic) throws RemoteException;
     void lifeSignal(String port) throws RemoteException;
     ArrayList<String> getDataNodePorts() throws  RemoteException;
+    void dataNodeToManage(ArrayList<String> ports) throws RemoteException;
 }

@@ -61,6 +61,25 @@ public class MasterDAO {
         }
     }
 
+    /**
+     * Cancella tutte le informazioni relative all'indirizzo del DataNode passato.
+     *
+     * @param address Indirizzo del DataNode di cui si devono cancellare le informazioni.
+     * @throws MasterException
+     */
+    public void deleteAllAddress(String address) throws MasterException {
+
+        String deleteQuery = "DELETE FROM MasterTable WHERE dataNodeAddress = ?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
+            preparedStatement.setString(1, address);
+            preparedStatement.execute();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            throw new MasterException("Impossible to delete " + address);
+        }
+    }
+
     public ArrayList<String> getServerFiles(String port) throws FileNotFoundException, MasterException {
 
         String query = "SELECT filename FROM MasterTable WHERE dataNodeAddress = ?";
