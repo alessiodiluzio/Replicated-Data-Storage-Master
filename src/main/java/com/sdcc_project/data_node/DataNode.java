@@ -34,6 +34,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static final Object dataNodeLock = new Object();
     private static int masterAddress;
     private static long milliseconds;
+    private static String completeName;
 
     private DataNode() throws RemoteException {
         super();
@@ -66,7 +67,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         file = new File(Integer.toString(registryPort) + ".txt");
 
         try {
-            String completeName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
+            completeName = "//" + registryHost + ":" + REGISTRYPORT + "/" + serviceName;
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
@@ -359,6 +360,12 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     @Override
     public void killSignal() {
         condition = false;
+        try {
+            registry.unbind(completeName);
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
          {
             try {
                 statisticThread.join();
@@ -428,7 +435,12 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
      */
     @Override
     public void terminate() {
-
+        try {
+            registry.unbind(completeName);
+            UnicastRemoteObject.unexportObject(this, true);
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
         writeOutput("Termination...");
         System.exit(0);
     }

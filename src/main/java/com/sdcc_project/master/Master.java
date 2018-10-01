@@ -119,7 +119,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
 
             lastPort = lastPort + dataNodePorts.size();
-            // createShadowMaster(REGISTRY_PORT);
+            //createShadowMaster(REGISTRY_PORT);
 
             balancingThread.start();
             lifeThread.start();
@@ -156,7 +156,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 createDataNode();
             }
 
-            // createShadowMaster(REGISTRY_PORT);
+            createShadowMaster(REGISTRY_PORT);
 
             balancingThread.start();
             lifeThread.start();
@@ -171,10 +171,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             System.out.println("Salvo DB.");
                             masterDAO.saveDB();
                             masterDAO.closeDBConnection();
-
+                            /*
                             for (String port : dataNodePorts) {
                                 sendKillSignal(port);
-                            }
+                            }*/
                         }
                     });
         }
@@ -204,7 +204,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 System.exit(1);
             }
 
-            // createShadowMaster(REGISTRY_PORT);
+            createShadowMaster(REGISTRY_PORT);
 
             balancingThread.start();
             lifeThread.start();
@@ -273,20 +273,20 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         try {
             String os_name = System.getProperty("os.name");
             if(os_name.startsWith("Mac OS")){
-                cmd = Config.MAC_CREATE_DATANODE + arguments + "'";
+                cmd = Config.MAC_CREATE_DATANODE + "\""+ arguments +"\"";
             }
             else if(os_name.startsWith("Windows")){
-                cmd = Config.WINDOWS_CREATE_DATANODE + arguments + "'";
+                cmd = Config.WINDOWS_CREATE_DATANODE + "\""+ arguments +"\"" ;
             }
             else {
-                cmd = Config.OTHERS_CREATE_DATANODE + arguments + "'";
+                cmd = Config.OTHERS_CREATE_DATANODE + "\""+ arguments +"\"" ;
                 System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.OTHERS_CREATE_DATANODE);
             }
-
+            System.out.println(cmd);
             Process process = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            System.out.println(in.readLine());
             //Aggiungo il processo e la porta del DataNode creato nei rispettivi Array.
+            //for(int i = 0;i<26;i++) System.out.println(in.readLine());
             synchronized (dataNodePortsLock) {
                 dataNodePorts.add(Integer.toString(lastPort));
             }
@@ -315,13 +315,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         try {
             String os_name = System.getProperty("os.name");
             if(os_name.startsWith("Mac OS")){
-                cmd = Config.MAC_CREATE_MASTER + arguments + "'";
+                cmd = Config.MAC_CREATE_MASTER + "\""+ arguments +"\"";
             }
             else if(os_name.startsWith("Windows")){
-                cmd = Config.WINDOWS_CREATE_MASTER + arguments + "'";
+                cmd = Config.WINDOWS_CREATE_MASTER +  "\""+ arguments +"\"";
             }
             else {
-                cmd = Config.OTHERS_CREATE_MASTER + arguments + "'";
+                cmd = Config.OTHERS_CREATE_MASTER +  "\""+ arguments +"\"";
                 System.out.println("Sistema Operativo Terzo. Se il programma non si avvia correttamente, provare a cambiare la seguente stringa: " + Config.OTHERS_CREATE_MASTER);
             }
 
@@ -348,6 +348,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             result.add(fileAddress);
             cl.setResult(true);
             cl.setFilePositions(result);
+            int latestVersion = masterDAO.getFileVersion(fileName,fileAddress);
+            cl.setFileVersion(latestVersion);
             return cl;
         }
         if (operation.equals("W")) {
@@ -667,14 +669,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             while (!exit) {
                 writeOutput("Inizio il Bilanciamento!");
-                /*
+
                 // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
                 try {
                     deleteEmptyDataNode();
                 }
                 catch (ImpossibleToTerminateDatanodeException e) {
                     LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO TERMINATE DataNode " + e.getMessage());
-                }*/
+                }
 
                 synchronized (statisticLock){
                     //Ad ogni ciclo la mappa delle statistiche è azzerata e popolata con le statistiche aggiornate
@@ -863,7 +865,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             long timeInMillis = time.getTime();
                             while(!getLifeSignal(Integer.toString(newServerPort))){
                                 Date now = new Date();
-                                if(now.getTime()-timeInMillis>1000) {
+                                if(now.getTime()-timeInMillis>10000) {
                                     LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerPort);
                                     break;
                                 }
@@ -1032,7 +1034,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     // Invia al nuovo Master le porte dei DataNode che deve gestire:
                     while (!contactNewMaster(newMasterPort, ports)) {
                         Date now = new Date();
-                        if (now.getTime() - timeInMillis > 2000) {
+                        if (now.getTime() - timeInMillis > 10000) {
                             writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterPort);
                             LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT New Master " + newMasterPort);
                             return;
@@ -1065,13 +1067,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             try {
                 String os_name = System.getProperty("os.name");
                 if(os_name.startsWith("Mac OS")){
-                    cmd = Config.MAC_CREATE_MASTER + arguments + "'";
+                    cmd = Config.MAC_CREATE_MASTER +  "\""+ arguments +"\"";
                 }
                 else if(os_name.startsWith("Windows")){
-                    cmd = Config.WINDOWS_CREATE_MASTER + arguments + "'";
+                    cmd = Config.WINDOWS_CREATE_MASTER +  "\""+ arguments +"\"";
                 }
                 else {
-                    cmd = Config.OTHERS_CREATE_MASTER + arguments + "'";
+                    cmd = Config.OTHERS_CREATE_MASTER +  "\""+ arguments +"\"";
                 }
 
                 Runtime.getRuntime().exec(cmd);
