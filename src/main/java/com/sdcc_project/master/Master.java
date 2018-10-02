@@ -286,7 +286,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             Process process = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             //Aggiungo il processo e la porta del DataNode creato nei rispettivi Array.
-            //for(int i = 0;i<26;i++) System.out.println(in.readLine());
+            for(int i = 0;i<26;i++) System.out.println(in.readLine());
             synchronized (dataNodePortsLock) {
                 dataNodePorts.add(Integer.toString(lastPort));
             }
@@ -393,7 +393,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         boolean find;
         boolean delete_oldPort = false;
 
-        // TODO: Verificare newPort - OldPort.
         // Verifica che la porta compare nell'elenco di DataNode gestito da questo Master:
         synchronized (dataNodePortsLock){
             find = dataNodePorts.contains(newPort);
@@ -1006,12 +1005,16 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 // Prende metà delle porte dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
                 ArrayList<String> ports = new ArrayList<>();
+                int index;
 
                 synchronized (dataNodePortsLock) {
                     while(!dataNodePorts.isEmpty() && dataNode_to_move > 0) {
 
-                        ports.add(dataNodePorts.get(0));
-                        dataNodePorts.remove(0);
+                        // Numero random tra [ 0 , dataNodePorts.size() - 1 ] :
+                        index = (int) (Math.random() * (dataNodePorts.size()));
+
+                        ports.add(dataNodePorts.get(index));
+                        dataNodePorts.remove(index);
 
                         dataNode_to_move--;
                     }
