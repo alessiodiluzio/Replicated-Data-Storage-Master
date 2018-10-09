@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Util {
 
@@ -17,5 +19,20 @@ public class Util {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getLocalIPAddress(){
+        InetAddress ip;
+        try {
+
+            ip = InetAddress.getLocalHost();
+            return ip.getHostAddress();
+
+        } catch (UnknownHostException e) {
+
+            e.printStackTrace();
+
+        }
+        return null;
     }
 }
