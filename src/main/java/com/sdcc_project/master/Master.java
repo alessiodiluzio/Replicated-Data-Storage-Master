@@ -10,6 +10,7 @@ import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
 import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
+import com.sdcc_project.util.Util;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -19,7 +20,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static java.rmi.registry.LocateRegistry.createRegistry;
 
 public class Master extends UnicastRemoteObject implements MasterInterface {
@@ -28,7 +28,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static final Logger LOGGER = Logger.getLogger(Master.class.getName());
 
     private static File file;
-    private static int mainMasterPort;
+    private static String mainMasterAddress;
+    private static String address;
     private static MasterDAO masterDAO;
     private static Registry registry;
     private static HashMap<String,DataNodeStatistic> dataNodesStatisticMap = new HashMap<>();
@@ -37,16 +38,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static HashMap<String,Long> lifeSignalMap = new HashMap<>();
     // Lock:
     private static final Object statisticLock = new Object();
-    private static final Object dataNodePortsLock = new Object();
+    private static final Object dataNodeAddressesLock = new Object();
     private static final Object lifeSignalMapLock = new Object();
     private static int REGISTRY_PORT;
-    // Elenco delle porte dei server DataNode attivi:
-    private static ArrayList<String> dataNodePorts = new ArrayList<>();
+    // Elenco degli indirizzi dei server DataNode attivi:
+    private static ArrayList<String> dataNodeAddresses = new ArrayList<>();
     // Elenco dei processi su cui sono lanciati i DataNode attivi:
     private static HashMap<String,Process> processes = new HashMap<>();
     // Ultima porta usata per lanciare un DataNode:
-    private static int lastPort = Config.dataNodeStartPort;
-
+    private static int lastPort = 1400; // TODO:
 
     private Master() throws RemoteException {
         super();
@@ -55,32 +55,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     public static void main(String args[]){
 
         if(args.length < 1){
-            System.out.println("Usage: Master Main || Master Shadow <main_master_port> || Master Splitting <port> ");
+            System.out.println("Usage: Master Main || Master Shadow <main_master_address> || Master Splitting");
             System.exit(1);
         }
         else if (args[0].equals("Shadow")) {
 
             if(args.length != 2) {
-                System.out.println("Usage: Master Shadow <main_master_port>");
+                System.out.println("Usage: Master Shadow <main_master_address>");
                 System.exit(1);
             }
 
             try {
-                // Lo Shadow Master si mette sulla porta successiva al Main Master:
-                mainMasterPort = Integer.parseInt(args[1]);
-                REGISTRY_PORT = mainMasterPort + 1;
-                masterDAO = MasterDAO.getInstance(REGISTRY_PORT);
-
-                String registryHost = Config.registryHost;
-                String serviceName = Config.masterServiceName;
-
-                String completeName = "//" + registryHost + ":" + REGISTRY_PORT + "/" + serviceName;
-                Master master = new Master();
-                registry = createRegistry(REGISTRY_PORT);
-                registry.rebind(completeName, master);
-                System.out.println("Shadow Master Bound");
-                file = new File(Integer.toString(REGISTRY_PORT) + ".txt");
-                writeOutput("Shadow Master lanciato sulla porta: " + REGISTRY_PORT);
+                mainMasterAddress = args[1];
+                masterConfiguration("Shadow");
 
                 shadowThread.start();
 
@@ -92,16 +79,16 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 writeOutput("SHADOW MASTER SHUTDOWN: " + e.getMessage());
                 System.exit(1);
             }
-            writeOutput("DataNode Ports:\n" + dataNodePorts);
-            System.out.println("DataNode Ports:\n" + dataNodePorts);
+            writeOutput("DataNode Addresses:\n" + dataNodeAddresses);
+            System.out.println("DataNode Addresses:\n" + dataNodeAddresses);
 
             try {
-                for (String dataNodePort : dataNodePorts) {
+                for (String dataNodeAddress : dataNodeAddresses) {
 
-                    StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodePort, Config.dataNodeServiceName);
+                    StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodeAddress, Config.dataNodeServiceName);
 
                     // Informa il DataNode del cambio di indirizzo del Master:
-                    dataNode.changeMasterAddress(REGISTRY_PORT);
+                    dataNode.changeMasterAddress(address);
 
                     ArrayList<ArrayList<String>> db_data;
                     // Prende le informazioni dal DataNode:
@@ -117,8 +104,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 e.printStackTrace();
             }
 
-            lastPort = lastPort + dataNodePorts.size();
-            //createShadowMaster(REGISTRY_PORT);
+            lastPort = lastPort + dataNodeAddresses.size();
+            createShadowMaster(address);
 
             balancingThread.start();
             lifeThread.start();
@@ -127,19 +114,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         else if (args[0].equals("Main")) {
 
             try {
-                REGISTRY_PORT = Config.masterRegistryPort;
-                masterDAO = MasterDAO.getInstance(REGISTRY_PORT);
-
-                String registryHost = Config.registryHost;
-                String serviceName = Config.masterServiceName;
-
-                String completeName = "//" + registryHost + ":" + REGISTRY_PORT + "/" + serviceName;
-                Master master = new Master();
-                registry = createRegistry(REGISTRY_PORT);
-                registry.rebind(completeName, master);
-                System.out.println("Master Bound");
-                file = new File(Integer.toString(REGISTRY_PORT) + ".txt");
-                writeOutput("Main Master lanciato sulla porta: " + REGISTRY_PORT);
+                masterConfiguration("Main");
             }
             catch (MasterException e) {
                 e.printStackTrace();
@@ -155,7 +130,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 createDataNode();
             }
 
-            createShadowMaster(REGISTRY_PORT);
+            createShadowMaster(address);
 
             balancingThread.start();
             lifeThread.start();
@@ -171,50 +146,69 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             masterDAO.saveDB();
                             masterDAO.closeDBConnection();
                             /*
-                            for (String port : dataNodePorts) {
-                                sendKillSignal(port);
+                            for (String address : dataNodeAddresses) {
+                                sendKillSignal(address);
                             }*/
                         }
                     });
         }
         else if(args[0].equals("Splitting")) {
 
-            if(args.length != 2) {
-                System.out.println("Usage: Master Splitting <port>");
-                System.exit(1);
-            }
-
             try {
-                REGISTRY_PORT = Integer.parseInt(args[1]);
-                masterDAO = MasterDAO.getInstance(REGISTRY_PORT);
-
-                String registryHost = Config.registryHost;
-                String serviceName = Config.masterServiceName;
-
-                String completeName = "//" + registryHost + ":" + REGISTRY_PORT + "/" + serviceName;
-                Master master = new Master();
-                registry = createRegistry(REGISTRY_PORT);
-                registry.rebind(completeName, master);
-                file = new File(Integer.toString(REGISTRY_PORT) + ".txt");
-                writeOutput("New Main Master lanciato sulla porta: " + REGISTRY_PORT);
+                masterConfiguration("Splitting");
             }
             catch (Exception e) {
                 writeOutput("MASTER SHUTDOWN: " + e.getMessage());
                 System.exit(1);
             }
 
-            createShadowMaster(REGISTRY_PORT);
+            createShadowMaster(address);
 
             balancingThread.start();
             lifeThread.start();
         }
     }
 
-    private static Remote registryLookup(String registryHost, String port, String serviceName) throws NotBoundException, RemoteException {
+    /**
+     * Setta le informazioni base del Master.
+     *
+     * @param masterType Tipologia di Master: Main, Shadow, Splitting.
+     * @throws MasterException
+     * @throws RemoteException
+     */
+    private static void masterConfiguration(String masterType) throws MasterException, RemoteException {
 
-        String completeName = "//" + registryHost + ":" + port + "/" + serviceName;
+        REGISTRY_PORT = Config.port;
+        masterDAO = MasterDAO.getInstance(Config.MASTER_DATABASE_NAME);
+        address= Util.getLocalIPAddress();
 
-        registry = LocateRegistry.getRegistry(registryHost, Integer.parseInt(port));
+        String registryHost = Config.registryHost;
+        String serviceName = Config.masterServiceName;
+
+        String completeName = "//" + registryHost + ":" + REGISTRY_PORT + "/" + serviceName;
+        Master master = new Master();
+        registry = createRegistry(REGISTRY_PORT);
+        registry.rebind(completeName, master);
+        System.out.println(masterType + " Master Bound");
+        file = new File(Config.MASTER_FILE_LOGGING_NAME + ".txt");
+        writeOutput(masterType + " Master lanciato all'indirizzo: " + address);
+    }
+
+    /**
+     * Setta la connessione RMI.
+     *
+     * @param registryHost
+     * @param address
+     * @param serviceName
+     * @return
+     * @throws NotBoundException
+     * @throws RemoteException
+     */
+    private static Remote registryLookup(String registryHost, String address, String serviceName) throws NotBoundException, RemoteException {
+
+        String completeName = "//" + registryHost + ":" + address + "/" + serviceName;
+
+        registry = LocateRegistry.getRegistry(registryHost, Integer.parseInt(address));
         return registry.lookup(completeName);
     }
 
@@ -237,27 +231,27 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
     @Override
-    public ArrayList<String> getDataNodePorts() {
+    public ArrayList<String> getDataNodeAddresses() {
 
-        synchronized (dataNodePortsLock) {
+        synchronized (dataNodeAddressesLock) {
 
-            return dataNodePorts;
+            return dataNodeAddresses;
         }
     }
 
     /**
      * Funzione che invia il segnale di attesa terminazione del Thread.
      *
-     * @param port Porta da contattare.
+     * @param dataNode_address Indirizzo da contattare.
      */
-    private static void sendKillSignal(String port){
+    private static void sendKillSignal(String dataNode_address){
 
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, port, Config.dataNodeServiceName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNode_address, Config.dataNodeServiceName);
             dataNode.killSignal();
         }
         catch (NotBoundException | IOException e) {
-            LOGGER.log(Level.WARNING,port + " shutdowned");
+            LOGGER.log(Level.WARNING,dataNode_address + " shutdowned");
         }
     }
 
@@ -269,7 +263,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         String cmd;
         lastPort++;
-        String arguments = Integer.toString(lastPort) + " " + REGISTRY_PORT;
+        String arguments = address;
 
         try {
             String os_name = System.getProperty("os.name");
@@ -286,20 +280,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.out.println(cmd);
             Process process = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            //Aggiungo il processo e la porta del DataNode creato nei rispettivi Array.
-            for(int i = 0;i<26;i++) System.out.println(in.readLine());
-            synchronized (dataNodePortsLock) {
-                dataNodePorts.add(Integer.toString(lastPort));
+            //for(int i = 0;i<26;i++) System.out.println(in.readLine());
+            //Aggiungo il processo e l'indirizzo del DataNode creato nei rispettivi Array.
+            synchronized (dataNodeAddressesLock) {
+                dataNodeAddresses.add(Integer.toString(lastPort));
             }
-            processes.put(Integer.toString(lastPort),process);
-            writeOutput("Nuovo DataNode lanciato sulla porta: " + lastPort + " - Porta del Master: " + REGISTRY_PORT);
+            processes.put(Integer.toString(lastPort), process);
+            writeOutput("Nuovo DataNode lanciato All'indirizzo: " + lastPort + " - Indirizzo del Master: " + address);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         Date now = new Date();
         lifeSignalMap.put(Integer.toString(lastPort), now.getTime());
-
 
         return lastPort;
     }
@@ -308,10 +301,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * Funzione per creare un nuovo Shadow Master.
      *
      */
-    private static void createShadowMaster(int mainMasterPort) {
+    private static void createShadowMaster(String mainMasterAddress) {
 
         String cmd;
-        String arguments = "Shadow " + Integer.toString(mainMasterPort);
+        String arguments = "Shadow " + mainMasterAddress;
 
         try {
             String os_name = System.getProperty("os.name");
@@ -384,41 +377,41 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * Notifica di scrittura della versione di un file.
      *
      * @param filename Nome del file di cui si deve aggiornare la versione.
-     * @param newPort nuova Posizione del file.
+     * @param newAddress nuova Posizione del file.
      * @param version versione del file aggiornato
-     * @param oldPort vecchia posizione del file (in caso di spostamento)
+     * @param oldAddress vecchia posizione del file (in caso di spostamento)
      */
     @Override
-    public void writeAck(String filename, String newPort, int version, String oldPort){
+    public void writeAck(String filename, String newAddress, int version, String oldAddress){
 
         boolean find;
-        boolean delete_oldPort = false;
+        boolean delete_oldAddress = false;
 
-        // Verifica che la porta compare nell'elenco di DataNode gestito da questo Master:
-        synchronized (dataNodePortsLock){
-            find = dataNodePorts.contains(newPort);
-            if(oldPort != null) {
+        // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
+        synchronized (dataNodeAddressesLock){
+            find = dataNodeAddresses.contains(newAddress);
+            if(oldAddress != null) {
                 // Contiene la 'old' ma non la 'new':
-                if(dataNodePorts.contains(oldPort) && !find) {
-                    delete_oldPort = true;
+                if(dataNodeAddresses.contains(oldAddress) && !find) {
+                    delete_oldAddress = true;
                 }
             }
         }
         if(find) {
             try {
-                if(oldPort != null){
-                    masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, oldPort, newPort, version);
+                if(oldAddress != null){
+                    masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, oldAddress, newAddress, version);
                 }
-                masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, newPort, newPort, version);
+                masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, newAddress, newAddress, version);
             }
             catch (MasterException e) {
                 e.printStackTrace();
                 LOGGER.log(Level.SEVERE,e.getMessage());
             }
         }
-        if(delete_oldPort) {
+        if(delete_oldAddress) {
             try {
-                masterDAO.deleteFilePosition(filename, oldPort);
+                masterDAO.deleteFilePosition(filename, oldAddress);
             }
             catch (MasterException e) {
                 e.printStackTrace();
@@ -435,13 +428,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         boolean find;
 
-        // Verifica che la porta compare nell'elenco di DataNode gestito da questo Master:
-        synchronized (dataNodePortsLock){
-            find = dataNodePorts.contains(Integer.toString(dataNodeStatistic.getDataNodePort()));
+        // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
+        synchronized (dataNodeAddressesLock){
+            find = dataNodeAddresses.contains(dataNodeStatistic.getDataNodeAddress());
         }
         if(find){
             synchronized (statisticLock) {
-                dataNodesStatisticMap.put(Integer.toString(dataNodeStatistic.getDataNodePort()), dataNodeStatistic);
+                dataNodesStatisticMap.put(dataNodeStatistic.getDataNodeAddress(), dataNodeStatistic);
             }
         }
     }
@@ -449,24 +442,24 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     /**
      * Inserisce/Aggiorna il segnale di vita di un DataNode.
      *
-     * @param port Indirizzo del DataNode che ha mandato il sengale.
+     * @param dataNodeAddress Indirizzo del DataNode che ha mandato il sengale.
      */
     @Override
-    public void lifeSignal(String port) {
+    public void lifeSignal(String dataNodeAddress) {
 
         boolean find;
 
-        // Verifica che la porta compare nell'elenco di DataNode gestito da questo Master:
-        synchronized (dataNodePortsLock){
-            find = dataNodePorts.contains(port);
+        // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
+        synchronized (dataNodeAddressesLock){
+            find = dataNodeAddresses.contains(dataNodeAddress);
         }
         if(find){
             Date now = new Date();
             long timeInMillis = now.getTime();
 
             synchronized (lifeSignalMapLock) {
-                lifeSignalMap.remove(port);
-                lifeSignalMap.put(port, timeInMillis);
+                lifeSignalMap.remove(dataNodeAddress);
+                lifeSignalMap.put(dataNodeAddress, timeInMillis);
             }
         }
     }
@@ -474,27 +467,27 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     /**
      * Algoritmo Round - Robin per la distribuzione delle "prime richieste" di scrittura
      *
-     * @return un array di porte estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
+     * @return un array di indirizzi estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
      */
     private ArrayList<String> roundRobinDistribution(){
 
         int startPosition = -1;
-        ArrayList<String> extractedPort = new ArrayList<>();
-        synchronized (dataNodePortsLock) {
+        ArrayList<String> extractedAddress = new ArrayList<>();
+        synchronized (dataNodeAddressesLock) {
             if (lastChosenServer != 0) {
 
-                startPosition = dataNodePorts.indexOf(Integer.toString(lastChosenServer));
+                startPosition = dataNodeAddresses.indexOf(Integer.toString(lastChosenServer));
 
             }
             for (int i = 1; i <= Config.REPLICATION_FACTORY; i++) {
-                int index = (startPosition + i) % (dataNodePorts.size());
+                int index = (startPosition + i) % (dataNodeAddresses.size());
                 if (i == 1)
-                    lastChosenServer = Integer.parseInt(dataNodePorts.get(index));
-                extractedPort.add(dataNodePorts.get(index));
+                    lastChosenServer = Integer.parseInt(dataNodeAddresses.get(index));
+                extractedAddress.add(dataNodeAddresses.get(index));
             }
         }
 
-        return extractedPort;
+        return extractedAddress;
     }
 
     /**
@@ -502,47 +495,49 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * invia il file al server destinatario e aggiorna le tabelle del master.
      *
      * @param filename FIle spostare e reletive informazioni
-     * @param oldPort porta di provenienza
-     * @param newServerPort Destinazione del file
+     * @param oldAddress indirizzo di provenienza
+     * @param newServerAddress Destinazione del file
      */
-    private static void balanceFile(String filename,String oldPort, String newServerPort) throws MasterException, FileNotFoundException, DataNodeException, NotBalancableFile, AlreadyMovedFileException {
+    private static void balanceFile(String filename, String oldAddress, String newServerAddress) throws MasterException, FileNotFoundException, DataNodeException, NotBalancableFile, AlreadyMovedFileException {
 
-        writeOutput("Tento di mandare " + filename + " in " + newServerPort + " da "+oldPort);
-        System.out.println("Tento di mandare " + filename + " in " + newServerPort + " da "+oldPort);
-        if (masterDAO.serverContainsFile(filename, newServerPort)) {
-            throw new NotBalancableFile("A replica of this file " +filename+" is already in the server " +newServerPort);
+        writeOutput("Tento di mandare " + filename + " in " + newServerAddress + " da " + oldAddress);
+        System.out.println("Tento di mandare " + filename + " in " + newServerAddress + " da " + oldAddress);
+
+        if (masterDAO.serverContainsFile(filename, newServerAddress)) {
+            throw new NotBalancableFile("A replica of this file " +filename+" is already in the server " + newServerAddress);
         }
-        if(!masterDAO.serverContainsFile(filename,oldPort)){
-            throw new AlreadyMovedFileException("File " +filename+" is not in the server "+oldPort +" anymore.");
+        if(!masterDAO.serverContainsFile(filename, oldAddress)){
+            throw new AlreadyMovedFileException("File " +filename+" is not in the server " + oldAddress +" anymore.");
         }
-        sendFileToDataNode(filename, newServerPort, oldPort);
-        System.out.println("Spostato " + filename + " da " + oldPort + " in " + newServerPort);
-        writeOutput("Spostato " + filename + " da " + oldPort + " in " + newServerPort);
+
+        sendFileToDataNode(filename, newServerAddress, oldAddress);
+        System.out.println("Spostato " + filename + " da " + oldAddress + " in " + newServerAddress);
+        writeOutput("Spostato " + filename + " da " + oldAddress + " in " + newServerAddress);
     }
 
     /**
      * "Ordina" ad un DataNode di spostare un file ad un altro DataNode.
      *
      * @param fileName nome del file da spostare
-     * @param newsServerPort indirizzo di destinazione
-     * @param oldServerPort indirizzo mittente
+     * @param newsServerAddress indirizzo di destinazione
+     * @param oldServerAddress indirizzo mittente
      */
-    private static void sendFileToDataNode(String fileName,String newsServerPort,String oldServerPort) throws MasterException, FileNotFoundException, DataNodeException {
+    private static void sendFileToDataNode(String fileName, String newsServerAddress, String oldServerAddress) throws MasterException, FileNotFoundException, DataNodeException {
 
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, oldServerPort, Config.dataNodeServiceName);
-            dataNode.moveFile(fileName,newsServerPort,masterDAO.getFileVersion(fileName,oldServerPort),oldServerPort);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, oldServerAddress, Config.dataNodeServiceName);
+            dataNode.moveFile(fileName,newsServerAddress,masterDAO.getFileVersion(fileName, oldServerAddress), oldServerAddress);
         }
         catch (NotBoundException | IOException e) {
             e.printStackTrace();
-            throw new MasterException("Error in bind to DataNode Port " + oldServerPort);
+            throw new MasterException("Error in bind to DataNode on Address " + oldServerAddress);
         }
     }
 
-    private static boolean getLifeSignal(String port){
+    private static boolean getLifeSignal(String dataNodeAddress){
 
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, port, Config.dataNodeServiceName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodeAddress, Config.dataNodeServiceName);
             return dataNode.lifeSignal();
         }
         catch (NotBoundException | IOException e) {
@@ -555,8 +550,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         String replacedDataNode = Integer.toString(createDataNode());
         if(getLifeSignal(address))
             return;
-        synchronized (dataNodePortsLock){
-            dataNodePorts.remove(address);
+        synchronized (dataNodeAddressesLock){
+            dataNodeAddresses.remove(address);
         }
         synchronized (statisticLock){
             dataNodesStatisticMap.remove(address);
@@ -572,7 +567,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 LOGGER.log(Level.WARNING,"Failed server has none file");
                 return;
             }
-            System.out.println("MovedFie "+movedFile+" port "+address);
+            System.out.println("MovedFie "+movedFile+" Address "+address);
             for(String file : movedFile){
                 masterDAO.deleteFilePosition(file,address);
                 ArrayList<String> filePositions = masterDAO.getFilePosition(file);
@@ -721,8 +716,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 // Crea un nuovo Master se necessario:
                 splitMaster();
 
-                writeOutput("DataNode Ancora Gestiti: " + dataNodePorts);
-                System.out.println("DataNode Ancora Gestiti: " + dataNodePorts);
+                writeOutput("DataNode Ancora Gestiti: " + dataNodeAddresses);
+                System.out.println("DataNode Ancora Gestiti: " + dataNodeAddresses);
             }
         }
 
@@ -780,23 +775,23 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     if(serverStat.getServerSize() + file.getFileSize() < maxSize &&
                             serverStat.getServerRequests() + file.getFileRequests() <maxRequest){
                         try {
-                            if (masterDAO.serverContainsFile(file.getFileName(), Integer.toString(serverStat.getDataNodePort()))) {
-                                System.out.println(Integer.toString(serverStat.getDataNodePort()) + " contiene già " + file.getFileName());
+                            if (masterDAO.serverContainsFile(file.getFileName(), serverStat.getDataNodeAddress())) {
+                                System.out.println(serverStat.getDataNodeAddress() + " contiene già " + file.getFileName());
                             }
                             Date time = new Date();
                             long timeInMillis = time.getTime();
-                            while(!getLifeSignal(Integer.toString(serverStat.getDataNodePort()))){
+                            while(!getLifeSignal(serverStat.getDataNodeAddress())){
                                 Date now = new Date();
                                 if(now.getTime()-timeInMillis>1000) {
-                                    LOGGER.log(Level.SEVERE, "IMPOSSIBLE TO CONTACT SERVER " + serverStat.getDataNodePort());
+                                    LOGGER.log(Level.SEVERE, "IMPOSSIBLE TO CONTACT SERVER " + serverStat.getDataNodeAddress());
                                     break;
                                 }
                             }
-                            balanceFile(file.getFileName(),Integer.toString(file.getDataNodeOwner()), Integer.toString(serverStat.getDataNodePort()));
+                            balanceFile(file.getFileName(), file.getDataNodeOwner(), serverStat.getDataNodeAddress());
                             //Il file viene rimosso dal buffer e aggiunto alle statistiche del server a cui è stato inviato
                             bufferRebalanced.remove(file);
                             file.setFileRequests(Integer.toUnsignedLong(0));
-                            file.setDataNodeOwner(serverStat.getDataNodePort());
+                            file.setDataNodeOwner(serverStat.getDataNodeAddress());
                             serverStat.insert(file);
 
                         }catch (MasterException | FileNotFoundException | DataNodeException e){
@@ -820,8 +815,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             return bufferRebalanced;
         }
 
-
-
         /**
          * Crea nuovi datanode a cui inviare file da ricollocare
          *
@@ -839,7 +832,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 if (count > 2) //Per evitare ciclo infinito
                     break;
                 //Creo un nuovo dataNode.
-                int newServerPort = createDataNode();
+                int newServerAddress = createDataNode();
                 long serverSize = 0;
                 long serverRequest = 0;
                 //Finchè il nuovo server non è saturo e il buffer è non vuoto
@@ -849,19 +842,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         //Se il server può accettare un file lo invio
                     try{
                         if (serverSize + file.getFileSize() < maxSize && serverRequest + file.getFileRequests() < maxRequest) {
-                            if (masterDAO.serverContainsFile(file.getFileName(), Integer.toString(newServerPort))) {
-                                System.out.println(Integer.toString(newServerPort)+" contiene già " + file.getFileName());
+                            if (masterDAO.serverContainsFile(file.getFileName(), Integer.toString(newServerAddress))) {
+                                System.out.println(Integer.toString(newServerAddress)+" contiene già " + file.getFileName());
                             }
                             Date time = new Date();
                             long timeInMillis = time.getTime();
-                            while(!getLifeSignal(Integer.toString(newServerPort))){
+                            while(!getLifeSignal(Integer.toString(newServerAddress))){
                                 Date now = new Date();
                                 if(now.getTime()-timeInMillis>10000) {
-                                    LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerPort);
+                                    LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerAddress);
                                     break;
                                 }
                             }
-                            balanceFile(file.getFileName(),Integer.toString(file.getDataNodeOwner()), Integer.toString(newServerPort));
+                            balanceFile(file.getFileName(), file.getDataNodeOwner(), Integer.toString(newServerAddress));
                                 //Aggiorno carico del nuovo server
                             System.out.println("Bilanciato " + file);
                             serverSize = serverSize + file.getFileSize();
@@ -912,56 +905,56 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 if(stats.getFileInfos().isEmpty() && stats.getMilliseconds_timer() > Config.MAX_TIME_EMPTY_DATANODE) {
 
-                    writeOutput("Empty DataNode: " + stats.getDataNodePort() + " - Timer: " + stats.getMilliseconds_timer());
-                    System.out.println("Empty DataNode: " + stats.getDataNodePort() + " - Timer: " + stats.getMilliseconds_timer());
-                    // Rimuove dalla lista di porte globale la porta del DataNode:
-                    synchronized (dataNodePortsLock) {
-                        dataNodePorts.remove(Integer.toString(stats.getDataNodePort()));
+                    writeOutput("Empty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer());
+                    System.out.println("Empty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer());
+                    // Rimuove dalla lista di indirizzi globale l'indirizzo del DataNode:
+                    synchronized (dataNodeAddressesLock) {
+                        dataNodeAddresses.remove(stats.getDataNodeAddress());
                     }
                     // Contatta il DataNode per verificare che le statistiche sia ancora vuote:
                     boolean isEmpty = false;
                     try {
-                        StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, Integer.toString(stats.getDataNodePort()), Config.dataNodeServiceName);
+                        StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, stats.getDataNodeAddress(), Config.dataNodeServiceName);
                         isEmpty = dataNode.isEmpty();
                     }
                     catch (NotBoundException | IOException e) {
-                        writeOutput("SEVERE: IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodePort());
-                        LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodePort());
+                        writeOutput("SEVERE: IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress());
+                        LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress());
                     }
                     if(isEmpty){
                         try {
-                            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, Integer.toString(stats.getDataNodePort()), Config.dataNodeServiceName);
+                            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, stats.getDataNodeAddress(), Config.dataNodeServiceName);
                             dataNode.terminate(); // Il DataNode viene terminato.
                         }
                         catch (NotBoundException | RemoteException e){
 
                             // DataNode terminato correttamente:
                             if(e.getCause().toString().equals("java.io.EOFException")){
-                                writeOutput("INFO: EMPTY DATANODE " + stats.getDataNodePort() + " TERMINATED!");
-                                LOGGER.log(Level.INFO,"EMPTY DATANODE " + stats.getDataNodePort() + " TERMINATED!");
+                                writeOutput("INFO: EMPTY DATANODE " + stats.getDataNodeAddress() + " TERMINATED!");
+                                LOGGER.log(Level.INFO,"EMPTY DATANODE " + stats.getDataNodeAddress() + " TERMINATED!");
                             }
                             // DataNode NON terminato correttamente:
                             else {
-                                // Rinserisce la porta del DataNode in quelle globali:
-                                synchronized (dataNodePortsLock) {
-                                    dataNodePorts.add(Integer.toString(stats.getDataNodePort()));
+                                // Rinserisce l'indirizzo del DataNode in quelle globali:
+                                synchronized (dataNodeAddressesLock) {
+                                    dataNodeAddresses.add(stats.getDataNodeAddress());
                                 }
-                                throw new ImpossibleToTerminateDatanodeException(Integer.toString(stats.getDataNodePort()));
+                                throw new ImpossibleToTerminateDatanodeException(stats.getDataNodeAddress());
                             }
                         }
                         // Rimuove le statistiche di quel DataNode:
                         synchronized (statisticLock) {
-                            dataNodesStatisticMap.remove(Integer.toString(stats.getDataNodePort()));
+                            dataNodesStatisticMap.remove(stats.getDataNodeAddress());
                         }
                         synchronized (lifeSignalMapLock) {
-                            lifeSignalMap.remove(Integer.toString(stats.getDataNodePort()));
+                            lifeSignalMap.remove(stats.getDataNodeAddress());
                         }
                     }
                     // DataNode non vuoto:
                     else {
-                        // Rinserisce la porta del DataNode in quelle globali:
-                        synchronized (dataNodePortsLock) {
-                            dataNodePorts.add(Integer.toString(stats.getDataNodePort()));
+                        // Rinserisce l'indirizzo del DataNode in quelli globali:
+                        synchronized (dataNodeAddressesLock) {
+                            dataNodeAddresses.add(stats.getDataNodeAddress());
                         }
                         // Il DataNode non viene terminato.
                     }
@@ -978,67 +971,67 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             int dataNodes_number;
 
-            synchronized (dataNodePortsLock) {
-                dataNodes_number = dataNodePorts.size();
+            synchronized (dataNodeAddressesLock) {
+                dataNodes_number = dataNodeAddresses.size();
             }
 
             if(dataNodes_number > Config.MAX_DATANODE_PER_MASTER) {
 
-                int newMasterPort = REGISTRY_PORT + 20;
                 // Crea il nuovo Master:
-                createMaster(newMasterPort);
-                writeOutput("Creato nuovo Master sulla porta: " + newMasterPort);
-                System.out.println("Creato nuovo Master sulla porta: " + newMasterPort);
+                String newMasterAddress = ""; // TODO: Prendere l'indirizzo del master creato.
+                createMaster();
+                writeOutput("Creato nuovo Master all'indirizzo: " + newMasterAddress);
+                System.out.println("Creato nuovo Master all'indirizzo: " + newMasterAddress);
 
-                // Prende metà delle porte dei DataNode:
+                // Prende metà degli indirizzi dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
-                ArrayList<String> ports = new ArrayList<>();
+                ArrayList<String> addresses = new ArrayList<>();
                 int index;
 
-                synchronized (dataNodePortsLock) {
-                    while(!dataNodePorts.isEmpty() && dataNode_to_move > 0) {
+                synchronized (dataNodeAddressesLock) {
+                    while(!dataNodeAddresses.isEmpty() && dataNode_to_move > 0) {
 
-                        // Numero random tra [ 0 , dataNodePorts.size() - 1 ] :
-                        index = (int) (Math.random() * (dataNodePorts.size()));
+                        // Numero random tra [ 0 , dataNodeAddresses.size() - 1 ] :
+                        index = (int) (Math.random() * (dataNodeAddresses.size()));
 
-                        ports.add(dataNodePorts.get(index));
-                        dataNodePorts.remove(index);
+                        addresses.add(dataNodeAddresses.get(index));
+                        dataNodeAddresses.remove(index);
 
                         dataNode_to_move--;
                     }
                 }
-                // Rimuove le porte dalla StatisticMap e dalla LifeMap:
+                // Rimuove gli indirizzi dalla StatisticMap e dalla LifeMap:
                 synchronized (statisticLock){
-                    for(int i = 0; i < ports.size(); i++) {
-                        dataNodesStatisticMap.remove(ports.get(i));
+                    for(int i = 0; i < addresses.size(); i++) {
+                        dataNodesStatisticMap.remove(addresses.get(i));
                     }
                 }
                 synchronized (lifeSignalMapLock) {
-                    for(int i = 0; i < ports.size(); i++) {
-                        lifeSignalMap.remove(ports.get(i));
+                    for(int i = 0; i < addresses.size(); i++) {
+                        lifeSignalMap.remove(addresses.get(i));
                     }
                 }
 
                 try {
                     Date date = new Date();
                     long timeInMillis = date.getTime();
-                    // Invia al nuovo Master le porte dei DataNode che deve gestire:
-                    while (!contactNewMaster(newMasterPort, ports)) {
+                    // Invia al nuovo Master gli indirizzi dei DataNode che deve gestire:
+                    while (!contactNewMaster(newMasterAddress, addresses)) {
                         Date now = new Date();
                         if (now.getTime() - timeInMillis > 10000) {
-                            writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterPort);
-                            LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT New Master " + newMasterPort);
+                            writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
+                            LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
                             return;
                         }
                     }
 
                     // Rimuove dal DB tutte le informazioni relative ai DataNode traferito al nuovo Master:
-                    for(String address : ports){
+                    for(String address : addresses){
                         masterDAO.deleteAllAddress(address);
                     }
 
-                    writeOutput("DataNode Spostati: " + ports);
-                    System.out.println("DataNode Spostati: " + ports);
+                    writeOutput("DataNode Spostati: " + addresses);
+                    System.out.println("DataNode Spostati: " + addresses);
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -1050,10 +1043,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
          * Funzione per creare un nuovo Master.
          *
          */
-        private void createMaster(int newMasterPort) {
+        private void createMaster() {
 
             String cmd;
-            String arguments = "Splitting " + Integer.toString(newMasterPort);
+            String arguments = "Splitting";
 
             try {
                 String os_name = System.getProperty("os.name");
@@ -1070,17 +1063,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 Runtime.getRuntime().exec(cmd);
             }
             catch (Exception e) {
-                writeOutput("Impossibile creare un nuovo Master sulla porta: " + newMasterPort);
+                writeOutput("Impossibile creare un nuovo Master");
                 e.printStackTrace();
             }
         }
 
-        private boolean contactNewMaster(int newMasterPort, ArrayList<String> ports) {
+        private boolean contactNewMaster(String newMasterAddress, ArrayList<String> addresses) {
 
             try {
-                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, Integer.toString(newMasterPort), Config.masterServiceName);
+                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, newMasterAddress, Config.masterServiceName);
 
-                master.dataNodeToManage(ports);
+                master.dataNodeToManage(addresses);
             }
             catch (Exception e) {
                 return false;
@@ -1091,19 +1084,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     };
 
     /**
-     * Metodo che riceve una lista di porte di DataNode ed esegue tutte le operazini per prendere in gestione quei DataNode.
+     * Metodo che riceve una lista di indirizzi di DataNode ed esegue tutte le operazini per prendere in gestione quei DataNode.
      *
-     * @param ports Indirizzi dei DataNode che il nuovo Master deve gestire.
+     * @param addresses Indirizzi dei DataNode che il nuovo Master deve gestire.
      */
     @Override
-    public void dataNodeToManage(ArrayList<String> ports) {
+    public void dataNodeToManage(ArrayList<String> addresses) {
 
         lastPort = lastPort + 100;
 
         try {
-            for (String dataNodePort : ports) {
+            for (String dataNodeAddress : addresses) {
 
-                StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodePort, Config.dataNodeServiceName);
+                StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodeAddress, Config.dataNodeServiceName);
 
                 ArrayList<ArrayList<String>> db_data;
                 // Richiede al DataNode la lista di file che possiede:
@@ -1113,13 +1106,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), file_info.get(1), Integer.parseInt(file_info.get(2)));
                 }
 
-                // Iserisce la porta del DataNode in quelle globali:
-                synchronized (dataNodePortsLock) {
-                    dataNodePorts.add(dataNodePort);
+                // Iserisce l'indirizzo del DataNode in quelli globali:
+                synchronized (dataNodeAddressesLock) {
+                    dataNodeAddresses.add(dataNodeAddress);
                 }
 
                 // Informa il DataNode del cambio di indirizzo del Master:
-                dataNode.changeMasterAddress(REGISTRY_PORT);
+                dataNode.changeMasterAddress(address);
             }
         }
         catch (Exception e) {
@@ -1145,8 +1138,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     while (!contactMainMaster()) {
                         Date now = new Date();
                         if (now.getTime() - timeInMillis > 1000) {
-                            writeOutput("IMPOSSIBLE TO CONTACT Main Master " + mainMasterPort);
-                            LOGGER.log(Level.WARNING, "IMPOSSIBLE TO CONTACT Main Master " + mainMasterPort);
+                            writeOutput("IMPOSSIBLE TO CONTACT Main Master " + mainMasterAddress);
+                            LOGGER.log(Level.WARNING, "IMPOSSIBLE TO CONTACT Main Master " + mainMasterAddress);
                             return;
                         }
                     }
@@ -1164,15 +1157,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             ArrayList<String> temp;
 
             try {
-                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, Integer.toString(mainMasterPort), Config.masterServiceName);
+                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, mainMasterAddress, Config.masterServiceName);
 
-                temp = master.getDataNodePorts();
+                temp = master.getDataNodeAddresses();
             }
             catch (RemoteException | NotBoundException e) {
                 return false;
             }
 
-            dataNodePorts = temp;
+            dataNodeAddresses = temp;
             return true;
         }
     };

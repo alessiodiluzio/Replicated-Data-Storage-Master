@@ -7,20 +7,21 @@ public class FileInfo implements Serializable {
     private String fileName;
     private Long fileRequests;
     private Long fileSize;
-    private Integer dataNodeOwner;
+    private String dataNodeOwner;
 
-    public FileInfo(String fileName, Long fileRequests, Long fileSize, Integer dataNodeOwner) {
+    public FileInfo(String fileName, Long fileRequests, Long fileSize, String dataNodeOwner) {
+
         this.fileName = fileName;
         this.fileRequests = fileRequests;
         this.fileSize = fileSize;
         this.dataNodeOwner = dataNodeOwner;
     }
 
-    public void setDataNodeOwner(Integer dataNodeOwner) {
+    public void setDataNodeOwner(String dataNodeOwner) {
         this.dataNodeOwner = dataNodeOwner;
     }
 
-    public Integer getDataNodeOwner() {
+    public String getDataNodeOwner() {
         return dataNodeOwner;
     }
 

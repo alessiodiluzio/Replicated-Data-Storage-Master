@@ -14,6 +14,6 @@ public interface MasterInterface extends Remote {
     void writeAck(String filename, String port, int version, String oldPort) throws RemoteException;
     void setStatistic(DataNodeStatistic dataNodeStatistic) throws RemoteException;
     void lifeSignal(String port) throws RemoteException;
-    ArrayList<String> getDataNodePorts() throws  RemoteException;
-    void dataNodeToManage(ArrayList<String> ports) throws RemoteException;
+    ArrayList<String> getDataNodeAddresses() throws RemoteException;
+    void dataNodeToManage(ArrayList<String> addresses) throws RemoteException;
 }

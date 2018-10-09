@@ -1,11 +1,11 @@
 package com.sdcc_project.dao;
 
+import com.sdcc_project.config.Config;
 import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.DataNodeException;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.FileManager;
 import com.sdcc_project.util.Util;
-
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,17 +24,18 @@ public class DataNodeDAO {
          return dataNodeStatistic;
     }
 
-    private DataNodeDAO(Integer registryPort) throws DataNodeException {
-        this.dbName = Integer.toString(registryPort);
-        file = new File(dbName+"dao.txt");
-        dataNodeStatistic = new DataNodeStatistic(registryPort);
+    private DataNodeDAO(String address) throws DataNodeException {
+
+        this.dbName = Config.DATANODE_DATABASE_NAME;
+        file = new File(Config.DATANODE_FILE_LOGGING_NAME + "_Dao.txt");
+        dataNodeStatistic = new DataNodeStatistic(address);
         loadDB();
     }
 
-    public static DataNodeDAO getInstance(Integer registryPort) throws DataNodeException {
+    public static DataNodeDAO getInstance(String address) throws DataNodeException {
 
         if(instance == null){
-            instance = new DataNodeDAO(registryPort);
+            instance = new DataNodeDAO(address);
         }
         return instance;
     }
@@ -49,7 +50,7 @@ public class DataNodeDAO {
             while (set.next()){
                 ArrayList<String> row = new ArrayList<>();
                 row.add(set.getString(1)); // Filename
-                row.add(dataNodeAddress); // Porta
+                row.add(dataNodeAddress); // Indirizzo
                 row.add(set.getString(2)); // Versione
 
                 result.add(row);
@@ -195,11 +196,11 @@ public class DataNodeDAO {
     }
 
     private void createDB(boolean restore) throws Exception {
-        String dbUri = "jdbc:derby:memory:" + dbName + "DB" + ";create=true;user=" + "dataNode" + ";password=" + "dataNode";
+        String dbUri = "jdbc:derby:memory:" + dbName + ";create=true;user=" + "dataNode" + ";password=" + "dataNode";
         if (restore)
-            dbUri = "jdbc:derby:memory:" + dbName + "DB" + ";restoreFrom=db/" + dbName + "DB" + " ;user=" + "dataNode" + ";password=" + "dataNode";
+            dbUri = "jdbc:derby:memory:" + dbName + ";restoreFrom=db/" + dbName + " ;user=" + "dataNode" + ";password=" + "dataNode";
         DataSource dataSource = DataSource.getInstance();
-        this.connection = dataSource.getConnection(dbUri, Integer.parseInt(dbName));
+        this.connection = dataSource.getConnection(dbUri);
         if (!restore){
             createTable();
         }else loadStatistic();

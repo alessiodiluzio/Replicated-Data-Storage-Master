@@ -12,18 +12,19 @@ public class DataNodeStatistic implements Serializable {
     private ArrayList<FileInfo> fileInfos = new ArrayList<>();
     private ArrayList<FileInfo> filePerSize = new ArrayList<>();
     private ArrayList<FileInfo> filePerRequest = new ArrayList<>();
-    private Integer dataNodePort;
+    private String dataNodeAddress;
     private long milliseconds_timer;
 
-    public DataNodeStatistic(Integer dataNodePort) {
-        this.dataNodePort = dataNodePort;
+    public DataNodeStatistic(String dataNodeAddress) {
+
+        this.dataNodeAddress = dataNodeAddress;
     }
 
     public void incrementSingleFileRequest(String fileName){
 
         FileInfo fileInfo = arrayContainsFileName(fileName,fileInfos);
         if(fileInfo == null){
-            fileInfo = new FileInfo(fileName,Integer.toUnsignedLong(0),Integer.toUnsignedLong(0),dataNodePort);
+            fileInfo = new FileInfo(fileName,Integer.toUnsignedLong(0), Integer.toUnsignedLong(0), dataNodeAddress);
             fileInfos.add(fileInfo);
         }
         else{
@@ -39,7 +40,7 @@ public class DataNodeStatistic implements Serializable {
 
         FileInfo fileInfo = arrayContainsFileName(fileName,fileInfos);
         if(fileInfo == null){
-            fileInfo = new FileInfo(fileName,Integer.toUnsignedLong(0),fileSize,dataNodePort);
+            fileInfo = new FileInfo(fileName,Integer.toUnsignedLong(0),fileSize, dataNodeAddress);
             fileInfos.add(fileInfo);
         }
         else{
@@ -74,8 +75,8 @@ public class DataNodeStatistic implements Serializable {
         return filePerSize;
     }
 
-    public Integer getDataNodePort() {
-        return dataNodePort;
+    public String getDataNodeAddress() {
+        return dataNodeAddress;
     }
 
     public long getMilliseconds_timer() {
@@ -149,7 +150,7 @@ public class DataNodeStatistic implements Serializable {
 
     @Override
     public String toString() {
-        return "Server Port: " + dataNodePort + " - Server Size: "+serverSize +" - Server Requests: "+serverRequests
+        return "Server Address: " + dataNodeAddress + " - Server Size: "+serverSize +" - Server Requests: "+serverRequests
                 +" - Files: " +fileInfos;
     }
 

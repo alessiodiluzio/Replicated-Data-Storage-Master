@@ -11,15 +11,15 @@ public class MasterDAO {
     private static MasterDAO instance;
     private Connection connection = null;
 
-    private MasterDAO(int port) throws MasterException {
+    private MasterDAO(String dbName) throws MasterException {
 
-        loadDB(port);
+        loadDB(dbName);
     }
 
-    public static MasterDAO getInstance(int port) throws MasterException {
+    public static MasterDAO getInstance(String dbName) throws MasterException {
 
         if (instance == null) {
-            instance = new MasterDAO(port);
+            instance = new MasterDAO(dbName);
         }
         return instance;
     }
@@ -272,13 +272,13 @@ public class MasterDAO {
      * Ricarica dal disco il Database con le informazioni di posizione dei file.
      *
      */
-    private void loadDB(int port) throws MasterException {
+    private void loadDB(String dbName) throws MasterException {
         try{
-            createDB(true, port);
+            createDB(true, dbName);
         }
         catch (Exception e) {
             try {
-                createDB(false, port);
+                createDB(false, dbName);
             }
             catch (Exception e1) {
                 e1.printStackTrace();
@@ -287,16 +287,16 @@ public class MasterDAO {
         }
     }
 
-    private void createDB(boolean restore, int port) throws Exception {
+    private void createDB(boolean restore, String dbName) throws Exception {
 
-        String dbUri = "jdbc:derby:memory:"+ port +"DB"+";create=true;user=" + "master"+";password="+"master";
+        String dbUri = "jdbc:derby:memory:" + dbName + ";create=true;user=" + "master" + ";password=" + "master";
 
         if(restore) {
-            dbUri = "jdbc:derby:memory:" + port + "DB" + ";restoreFrom=db/" + port + "DB" + ";user="
+            dbUri = "jdbc:derby:memory:" + dbName + ";restoreFrom=db/" + dbName + ";user="
                     + "master" + ";password=" + "master";
         }
         DataSource dataSource = DataSource.getInstance();
-        this.connection = dataSource.getConnection(dbUri, port);
+        this.connection = dataSource.getConnection(dbUri);
         if(!restore){
             createTable();
         }
