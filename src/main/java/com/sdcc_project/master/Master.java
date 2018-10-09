@@ -11,6 +11,7 @@ import com.sdcc_project.service_interface.StorageInterface;
 import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -97,9 +98,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             try {
                 for (String dataNodePort : dataNodePorts) {
 
-                    String completeName = "//" + Config.registryHost + ":" + dataNodePort + "/" + Config.dataNodeServiceName;
-                    registry = LocateRegistry.getRegistry(Config.registryHost, Integer.parseInt(dataNodePort));
-                    StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+                    StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodePort, Config.dataNodeServiceName);
 
                     // Informa il DataNode del cambio di indirizzo del Master:
                     dataNode.changeMasterAddress(REGISTRY_PORT);
@@ -211,10 +210,18 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    private static Remote registryLookup(String registryHost, String port, String serviceName) throws NotBoundException, RemoteException {
+
+        String completeName = "//" + registryHost + ":" + port + "/" + serviceName;
+
+        registry = LocateRegistry.getRegistry(registryHost, Integer.parseInt(port));
+        return registry.lookup(completeName);
+    }
+
     /**
      * Funzione per fare il logging dell'output di ogni DataNode.
      *
-     * @param message Output del DataNode da appendere nel file.
+     * @param message Output del DataNode da appendere nel file
      */
     @SuppressWarnings("all")
     private static void writeOutput(String message){
@@ -245,14 +252,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      */
     private static void sendKillSignal(String port){
 
-        String serviceName = Config.dataNodeServiceName;
-        String completeName = "//" + Config.registryHost + ":" +port + "/" + serviceName;
-
-        // Cerca l'oggetto remoto per nome nel registro dell'host del server
-        Registry registry;
         try {
-            registry = LocateRegistry.getRegistry(Config.registryHost, Integer.parseInt(port));
-            StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, port, Config.dataNodeServiceName);
             dataNode.killSignal();
         }
         catch (NotBoundException | IOException e) {
@@ -528,32 +529,23 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      */
     private static void sendFileToDataNode(String fileName,String newsServerPort,String oldServerPort) throws MasterException, FileNotFoundException, DataNodeException {
 
-        String serviceName = Config.dataNodeServiceName;
-        String completeName = "//" + Config.registryHost + ":" +oldServerPort + "/" + serviceName;
-        // Cerca l'oggetto remoto per nome nel registro dell'host del server
         try {
-            registry = LocateRegistry.getRegistry(Config.registryHost, Integer.parseInt(oldServerPort));
-            StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, oldServerPort, Config.dataNodeServiceName);
             dataNode.moveFile(fileName,newsServerPort,masterDAO.getFileVersion(fileName,oldServerPort),oldServerPort);
-
         }
         catch (NotBoundException | IOException e) {
             e.printStackTrace();
-            throw new MasterException("Error in bind to DataNode Port "+oldServerPort+" "+completeName);
+            throw new MasterException("Error in bind to DataNode Port " + oldServerPort);
         }
     }
 
     private static boolean getLifeSignal(String port){
-        String serviceName = Config.dataNodeServiceName;
-        String completeName = "//" + Config.registryHost + ":" +port + "/" + serviceName;
-        // Cerca l'oggetto remoto per nome nel registro dell'host del server
+
         try {
-            registry = LocateRegistry.getRegistry(Config.registryHost, Integer.parseInt(port));
-            StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, port, Config.dataNodeServiceName);
             return dataNode.lifeSignal();
         }
         catch (NotBoundException | IOException e) {
-            //LOGGER.log(Level.WARNING,"Impossible to bind to "+port + " "+completeName);
             return false;
         }
     }
@@ -927,12 +919,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         dataNodePorts.remove(Integer.toString(stats.getDataNodePort()));
                     }
                     // Contatta il DataNode per verificare che le statistiche sia ancora vuote:
-                    String serviceName = Config.dataNodeServiceName;
-                    String completeName = "//" + Config.registryHost + ":" + stats.getDataNodePort() + "/" + serviceName;
                     boolean isEmpty = false;
                     try {
-                        registry = LocateRegistry.getRegistry(Config.registryHost, stats.getDataNodePort());
-                        StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+                        StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, Integer.toString(stats.getDataNodePort()), Config.dataNodeServiceName);
                         isEmpty = dataNode.isEmpty();
                     }
                     catch (NotBoundException | IOException e) {
@@ -941,8 +930,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     }
                     if(isEmpty){
                         try {
-                            registry = LocateRegistry.getRegistry(Config.registryHost, stats.getDataNodePort());
-                            StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+                            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, Integer.toString(stats.getDataNodePort()), Config.dataNodeServiceName);
                             dataNode.terminate(); // Il DataNode viene terminato.
                         }
                         catch (NotBoundException | RemoteException e){
@@ -1090,9 +1078,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         private boolean contactNewMaster(int newMasterPort, ArrayList<String> ports) {
 
             try {
-                String completeName = "//" + Config.registryHost + ":" + newMasterPort + "/" + Config.masterServiceName;
-                registry = LocateRegistry.getRegistry(Config.registryHost, newMasterPort);
-                MasterInterface master = (MasterInterface) registry.lookup(completeName);
+                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, Integer.toString(newMasterPort), Config.masterServiceName);
 
                 master.dataNodeToManage(ports);
             }
@@ -1117,9 +1103,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         try {
             for (String dataNodePort : ports) {
 
-                String completeName = "//" + Config.registryHost + ":" + dataNodePort + "/" + Config.dataNodeServiceName;
-                registry = LocateRegistry.getRegistry(Config.registryHost, Integer.parseInt(dataNodePort));
-                StorageInterface dataNode = (StorageInterface) registry.lookup(completeName);
+                StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, dataNodePort, Config.dataNodeServiceName);
 
                 ArrayList<ArrayList<String>> db_data;
                 // Richiede al DataNode la lista di file che possiede:
@@ -1180,9 +1164,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             ArrayList<String> temp;
 
             try {
-                String completeName = "//" + Config.registryHost + ":" + mainMasterPort + "/" + Config.masterServiceName;
-                registry = LocateRegistry.getRegistry(Config.registryHost, mainMasterPort);
-                MasterInterface master = (MasterInterface) registry.lookup(completeName);
+                MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, Integer.toString(mainMasterPort), Config.masterServiceName);
 
                 temp = master.getDataNodePorts();
             }
