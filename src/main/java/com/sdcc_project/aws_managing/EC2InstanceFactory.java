@@ -125,8 +125,8 @@ public class EC2InstanceFactory {
         }
         ArrayList<String> lines = new ArrayList<>();
         lines.add("#! /bin/bash");
-        lines.add("java -jar /home/ubuntu/S3Manager-1.0-SNAPSHOT-jar-with-dependencies.jar");
-        lines.add("cd /home/ubuntu/ && unzip Master.zip && cd Master && mvn compile && "+command+arguments);
+        lines.add("java -jar /home/ubuntu/DownloadMasterFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
+        lines.add("cd /home/ubuntu/ && unzip master.zip && cd master && mvn compile && "+command+arguments);
         String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
         return str;
     }
