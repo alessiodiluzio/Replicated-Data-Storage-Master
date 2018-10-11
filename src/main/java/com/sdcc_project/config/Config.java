@@ -22,7 +22,7 @@ public class Config {
     public static final int DATANODE_NUMBER = 3;
     public static final int BALANCING_THREAD_SLEEP_TIME = 10000;
     public static final int LIFE_THREAD_SLEEP_TIME = 2000;
-    public static final int MAX_TIME_EMPTY_DATANODE = 120000; // 120 secondi
+    public static final int MAX_TIME_EMPTY_DATANODE = 6000000; // 120 secondi
     public static final int MAX_TIME_NOT_RESPONDING_DATANODE = 180000; // 30 secondi
     public static final int MAX_DATANODE_PER_MASTER = 3;
 
@@ -34,8 +34,10 @@ public class Config {
     public static final String DATANODE_FILE_LOGGING_NAME = "File_Logging_DataNode";
 
     // Soglie:
-    public static final Long dataNodeMemory = Integer.toUnsignedLong(300);
+    public static final Long dataNodeMemory = Integer.toUnsignedLong(1000);
     public static final Long loadThreshold = Integer.toUnsignedLong(20);
-    public static final Long dataNodeMaxRequest = Integer.toUnsignedLong(200);
+    public static final Long dataNodeMaxRequest = Integer.toUnsignedLong(1000);
     public static final Long requestThreshold = Integer.toUnsignedLong(20);
+    public static String launchDataNode = "mvn exec:java@DataNode -Dexec.args=";
+    public static String launchMaster ="mvn exec:java@Master -Dexec.args=";
 }

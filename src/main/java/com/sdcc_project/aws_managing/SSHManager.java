@@ -1,4 +1,4 @@
-package aws_managing;
+package com.sdcc_project.aws_managing;
 
 import com.jcraft.jsch.*;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class SSHManager {
 
-    private static SSHManager istanza ;
+    /*private static SSHManager istanza ;
 
     private SSHManager(){};
 
@@ -64,5 +64,5 @@ public class SSHManager {
             e.printStackTrace();
         }
 
-    };
+    };*/
 }

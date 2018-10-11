@@ -83,11 +83,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         lifeThread.start();
     }
 
-    private static Remote registryLookup(String registryHost, String Address, String serviceName) throws NotBoundException, RemoteException {
+    private static Remote registryLookup(String Address, String serviceName) throws NotBoundException, RemoteException {
 
-        String completeName = "//" + registryHost + ":" + Address + "/" + serviceName;
-
-        registry = LocateRegistry.getRegistry(registryHost, Integer.parseInt(Address));
+        String completeName = "//" + Address + ":" + Config.port + "/" + serviceName;
+        writeOutput("Contatto "+Address +" " +Config.port + " per "+completeName);
+        registry = LocateRegistry.getRegistry(Address, Config.port);
         return registry.lookup(completeName);
     }
 
@@ -195,7 +195,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         MasterInterface master;
         try {
-            master = (MasterInterface) registryLookup(Config.registryHost, masterAddress, Config.masterServiceName);
+            master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
             master.writeAck(fileName, address, version, oldAddress);
         }
         catch (RemoteException | NotBoundException e) {
@@ -212,7 +212,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                         break;
                     }
                 }
-                master = (MasterInterface) registryLookup(Config.registryHost, masterAddress, Config.masterServiceName);
+                master = (MasterInterface) registryLookup( masterAddress, Config.masterServiceName);
                 master.writeAck(fileName, address, version, oldAddress);
             }
             catch (RemoteException | NotBoundException e2){
@@ -236,7 +236,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             base64 = dataNodeDAO.getFileString(fileName,false);
         }
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, newServerAddress, Config.dataNodeServiceName);
+            StorageInterface dataNode = (StorageInterface) registryLookup(newServerAddress, Config.dataNodeServiceName);
             ArrayList<String> addresses = new ArrayList<>();
             addresses.add(newServerAddress);
             dataNode.write(base64, fileName, addresses, version, oldAddress);
@@ -260,7 +260,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static void sendLifeSignal() {
 
         try {
-            MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, masterAddress, Config.masterServiceName);
+            MasterInterface master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
             master.lifeSignal(address);
         }
         catch (RemoteException | NotBoundException e) {
@@ -318,7 +318,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                 String nextDataNode = dataNodeAddresses.get(0);
                 dataNodeAddresses.remove(nextDataNode);
                 try {
-                    StorageInterface dataNode = (StorageInterface) registryLookup(Config.registryHost, nextDataNode, Config.dataNodeServiceName);
+                    StorageInterface dataNode = (StorageInterface) registryLookup(nextDataNode, Config.dataNodeServiceName);
                     dataNode.forwardWrite(data, fileName, dataNodeAddresses, version, fileSize,null);
                 }
                 catch (RemoteException | NotBoundException | FileNotFoundException | DataNodeException e) {
@@ -440,7 +440,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         public void run() {
             while (condition){
                 try {
-                    MasterInterface master = (MasterInterface) registryLookup(Config.registryHost, masterAddress, Config.masterServiceName);
+                    MasterInterface master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
 
                     synchronized (dataNodeLock) {
                         DataNodeStatistic statistic = dataNodeDAO.getDataNodeStatistic();
@@ -460,9 +460,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                         master.setStatistic(statistic);
                     }
                 }
-                catch (RemoteException | NotBoundException e) {
-                    writeOutput("WARNING: IMPOSSIBLE TO CONTACT Master " + masterAddress + " - Statistics NOT Sent");
+                catch (RemoteException e) {
+                    writeOutput("REMOTE EXCEPTION" + e.getMessage());
                     continue; // Se non riesce a contattare il Master, semplicemente a questo giro non gli invia le statistiche.
+                }catch (NotBoundException e){
+                    writeOutput("NOT BOUND EXCEPTION\n" + e.getMessage());
                 }
 
                 try {
