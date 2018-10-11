@@ -50,10 +50,15 @@ public class EC2InstanceFactory {
         request.getFilters().add(new Filter().withName("owner-id").withValues(systemProperties.getAws_account_id()));
         DescribeImagesResult describeImagesResult= amazonEC2Client.describeImages(request);
         List<Image> images = describeImagesResult.getImages();
+        String ami = "";
         for(Image img : images){
-            System.out.println("Image ID: " +img.getImageId());
+            System.out.println(img.getName());
+            if(img.getName().equals(systemProperties.getAws_ec2_master_instance_ami_name())){
+                ami = img.getImageId();
+                System.out.println("Image ID: " +ami);
+            }
         }
-        return images.get(0).getImageId();
+        return ami;
     }
 
     public String createEC2Instance(NodeType nodeType, String arguments){
@@ -96,6 +101,7 @@ public class EC2InstanceFactory {
 
 
 
+
     }
 
     private  void waitFor(long milliseconds){
@@ -126,7 +132,7 @@ public class EC2InstanceFactory {
         ArrayList<String> lines = new ArrayList<>();
         lines.add("#! /bin/bash");
         lines.add("java -jar /home/ubuntu/DownloadMasterFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
-        lines.add("cd /home/ubuntu/ && unzip master.zip && cd master && mvn compile && "+command+arguments);
+        lines.add("cd /home/ubuntu/ && unzip master.zip && cd Master && mvn compile && "+command+arguments);
         String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
         return str;
     }

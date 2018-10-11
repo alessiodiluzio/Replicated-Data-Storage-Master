@@ -16,7 +16,7 @@ public class SystemProperties {
     private String aws_ec2_region_key;
     private String aws_ec2_region_security_group;
     private String aws_account_id;
-    private String aws_ec2_instance_ami;
+    private String aws_ec2_master_instance_ami_name;
     private Regions region;
 
     private SystemProperties(){
@@ -43,7 +43,7 @@ public class SystemProperties {
             this.aws_ec2_region_key=prop.getProperty("aws_ec2_region_key");
             this.aws_ec2_region_security_group=prop.getProperty("aws_ec2_region_security_group");
             this.aws_account_id = prop.getProperty("aws_account_id");
-            this.aws_ec2_instance_ami = prop.getProperty("aws_ec2_instance_ami");
+            this.aws_ec2_master_instance_ami_name = prop.getProperty("aws_ec2_master_instance_ami_name");
             this.region = Regions.valueOf(this.aws_deploy_region);
 
         } catch (IOException ex) {
@@ -51,8 +51,8 @@ public class SystemProperties {
         }
     }
 
-    public String getAws_ec2_instance_ami() {
-        return aws_ec2_instance_ami;
+    public String getAws_ec2_master_instance_ami_name() {
+        return aws_ec2_master_instance_ami_name;
     }
 
     public String getAws_access_key() {
