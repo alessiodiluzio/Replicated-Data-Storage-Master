@@ -253,7 +253,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             if(localIPAddress==null) {
                 throw new MasterException("Impossibile to find Master Address");
             }
-            arguments = "\"Shadow\" " + "\"" + localIPAddress + "\"";
+            arguments = "\"Shadow" + " " + localIPAddress + "\"";
         }
         else
             arguments = "Splitting";
@@ -914,7 +914,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 } catch (MasterException e) {
                     e.printStackTrace();
                 }
-                masterAddresses.add(newMasterAddress); //TODO Comunicazione tra master
+                masterAddresses.add(newMasterAddress);
                 writeOutput("Creato nuovo Master all'indirizzo: " + newMasterAddress);
                 System.out.println("Creato nuovo Master all'indirizzo: " + newMasterAddress);
 
