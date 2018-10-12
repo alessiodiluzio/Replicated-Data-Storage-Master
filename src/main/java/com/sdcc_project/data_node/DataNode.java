@@ -48,10 +48,9 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         Date time = new Date();
         milliseconds = time.getTime();
-        final int REGISTRY_PORT = Config.port;
+
         masterAddress = args[0];
         address = Util.getLocalIPAddress();
-        String registryHost = Config.registryHost;
         String serviceName = Config.dataNodeServiceName;
 
         try {
@@ -65,11 +64,12 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         file = new File(Config.DATANODE_FILE_LOGGING_NAME + ".txt");
 
         try {
-            completeName = "//" + registryHost + ":" + REGISTRY_PORT + "/" + serviceName;
+            completeName = "//" + address + ":" + Config.port + "/" + serviceName;
+            writeOutput(completeName);
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
-            registry = createRegistry(REGISTRY_PORT);
+            registry = createRegistry(Config.port);
             registry.rebind(completeName, dataNode);
             writeOutput("DataNode lanciato all'indirizzo: " + address + " - Indirizzo del Master: " + masterAddress);
         }
@@ -461,7 +461,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                     }
                 }
                 catch (RemoteException e) {
-                    writeOutput("REMOTE EXCEPTION" + e.getMessage());
+                    writeOutput("WARNING: Impossible to contact Master " + masterAddress);
                     continue; // Se non riesce a contattare il Master, semplicemente a questo giro non gli invia le statistiche.
                 }catch (NotBoundException e){
                     writeOutput("NOT BOUND EXCEPTION\n" + e.getMessage());

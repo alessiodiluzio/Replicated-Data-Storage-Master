@@ -100,11 +100,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     System.exit(1);
                 }
                 writeOutput("DataNode Addresses:\n" + dataNodeAddresses);
-                System.out.println("DataNode Addresses:\n" + dataNodeAddresses);
                 try {
                     for (String dataNodeAddress : dataNodeAddresses) {
                         StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
                         // Informa il DataNode del cambio di indirizzo del Master:
+                        writeOutput("Invio il nuovo indirizzo del Master " + address + " al DataNode " + dataNodeAddress);
                         dataNode.changeMasterAddress(address);
                         ArrayList<ArrayList<String>> db_data;
                         // Prende le informazioni dal DataNode:
@@ -114,28 +114,33 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), file_info.get(1), Integer.parseInt(file_info.get(2)));
                         }
                     }
-                    //System.out.println("DB Data:\n" + masterDAO.getAllData());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    writeOutput("DB Data:\n" + masterDAO.getAllData());
+                }
+                catch (Exception e) {
+                    writeOutput(e.getMessage());
                 }
                 try {
                     createMasterInstance("Shadow");
-                } catch (MasterException e) {
-                    e.printStackTrace();
+                }
+                catch (MasterException e) {
+                    writeOutput(e.getMessage());
                 }
                 break;
+
             case "Splitting":
                 try {
                     masterConfiguration("Splitting");
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     writeOutput("MASTER SHUTDOWN: " + e.getMessage());
                     System.exit(1);
                 }
 
                 try {
                     createMasterInstance("Shadow");
-                } catch (MasterException e) {
-                    e.printStackTrace();
+                }
+                catch (MasterException e) {
+                    writeOutput(e.getMessage());
                 }
                 break;
 
@@ -153,9 +158,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      */
     private static void masterConfiguration(String masterType) throws MasterException, RemoteException {
 
-
         masterDAO = MasterDAO.getInstance(Config.MASTER_DATABASE_NAME);
-        address= Util.getLocalIPAddress();
+        address = Util.getLocalIPAddress();
         String serviceName = Config.masterServiceName;
         String completeName = "//" + address + ":" + Config.port + "/" + serviceName;
         System.out.println(completeName);
