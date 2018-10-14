@@ -1,5 +1,6 @@
 package com.sdcc_project.data_node;
 
+import com.amazonaws.util.EC2MetadataUtils;
 import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.DataNodeDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
@@ -29,6 +30,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static DataNodeDAO dataNodeDAO;
     private static File file;
     private static String address;
+    private static String instanceID;
     private static boolean condition = true;
     private static final Object dataNodeLock = new Object();
     private static String masterAddress;
@@ -51,6 +53,8 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         masterAddress = args[0];
         address = Util.getLocalIPAddress();
+        instanceID = EC2MetadataUtils.getInstanceId(); // TODO: Verificare che funzioni.
+
         String serviceName = Config.dataNodeServiceName;
 
         try {
@@ -65,7 +69,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         try {
             completeName = "//" + address + ":" + Config.port + "/" + serviceName;
-            writeOutput(completeName);
+            //writeOutput(completeName);
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
@@ -86,7 +90,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static Remote registryLookup(String Address, String serviceName) throws NotBoundException, RemoteException {
 
         String completeName = "//" + Address + ":" + Config.port + "/" + serviceName;
-        writeOutput("Contatto "+Address +" " +Config.port + " per "+completeName);
+        //writeOutput("Contatto "+Address +" " +Config.port + " per "+completeName);
         registry = LocateRegistry.getRegistry(Address, Config.port);
         return registry.lookup(completeName);
     }
@@ -106,6 +110,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return filesInfo;
     }
 
+    @Override
+    public String getInstanceID() {
+
+        return instanceID;
+    }
 
     /**
      * Lettura di un file da memoria.

@@ -15,5 +15,7 @@ public interface MasterInterface extends Remote {
     void setStatistic(DataNodeStatistic dataNodeStatistic) throws RemoteException;
     void lifeSignal(String port) throws RemoteException;
     ArrayList<String> getDataNodeAddresses() throws RemoteException;
-    void dataNodeToManage(ArrayList<String> addresses) throws RemoteException;
+    ArrayList<String> getMasterAddresses() throws RemoteException;
+    void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses) throws RemoteException;
+    void updateMasterAddresses(String newMasterAddress, String oldMasterAddress) throws RemoteException;
 }

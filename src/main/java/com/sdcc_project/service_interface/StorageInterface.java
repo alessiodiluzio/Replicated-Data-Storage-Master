@@ -18,4 +18,5 @@ public interface StorageInterface extends Remote {
     ArrayList<ArrayList<String>> getDatabaseData() throws RemoteException;
     boolean isEmpty() throws RemoteException;
     void terminate() throws RemoteException;
+    String getInstanceID() throws RemoteException;
 }
