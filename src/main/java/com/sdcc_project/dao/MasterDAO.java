@@ -48,16 +48,30 @@ public class MasterDAO {
         return result;
     }
 
-    public void deleteFilePosition(String filename,String address) throws MasterException {
+    public void deleteFilePosition(String filename, String address) throws MasterException {
 
         String deleteQuery = "DELETE FROM MasterTable WHERE filename=? AND dataNodeAddress=?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
-            preparedStatement.setString(1,filename);
-            preparedStatement.setString(2,address);
+            preparedStatement.setString(1, filename);
+            preparedStatement.setString(2, address);
             preparedStatement.execute();
-        }catch (SQLException e){
+        }
+        catch (SQLException e){
             e.printStackTrace();
-            throw new MasterException("Impossible to delete "+filename);
+            throw new MasterException("Impossible to delete file "+filename);
+        }
+    }
+
+    public void deleteFilePosition(String filename) throws MasterException {
+
+        String deleteQuery = "DELETE FROM MasterTable WHERE filename=?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)){
+            preparedStatement.setString(1, filename);
+            preparedStatement.execute();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            throw new MasterException("Impossible to delete file " + filename);
         }
     }
 
@@ -100,12 +114,12 @@ public class MasterDAO {
 
     }
 
-    public int getFileVersion(String filename,String port) throws MasterException {
+    public int getFileVersion(String filename, String address) throws MasterException {
 
         String query = "SELECT version FROM MasterTable WHERE filename=? AND dataNodeAddress=?";
         try(PreparedStatement preparedStatement=connection.prepareStatement(query)){
-            preparedStatement.setString(1,filename);
-            preparedStatement.setString(2,port);
+            preparedStatement.setString(1, filename);
+            preparedStatement.setString(2, address);
             ResultSet resultSet = preparedStatement.executeQuery();
             int result = -1;
             if(resultSet.next()) result = resultSet.getInt(1);
@@ -121,28 +135,28 @@ public class MasterDAO {
 
     /**
      * Funzione che restituisce una posizione del file, memorizzata nel DB.
-     * Restituisce un'array con gli indirizzi delle repliche e le relative versioni :
-     *      [Address1][VersionOfAddress1][Address2][VersionOfAddress2].....
+     * Restituisce un'array con gli indirizzi delle repliche.
      *
      * @param filename Nome del file di cui recuperare le informazioni di posizione.
      * @return Ritorna una posizione del file.
      */
-    public ArrayList<String> getFilePosition(String filename) throws MasterException {
+    public String getFilePosition(String filename) throws MasterException {
 
-        String query = "SELECT * FROM MasterTable WHERE filename=? ORDER BY version DESC";
-        ArrayList<String> resultArray = new ArrayList<>();
+        String query = "SELECT dataNodeAddress FROM MasterTable WHERE filename=?";
+        String result;
+
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,filename);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                resultArray.add(resultSet.getString(2));
-            }
+            result = resultSet.getString(2);
             resultSet.close();
-        }catch (SQLException e){
+        }
+        catch (SQLException e){
             e.printStackTrace();
             throw new MasterException("Impossible to retrieve file positions "+filename);
         }
-        return resultArray;
+
+        return result;
     }
 
 
@@ -219,31 +233,14 @@ public class MasterDAO {
      * Funzione per aggiornare una SINGOLA posizione del file nel Database.
      *
      * @param filename          Nome del file di cui si deve aggiornare una posizione.
-     * @param oldPort           Vecchia porta che deve essere cambiata.
-     * @param newPort           Nuova porta che deve essere inserita.
+     * @param new_address           Nuova porta che deve essere inserita.
      * @param newVersion        Nuova versione da inserire.
      */
-    public void insertOrUpdateSingleFilePositionAndVersion(String filename, String oldPort, String newPort, int newVersion) throws MasterException {
-        deleteFilePosition(filename,oldPort);
-        insertFilePosition(filename, newPort, newVersion);
+    public void insertOrUpdateSingleFilePositionAndVersion(String filename, String new_address, int newVersion) throws MasterException {
 
+        deleteFilePosition(filename);
+        insertFilePosition(filename, new_address, newVersion);
     }
-
-    public void updateSingleFilePosition(String filename, String oldPort, String newPort) throws MasterException {
-        String updateQuery = "UPDATE MasterTable SET dataNodeAddress = ? WHERE filename=? AND dataNodeAddress=?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-            preparedStatement.setString(1,newPort);
-            preparedStatement.setString(2,filename);
-            preparedStatement.setString(3,oldPort);
-            if(preparedStatement.executeUpdate()!=1)
-                throw new MasterException("Impossible to update file position "+filename);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            throw new MasterException("Impossible to update file position SQL Error"+filename);
-        }
-    }
-
 
     private  void createTable() throws MasterException {
         try (Statement createStatement = connection.createStatement()) {

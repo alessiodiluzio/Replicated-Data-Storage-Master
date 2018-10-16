@@ -166,7 +166,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         db_data = dataNode.getDatabaseData();
                         for (ArrayList<String> file_info : db_data) {
                             // Inserisce le informazioni nel suo DB:
-                            masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), file_info.get(1), Integer.parseInt(file_info.get(2)));
+                            masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), Integer.parseInt(file_info.get(2)));
                         }
                     }
                     //writeOutput("DB Data:\n" + masterDAO.getAllData());
@@ -404,6 +404,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         FileLocation cl = new FileLocation();
         if (operation.equals("R")) {
+
             String fileAddress = masterDAO.getPrimaryReplicaFilePosition(fileName);
             ArrayList<String> result = new ArrayList<>();
             result.add(fileAddress);
@@ -413,78 +414,184 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             cl.setFileVersion(latestVersion);
             return cl;
         }
+        // TODO: Da cambiare per Multi-Master con replicazione 1 intra-master.
         if (operation.equals("W")) {
-                ArrayList<String> filePosition = new ArrayList<>();
+
+                String filePosition = null;
+                ArrayList<String> positions = new ArrayList<>();
+
                 try {
-                    filePosition=masterDAO.getFilePosition(fileName);
-                } catch (MasterException e) {
-                    LOGGER.log(Level.WARNING, "NEW FILE");
+                    filePosition = masterDAO.getFilePosition(fileName);
+                }
+                catch (MasterException e) {
+                    writeOutput("INFO: New File");
+                    LOGGER.log(Level.INFO, "New File");
                 }
                 cl.setResult(true);
-                if (!filePosition.isEmpty()) {
+                if (filePosition != null) {
 
-                    int latestVersion = masterDAO.getFileVersion(fileName, filePosition.get(0));
+                    int latestVersion = masterDAO.getFileVersion(fileName, filePosition);
                     cl.setFileVersion(latestVersion + 1);
-                    cl.setFilePositions(filePosition);
-
-                } else {
-                    filePosition = roundRobinDistribution();
-                    if (filePosition.isEmpty()) {
+                    positions.add(filePosition);
+                    cl.setFilePositions(positions); // TODO: Cambiare la FileLocation?
+                }
+                else {
+                    filePosition = roundRobinDistribution().get(0);
+                    if (filePosition == null) {
                         cl.setResult(false);
                     }
                     cl.setFileVersion(1);
-                    cl.setFilePositions(filePosition);
+                    positions.add(filePosition);
+                    cl.setFilePositions(positions);
                 }
             }
+
         return cl;
     }
 
 
     /**
-     * Notifica di scrittura della versione di un file.
+     * Notifica di scrittura di un file su un DataNode.
      *
      * @param filename Nome del file di cui si deve aggiornare la versione.
-     * @param newAddress nuova Posizione del file.
-     * @param version versione del file aggiornato
-     * @param oldAddress vecchia posizione del file (in caso di spostamento)
+     * @param dataNode_address nuova Posizione del file.
+     * @param version versione del file aggiornato.
      */
     @Override
-    public void writeAck(String filename, String newAddress, int version, String oldAddress){
+    public void writeAck(String filename, String dataNode_address, int version){
 
         boolean find;
-        boolean delete_oldAddress = false;
 
-        // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
         synchronized (dataNodeAddressesLock){
-            find = dataNodeAddresses.contains(newAddress);
-            if(oldAddress != null) {
-                // Contiene la 'old' ma non la 'new':
-                if(dataNodeAddresses.contains(oldAddress) && !find) {
-                    delete_oldAddress = true;
-                }
+            find = dataNodeAddresses.contains(dataNode_address);
+        }
+
+        try {
+            if (find) {
+                masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, dataNode_address, version);
+            }
+            else {
+                masterDAO.deleteFilePosition(filename, dataNode_address);
             }
         }
-        if(find) {
-            try {
-                if(oldAddress != null){
-                    masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, oldAddress, newAddress, version);
-                }
-                masterDAO.insertOrUpdateSingleFilePositionAndVersion(filename, newAddress, newAddress, version);
-            }
-            catch (MasterException e) {
-                e.printStackTrace();
-                LOGGER.log(Level.SEVERE,e.getMessage());
-            }
-        }
-        if(delete_oldAddress) {
-            try {
-                masterDAO.deleteFilePosition(filename, oldAddress);
-            }
-            catch (MasterException e) {
-                e.printStackTrace();
-            }
+        catch (MasterException e) {
+            writeOutput(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
+
+    /**
+     * Il Master chiede agli altri Masters che conosce la posizione di una replica del file da creare/aggiornare.
+     *
+     * @param filename Nome del file di cui si vuole cercare la posizione di una replica da creare/aggiornare.
+     * @param version Versione del file.
+     * @return Indirizzo di un DataNode su un altro Master su cui poter creare/aggiornare la replica del file.
+     * @throws ImpossibleToFindDataNodeForReplication
+     */
+    @Override
+    public String getDataNodeAddressForReplication(String filename, int version) throws ImpossibleToFindDataNodeForReplication {
+
+        MasterInterface master;
+        String master_address;
+        String replica_address = null;
+        ArrayList<String> random_masterAddresses = new ArrayList<>(masterAddresses);
+        Collections.shuffle(random_masterAddresses);
+
+        for(int i = 0; i < random_masterAddresses.size(); i++) {
+
+            master_address = random_masterAddresses.get(i);
+
+            try {
+                writeOutput("Cerco una Possibile Replica sul Master: " + master_address);
+                System.out.println("Cerco una Possibile Replica sul Master: " + master_address);
+                master = (MasterInterface) registryLookup(master_address, Config.masterServiceName);
+                replica_address = master.findReplicaPosition(filename, version);
+
+                if(replica_address != null) {
+                    break; // Trovato il DataNode su cui scrivere una replica.
+                }
+            }
+            catch (RemoteException | NotBoundException e) {
+                writeOutput("WARNING: Impossible to Contact Master " + master_address);
+                System.out.println("WARNING: Impossible to Contact Master " + master_address);
+            }
+        }
+
+        if(replica_address == null) {
+            throw new ImpossibleToFindDataNodeForReplication("Impossible to Find DataNode for Replication");
+        }
+
+        writeOutput("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename);
+        System.out.println("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename);
+
+        return replica_address;
+    }
+
+    /**
+     * Il Master cerca tra i suoi DataNodes uno su cui:
+     *
+     *  - Poter scrivere una replica del file, se non ha ancora quel file su nessun DataNodes.
+     *  o
+     *  - Dover aggiornare la replica del file che possiede.
+     *
+     * @param filename Nome del file di cui si cerca la replica.
+     * @param version Versione del file.
+     * @return Indirizzo di un proprio DataNode su cui scrivere/aggiornare una replica del file.
+     */
+    @Override
+    public String findReplicaPosition(String filename, int version) {
+
+        String replica_address = null;
+
+        // Creazione di una replica:
+        if(version == 1) {
+            try {
+                // Controlla se ha già una replica presente:
+                replica_address = masterDAO.getFilePosition(filename);
+
+                if(replica_address == null) {
+                // Prende un DataNode su cui replicare, con il RoundRobin:
+                    replica_address = roundRobinDistribution().get(0);
+                    writeOutput("Trovata una Nuova Posizione di Replicazione: " + replica_address + " - Per il File: " + filename);
+                }
+                else {
+                    writeOutput("Già Presente una Replica: " + replica_address + " - Del il File: " + filename);
+                    return null; // Possiede già una replica del file.
+                }
+            }
+            catch (MasterException e) {
+                writeOutput(e.getMessage());
+                System.out.println(e.getMessage());
+            }
+
+        }
+        // Verifico la presenza della replica da aggiornare:
+        else {
+            try {
+                // Controlla se ha una replica del file:
+                replica_address = masterDAO.getFilePosition(filename);
+
+                if(replica_address != null) {
+                    int fileVersion = masterDAO.getFileVersion(filename, replica_address);
+                    if(fileVersion >= version) {
+                        return null; // Replica già aggiornata.
+                    }
+                    writeOutput("Trovata una Replica da Aggiornare: " + replica_address + " - Del il File: " + filename);
+                }
+                else {
+                    writeOutput("Nessuna Replica da Aggiornare Trovata - Per il File: " + filename);
+                    return null; // Non ha nessuna replica di quel file.
+                }
+            }
+            catch (MasterException e) {
+                writeOutput(e.getMessage());
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return replica_address;
+    }
+
 
     /**
      *  Inserisce in un oggetto 'dataNodesStatistic' le informazioni sulle statistiche del DataNode.
@@ -536,7 +643,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      *
      * @return un array di indirizzi estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
      */
+    // TODO: Da cambiare per Multi-Master con replicazione 1 intra-master.
     private ArrayList<String> roundRobinDistribution(){
+
         int startPosition = -1;
         ArrayList<String> extractedAddress = new ArrayList<>();
         synchronized (dataNodeAddressesLock) {
@@ -553,46 +662,46 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
     /**
-     * Avvia l'operazione di bilanciamento di file , verifica l'elegibilità del server destinatario ,
-     * invia il file al server destinatario e aggiorna le tabelle del master.
+     * Avvia l'operazione di bilanciamento di un file, inviandolo al DataNode destinatario.
      *
      * @param filename FIle spostare e reletive informazioni
-     * @param oldAddress indirizzo di provenienza
-     * @param newServerAddress Destinazione del file
+     * @param old_address indirizzo di provenienza
+     * @param new_serverAddress Destinazione del file
      */
-    private static void balanceFile(String filename, String oldAddress, String newServerAddress) throws MasterException, FileNotFoundException, DataNodeException, NotBalancableFile, AlreadyMovedFileException {
+    private static void balanceFile(String filename, String old_address, String new_serverAddress) throws MasterException, FileNotFoundException, DataNodeException, NotBalancableFile, AlreadyMovedFileException, ImpossibleToMoveFileException {
 
-        writeOutput("Tento di mandare " + filename + " in " + newServerAddress + " da " + oldAddress);
-        System.out.println("Tento di mandare " + filename + " in " + newServerAddress + " da " + oldAddress);
+        writeOutput("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address);
+        System.out.println("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address);
 
-        if (masterDAO.serverContainsFile(filename, newServerAddress)) {
-            throw new NotBalancableFile("A replica of this file " +filename+" is already in the server " + newServerAddress);
+        if (masterDAO.serverContainsFile(filename, new_serverAddress)) {
+            throw new NotBalancableFile("A replica of this file " + filename + " is already in the server " + new_serverAddress);
         }
-        if(!masterDAO.serverContainsFile(filename, oldAddress)){
-            throw new AlreadyMovedFileException("File " +filename+" is not in the server " + oldAddress +" anymore.");
+        if(!masterDAO.serverContainsFile(filename, old_address)){
+            throw new AlreadyMovedFileException("File " + filename + " is not in the server " + old_address + " anymore.");
         }
 
-        sendFileToDataNode(filename, newServerAddress, oldAddress);
-        System.out.println("Spostato " + filename + " da " + oldAddress + " in " + newServerAddress);
-        writeOutput("Spostato " + filename + " da " + oldAddress + " in " + newServerAddress);
+        sendFileToDataNode(filename, new_serverAddress, old_address);
+
+        System.out.println("Spostato " + filename + " da " + old_address + " in " + new_serverAddress);
+        writeOutput("Spostato " + filename + " da " + old_address + " in " + new_serverAddress);
     }
 
     /**
-     * "Ordina" ad un DataNode di spostare un file ad un altro DataNode.
+     * Ordina ad un DataNode di spostare un file ad un altro DataNode dello STESSO MASTER.
      *
-     * @param fileName nome del file da spostare
-     * @param newsServerAddress indirizzo di destinazione
-     * @param oldServerAddress indirizzo mittente
+     * @param fileName Nome del file da spostare
+     * @param new_serverAddress Indirizzo di destinazione.
+     * @param old_serverAddress Indirizzo mittente.
      */
-    private static void sendFileToDataNode(String fileName, String newsServerAddress, String oldServerAddress) throws MasterException, FileNotFoundException, DataNodeException {
+    private static void sendFileToDataNode(String fileName, String new_serverAddress, String old_serverAddress) throws MasterException, FileNotFoundException, DataNodeException, ImpossibleToMoveFileException {
 
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(oldServerAddress, Config.dataNodeServiceName);
-            dataNode.moveFile(fileName,newsServerAddress,masterDAO.getFileVersion(fileName, oldServerAddress), oldServerAddress);
+            StorageInterface dataNode = (StorageInterface) registryLookup(old_serverAddress, Config.dataNodeServiceName);
+            dataNode.moveFile(fileName, new_serverAddress, masterDAO.getFileVersion(fileName, old_serverAddress));
         }
         catch (NotBoundException | IOException e) {
             e.printStackTrace();
-            throw new MasterException("Error in bind to DataNode on Address " + oldServerAddress);
+            throw new MasterException("Error in bind to DataNode on Address " + old_serverAddress);
         }
     }
 
@@ -607,6 +716,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    // TODO: Cambiare completamente per multi-master: i file presenti sul DataNode caduto devono essere presi/copiati dai DataNode di altri Master.
     private static void handleDataNodeCrash(String address){
 
         String replacedDataNode = createDataNodeInstance();
@@ -625,11 +735,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             ArrayList<String> movedFile ;
             try {
                 movedFile = masterDAO.getServerFiles(address);
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 LOGGER.log(Level.WARNING,"Failed server has none file");
                 return;
             }
-            System.out.println("MovedFie "+movedFile+" Address "+address);
+
+            /*
             for(String file : movedFile){
                 masterDAO.deleteFilePosition(file,address);
                 ArrayList<String> filePositions = masterDAO.getFilePosition(file);
@@ -645,15 +757,24 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                                 break;
                             }
                         }
-                        balanceFile(file,position,replacedDataNode);
+                        balanceFile(file, position, replacedDataNode);
+                        //TODO: Fare un metodo ad hoc per prendere i file da DataNode di altri Master.
+                        // TODO: La funzione balanceFile() è pensata per spostamenti tra DataNode di uno stesso Master.
                         break;
-                    } catch (FileNotFoundException | DataNodeException | NotBalancableFile | AlreadyMovedFileException e) {
+                    }
+                    catch (FileNotFoundException | DataNodeException | NotBalancableFile | AlreadyMovedFileException | ImpossibleToMoveFileException e) {
                         e.printStackTrace();
+                        writeOutput(e.getMessage());
                     }
                 }
             }
-        } catch (MasterException e) {
+            System.out.println("Moved Files " + movedFile + " from " + address + " to " + replacedDataNode);
+            writeOutput("Moved Files " + movedFile + " from " + address + " to " + replacedDataNode);
+            */
+        }
+        catch (MasterException e) {
             e.printStackTrace();
+            writeOutput(e.getMessage());
         }
 
     }
@@ -861,7 +982,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             file.setDataNodeOwner(serverStat.getDataNodeAddress());
                             serverStat.insert(file);
 
-                        }catch (MasterException | FileNotFoundException | DataNodeException e){
+                        }catch (MasterException | FileNotFoundException | DataNodeException | ImpossibleToMoveFileException e){
                             LOGGER.log(Level.SEVERE,e.getMessage());
                         } catch (NotBalancableFile notBalancableFile) {
                             LOGGER.log(Level.WARNING,notBalancableFile.getMessage());
@@ -937,11 +1058,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                             //Altrimenti il file è inserito tra quelli non bilanciati.
                         }
-                    }catch (MasterException masterException){
-                        LOGGER.log(Level.SEVERE,masterException.getMessage()+ " ME");
-                    }catch (NotBalancableFile notBalancableFile) {
-                        LOGGER.log(Level.WARNING,notBalancableFile.getMessage() + " NBFE");
-                    } catch (FileNotFoundException e) {
+                    }catch (MasterException e){
+                        LOGGER.log(Level.SEVERE,e.getMessage()+ " ME");
+                    }catch (NotBalancableFile e) {
+                        LOGGER.log(Level.WARNING,e.getMessage() + " NBFE");
+                    } catch (FileNotFoundException | ImpossibleToMoveFileException e) {
                         LOGGER.log(Level.SEVERE,e.getMessage() + " FNTE");
                     } catch (DataNodeException e) {
                         LOGGER.log(Level.SEVERE,e.getMessage() + " DNE");
@@ -1171,7 +1292,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 db_data = dataNode.getDatabaseData();
                 for(ArrayList<String> file_info : db_data){
                     // Inserisce le informazioni nel suo DB:
-                    masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), file_info.get(1), Integer.parseInt(file_info.get(2)));
+                    masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), Integer.parseInt(file_info.get(2)));
                 }
 
                 // Iserisce l'indirizzo del DataNode in quelli globali:

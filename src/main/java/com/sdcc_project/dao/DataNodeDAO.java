@@ -105,9 +105,8 @@ public class DataNodeDAO {
             throw new FileNotFoundException("Impossible to find "+fileName);
         }
         catch (SQLException e){
-            e.printStackTrace();
-            Util.writeOutput(e.getMessage(),file);
-            throw new DataNodeException("Internal to find "+fileName);
+            Util.writeOutput(e.getMessage(), file);
+            throw new DataNodeException("Internal to find " + fileName);
         }
     }
 

@@ -5,6 +5,8 @@ import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.DataNodeDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.DataNodeException;
+import com.sdcc_project.exception.ImpossibleToFindDataNodeForReplication;
+import com.sdcc_project.exception.ImpossibleToMoveFileException;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
 import com.sdcc_project.util.FileManager;
@@ -157,55 +159,126 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     }
 
     /**
-     * Scrive dati su un file in memoria
+     * Scrittura/Aggiornamento di un file sul DataNode e creazione/aggiornamento delle altre repliche.
      *
-     * @param data dati da scrivere
-     * @param fileName nome del file da aggiornare
-     * @return il nome file aggiornato
+     * @param filename Nome del file da scrivere/aggiornare.
+     * @param data Contenuto del file da aggiornare.
+     * @param replication_factory Numero di repliche da scrivere/aggiornare.
+     *
+     * @return Successo/Fallimento.
      */
     @Override
-    public String write(String data,String fileName, ArrayList<String> dataNodeAddresses, int version, String oldAddress) throws DataNodeException, FileNotFoundException {
+    public boolean write(String filename, String data, int updated_version, int replication_factory) throws DataNodeException {
 
-        String base64String ="";
-        String dataString = "";
+        int new_replication_factory;
+        String old_base64;
+        String updated_base64;
 
         synchronized (dataNodeLock){
             try {
-                base64String = dataNodeDAO.getFileString(fileName, false);
+                old_base64 = dataNodeDAO.getFileString(filename, false);
+                String old_data = FileManager.decodeString(old_base64);
+                String updated_data = old_data + data + "\n";
+                updated_base64 = FileManager.encodeString(updated_data);
             }
             catch (FileNotFoundException e){
-                writeOutput("WARNING: New File");
+                updated_base64 = FileManager.encodeString(data);
             }
         }
 
-        if(base64String != null){
-            //Converto il la stringa base64 in file.
-            dataString = FileManager.decodeString(base64String);
+        try {
+            synchronized (dataNodeLock) {
+                dataNodeDAO.setFileString(filename, updated_base64, updated_version); // Inserisce/Aggiorna il file.
+                writeOutput("Inserito File: " + filename + " - Versione: " + updated_version);
+            }
+        }
+        catch (Exception e) {
+            writeOutput(e.getMessage());
+            return false;
         }
 
-        //Codifico il file aggiornato in base64 e aggiorno il DB
-        dataString = dataString +data+"\n";
-        String updatedBase64File = FileManager.encodeString(dataString);
-        long fileSize = FileManager.getStringMemorySize(updatedBase64File);
-        dataNodeAddresses.remove(address);
+        sendCompletedWrite(filename, updated_version); // Comunica al Master la scrittura del file.
 
-        return forwardWrite(updatedBase64File, fileName, dataNodeAddresses, version, fileSize, oldAddress);
+        new_replication_factory = replication_factory - 1; // Decrementa il numero di repliche mancanti da creare/aggiornare.
+
+        // Crea/Aggiorna le altre repliche del file:
+        if(new_replication_factory != 0) {
+
+            writeOutput("Cerco Altre Repliche da Creare/Aggiornare");
+
+            Thread thread = new Thread("createReplicaThread") {
+                @Override
+                public void run() {
+
+                    MasterInterface master;
+                    String replica_address = null;
+
+                    try {
+                        master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
+                        replica_address = master.getDataNodeAddressForReplication(filename, updated_version);
+                    }
+                    catch (RemoteException | NotBoundException | ImpossibleToFindDataNodeForReplication e) {
+                        writeOutput("SEVERE:" + e.getMessage() + " - File" + filename);
+                    }
+                    if (replica_address != null) {
+                        try {
+                            writeOutput("Invio Creazione/Aggiornamento di una Replica del File: " + filename + " - Sul DataNode: " + replica_address);
+                            StorageInterface dataNode = (StorageInterface) registryLookup(replica_address, Config.dataNodeServiceName);
+                            dataNode.write(filename, data, updated_version, new_replication_factory);
+                            writeOutput("Replica del File " + filename + " - Creata/Aggiornata sul DataNode: " + replica_address);
+                        }
+                        catch (RemoteException | NotBoundException | DataNodeException e) {
+                            writeOutput("SEVERE: Impossible to Contact DataNode for Replication " + replica_address);
+                        }
+                    }
+                }
+            };
+            thread.start();
+        }
+
+        return true;
     }
 
     /**
-     * Comunica al Master il salvataggio di un file sul DataNode e:
+     * Scrive i dati di un file spostato da un altro DataNode dello STESSO MASTER.
      *
-     *  - Nel caso di prima scrittura, comunica al Master la posizione (indirizzo del DataNode) del file.
-     *  - Nel caso di scritture successive, comunica al Master di aggiornate le informazioni di posizione del file.
+     * @param base64 Dati da scrivere.
+     * @param fileName Nome del file da scrivere.
+     * @return il nome file scritto.
+     * */
+    @Override
+    public boolean writeMovedFile(String base64, String fileName, int version) {
+
+        try {
+            synchronized (dataNodeLock) {
+                // Scrive il file:
+                dataNodeDAO.setFileString(fileName, base64, version);
+                writeOutput("Inserito File: " + fileName + " - Versione: " + version);
+                // Comunica al Master lo spostamento del file:
+                sendCompletedWrite(fileName, version);
+            }
+        }
+        catch (Exception e) {
+            writeOutput(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Comunica al PROPRIO MASTER il salvataggio di un file sul DataNode.
      *
      * @param fileName Nome del file che è stato salvato.
      */
-    private void sendCompletedWrite(String fileName, int version, String oldAddress) {
+    private boolean sendCompletedWrite(String fileName, int version) {
 
         MasterInterface master;
+
         try {
             master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
-            master.writeAck(fileName, address, version, oldAddress);
+            master.writeAck(fileName, address, version);
+            writeOutput("Inviato ACK al Master: " + masterAddress + " - File: " + fileName + " - Versione: " + version);
         }
         catch (RemoteException | NotBoundException e) {
 
@@ -221,44 +294,52 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                         break;
                     }
                 }
-                master = (MasterInterface) registryLookup( masterAddress, Config.masterServiceName);
-                master.writeAck(fileName, address, version, oldAddress);
+                master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
+                master.writeAck(fileName, address, version);
             }
             catch (RemoteException | NotBoundException e2){
                 writeOutput("SEVERE: IMPOSSIBLE TO ACK Master " + masterAddress);
+                return false;
             }
         }
+
+        return true;
     }
 
     /**
-     * Sposta un file verso un altro DataNode.
+     * Sposta un file su un altro DataNode dello STESSO MASTER.
      *
-     * @param fileName nome del file da postare
-     * @param newServerAddress indirizzo del destinatario
-     * @param version versione del file
+     * @param fileName nome del file da postare.
+     * @param version versione del file.
      */
     @Override
-    public void moveFile(String fileName, String newServerAddress, int version, String oldAddress) throws FileNotFoundException,DataNodeException {
+    public void moveFile(String fileName, String new_dataNodeAddress, int version) throws FileNotFoundException, DataNodeException, ImpossibleToMoveFileException {
 
         String base64;
+        boolean result;
+
         synchronized (dataNodeLock){
             base64 = dataNodeDAO.getFileString(fileName,false);
         }
         try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(newServerAddress, Config.dataNodeServiceName);
-            ArrayList<String> addresses = new ArrayList<>();
-            addresses.add(newServerAddress);
-            dataNode.write(base64, fileName, addresses, version, oldAddress);
+            StorageInterface dataNode = (StorageInterface) registryLookup(new_dataNodeAddress, Config.dataNodeServiceName);
+            result = dataNode.writeMovedFile(base64, fileName, version);
 
-            writeOutput("Spostato " + fileName + " da " + address + " a " + newServerAddress);
-            synchronized (dataNodeLock) {
-                dataNodeDAO.deleteFile(fileName);
-                writeOutput("Cancello " + fileName);
+            if(result) {
+                writeOutput("Spostato File: " + fileName + " - Da " + address  + " a " + new_dataNodeAddress);
+                synchronized (dataNodeLock) {
+                    dataNodeDAO.deleteFile(fileName);
+                    writeOutput("Cancellato il file: " + fileName);
+                }
+            }
+            else {
+                writeOutput("Impossible to move file to DataNode " + new_dataNodeAddress);
+                throw new ImpossibleToMoveFileException("Impossible to move file to DataNode " + new_dataNodeAddress);
             }
         }
         catch (RemoteException | NotBoundException e) {
-            writeOutput("Impossible to bind to DataNode");
-            throw new DataNodeException("Impossible to bind to DataNode " + newServerAddress);
+            writeOutput("Impossible to bind to DataNode " + new_dataNodeAddress);
+            throw new DataNodeException("Impossible to bind to DataNode " + new_dataNodeAddress);
         }
     }
 
@@ -301,44 +382,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             }
         }
     };
-
-    /**
-     * Invocata quando deve essere inoltrato l'aggiornamento di un file dalla replica primarie alle secondarie.
-     *
-     * @param data I dati da scrivere.
-     * @param fileName File aggiornato.
-     * @param dataNodeAddresses Indirizzi dei dataNode che contengono le repliche secondarie.
-     */
-    @Override
-    public String forwardWrite(String data, String fileName, ArrayList<String> dataNodeAddresses, int version, long fileSize, String oldAddress) throws FileNotFoundException, DataNodeException {
-
-        String message;
-        synchronized (dataNodeLock) {
-            dataNodeDAO.setFileString(fileName, data, version);
-            sendCompletedWrite(fileName, version, oldAddress);
-            message = dataNodeDAO.getFileString(fileName,false);
-        }
-        Thread th = new Thread("forward-Thread") {
-
-            @Override
-            public void run() {
-                if (dataNodeAddresses.isEmpty())
-                    return;
-                String nextDataNode = dataNodeAddresses.get(0);
-                dataNodeAddresses.remove(nextDataNode);
-                try {
-                    StorageInterface dataNode = (StorageInterface) registryLookup(nextDataNode, Config.dataNodeServiceName);
-                    dataNode.forwardWrite(data, fileName, dataNodeAddresses, version, fileSize,null);
-                }
-                catch (RemoteException | NotBoundException | FileNotFoundException | DataNodeException e) {
-                    writeOutput(e.getMessage());
-                }
-            }
-        };
-        th.start();
-
-        return message;
-    }
 
     /**
      * Funzione per attendere la terminazione del Thread per l'invio delle statistiche al Master e del Thread per il
