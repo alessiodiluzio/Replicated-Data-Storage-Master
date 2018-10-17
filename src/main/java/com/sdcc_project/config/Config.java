@@ -28,7 +28,7 @@ public class Config {
     public static final int MAX_TIME_EMPTY_DATANODE = 6000000; // 600 secondi
     public static final int MAX_TIME_NOT_RESPONDING_DATANODE = 180000; // 3 minuti
     public static final int MAX_DATANODE_PER_MASTER = 3;
-    public static final int MAX_TIME_WAITING_FOR_INSTANCE_RUNNING = 120000; // (2 minuti) Attenzione può volerci molto tempo.
+    public static final int MAX_TIME_WAITING_FOR_INSTANCE_RUNNING = 300000; // (2 minuti) Attenzione può volerci molto tempo.
 
     // DataNode:
     public static final int STATISTIC_THREAD_SLEEP_TIME = 10000;
