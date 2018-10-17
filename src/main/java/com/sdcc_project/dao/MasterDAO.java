@@ -148,6 +148,8 @@ public class MasterDAO {
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,filename);
             ResultSet resultSet = preparedStatement.executeQuery();
+            if(!resultSet.next())
+                return null;
             result = resultSet.getString(2);
             resultSet.close();
         }
