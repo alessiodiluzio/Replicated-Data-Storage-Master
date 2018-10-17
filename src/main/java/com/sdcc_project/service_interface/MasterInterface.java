@@ -5,6 +5,8 @@ import com.sdcc_project.entity.FileLocation;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.exception.ImpossibleToFindDataNodeForReplication;
 import com.sdcc_project.exception.MasterException;
+import com.sdcc_project.monitor.State;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -21,4 +23,8 @@ public interface MasterInterface extends Remote {
     ArrayList<String> getMasterAddresses() throws RemoteException;
     void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses) throws RemoteException;
     void updateMasterAddresses(String newMasterAddress, String oldMasterAddress) throws RemoteException;
+    String getMinorLatencyCloudlet(String sourceIP) throws RemoteException;
+    ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) throws RemoteException;
+    boolean addCloudlet(String ipAddress) throws RemoteException;
+    void cloudletLifeSignal(String address, State state) throws RemoteException;
 }

@@ -40,27 +40,27 @@ public class EC2InstanceFactory {
         return istanza;
     }
 
-    private String getAmiID(Regions region){
-
+    private String getAmiID(Regions region,NodeType nodeType){
         AmazonEC2 amazonEC2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(AWS_CREDENTIALS))
                 .withRegion(region)
                 .build();
-
         DescribeImagesRequest request = new DescribeImagesRequest().withFilters(new LinkedList<Filter>());
         request.getFilters().add(new Filter().withName("owner-id").withValues(systemProperties.getAws_account_id()));
         DescribeImagesResult describeImagesResult= amazonEC2Client.describeImages(request);
         List<Image> images = describeImagesResult.getImages();
-
         String ami = "";
+        String amiName="";
+        if(nodeType.equals(NodeType.Master) || nodeType.equals(NodeType.DataNode))
+            amiName = systemProperties.getAws_ec2_master_instance_ami_name();
+        else if(nodeType.equals(NodeType.CloudLet))
+            amiName = systemProperties.getAws_ec2_cloudlet_instance_ami_name();
         for(Image img : images){
-            System.out.println(img.getName());
-            if(img.getName().equals(systemProperties.getAws_ec2_master_instance_ami_name())){
+            if(img.getName().equals(amiName)){
                 ami = img.getImageId();
-                //System.out.println("Image ID: " +ami);
+                System.out.println("Image ID: " +ami);
             }
         }
-
         return ami;
     }
 
@@ -70,7 +70,7 @@ public class EC2InstanceFactory {
 
         RunInstancesRequest runInstancesRequest =
                 new RunInstancesRequest();
-        runInstancesRequest.withImageId(getAmiID(systemProperties.getRegion()))
+        runInstancesRequest.withImageId(getAmiID(systemProperties.getRegion(),nodeType))
                 .withInstanceType(InstanceType.T2Micro)
                 .withMinCount(1)
                 .withMaxCount(1)
@@ -82,26 +82,41 @@ public class EC2InstanceFactory {
         Instance instance = runInstancesResult.getReservation().getInstances().get(0);
 
         String instanceId = instance.getInstanceId();
-        //System.out.println("EC2 Instance Id: " +instanceId);
         long waitedTime = 0;
         while(getInstanceStatus(instanceId)!=16){
             waitFor(1000);
             waitedTime += 1000;
         }
-        //System.out.println("Tempo Atteso " + waitedTime +" Instance State : "+getInstanceStatus(instanceId));
+        System.out.println("Tempo Atteso " + waitedTime +" Instance State : "+getInstanceStatus(instanceId));
 
-        String publicAddress = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
-                .withInstanceIds(instanceId))
-                .getReservations()
-                .stream()
-                .map(Reservation::getInstances)
-                .flatMap(List::stream)
-                .findFirst()
-                .map(Instance::getPrivateIpAddress)
-                .orElse(null);
-        //System.out.println("ip: " + publicAddress);
+        String address = "";
+        if(nodeType.equals(NodeType.CloudLet)){
+            address = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
+                    .withInstanceIds(instanceId))
+                    .getReservations()
+                    .stream()
+                    .map(Reservation::getInstances)
+                    .flatMap(List::stream)
+                    .findFirst()
+                    .map(Instance::getPublicIpAddress)
+                    .orElse(null);
+        }
+        else {
+            address = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
+                    .withInstanceIds(instanceId))
+                    .getReservations()
+                    .stream()
+                    .map(Reservation::getInstances)
+                    .flatMap(List::stream)
+                    .findFirst()
+                    .map(Instance::getPrivateIpAddress)
+                    .orElse(null);
+        }
+        return address;
 
-        return publicAddress;
+
+
+
     }
 
     private  void waitFor(long milliseconds){
@@ -125,23 +140,28 @@ public class EC2InstanceFactory {
         return state.getCode();
     }
 
-    private  String getUserDataScript(NodeType nodeType, String arguments){
-
+    private  String getUserDataScript(NodeType nodeType,String arguments){
         String command=null;
-
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add("#! /bin/bash");
         if(nodeType.equals(NodeType.DataNode)){
             command = Config.launchDataNode;
+            lines.add("java -jar /home/ubuntu/DownloadMasterFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
+            lines.add("cd /home/ubuntu/ && unzip master.zip && cd Master && mvn compile && "+command+arguments);
+
         }
         else if(nodeType.equals(NodeType.Master)){
             command = Config.launchMaster;
+            lines.add("java -jar /home/ubuntu/DownloadMasterFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
+            lines.add("cd /home/ubuntu/ && unzip master.zip && cd Master && mvn compile && "+command+arguments);
+
         }
-
-        ArrayList<String> lines = new ArrayList<>();
-        lines.add("#! /bin/bash");
-        lines.add("java -jar /home/ubuntu/DownloadMasterFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
-        lines.add("cd /home/ubuntu/ && unzip master.zip && cd master && mvn compile && " + command + arguments); // TODO: system_kernel/master.
+        else if(nodeType.equals(NodeType.CloudLet)){
+            command = Config.launchCloudlet;
+            lines.add("java -jar /home/ubuntu/DownloadCloudletFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
+            lines.add("cd /home/ubuntu/ && unzip cloudlet.zip && cd cloudlet && mvn compile && "+command+arguments);
+        }
         String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
-
         return str;
     }
 

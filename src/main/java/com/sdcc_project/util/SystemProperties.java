@@ -12,16 +12,18 @@ public class SystemProperties {
 
     private String aws_access_key;
     private String aws_secret_key;
-    private String aws_deploy_region;
     private String aws_ec2_region_key;
     private String aws_ec2_region_security_group;
     private String aws_account_id;
     private String aws_ec2_master_instance_ami_name;
+    private String aws_ec2_cloudlet_instance_ami_name;
+    private String aws_s3_bucket_name;
+    private String aws_s3_cloudlet_address_folder_name;
     private Regions region;
 
     private SystemProperties(){
         loadProperties();
-    };
+    }
 
 
     public static SystemProperties getInstance(){
@@ -39,16 +41,26 @@ public class SystemProperties {
             prop.load(input);
             this.aws_access_key=prop.getProperty("aws_access_key");
             this.aws_secret_key=prop.getProperty("aws_secret_key");
-            this.aws_deploy_region=prop.getProperty("aws_deploy_region");
             this.aws_ec2_region_key=prop.getProperty("aws_ec2_region_key");
             this.aws_ec2_region_security_group=prop.getProperty("aws_ec2_region_security_group");
             this.aws_account_id = prop.getProperty("aws_account_id");
             this.aws_ec2_master_instance_ami_name = prop.getProperty("aws_ec2_master_instance_ami_name");
-            this.region = Regions.valueOf(this.aws_deploy_region);
+            this.aws_ec2_cloudlet_instance_ami_name=prop.getProperty("aws_ec2_cloudlet_instance_ami_name");
+            this.aws_s3_bucket_name=prop.getProperty("aws_s3_bucket_name");
+            this.aws_s3_cloudlet_address_folder_name=prop.getProperty("aws_s3_cloudlet_address_folder_name");
+            this.region = Regions.valueOf(prop.getProperty("aws_deploy_region"));
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public String getAws_s3_bucket_name() {
+        return aws_s3_bucket_name;
+    }
+
+    public String getAws_s3_cloudlet_address_folder_name() {
+        return aws_s3_cloudlet_address_folder_name;
     }
 
     public String getAws_ec2_master_instance_ami_name() {
@@ -61,10 +73,6 @@ public class SystemProperties {
 
     public String getAws_secret_key() {
         return aws_secret_key;
-    }
-
-    public String getAws_deploy_region() {
-        return aws_deploy_region;
     }
 
     public String getAws_ec2_region_key() {
@@ -81,5 +89,9 @@ public class SystemProperties {
 
     public String getAws_account_id() {
         return aws_account_id;
+    }
+
+    public String getAws_ec2_cloudlet_instance_ami_name() {
+        return aws_ec2_cloudlet_instance_ami_name;
     }
 }

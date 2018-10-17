@@ -8,12 +8,16 @@ public class DataNodeStatistic implements Serializable {
 
     private Long serverRequests = 0L;
     private Long serverSize = 0L;
+    private boolean overCpuUsage = false;
+    private boolean ramUsage = false;
 
     private ArrayList<FileInfo> fileInfos = new ArrayList<>();
     private ArrayList<FileInfo> filePerSize = new ArrayList<>();
     private ArrayList<FileInfo> filePerRequest = new ArrayList<>();
     private String dataNodeAddress;
     private long milliseconds_timer;
+
+
 
     public DataNodeStatistic(String dataNodeAddress) {
 
@@ -50,6 +54,22 @@ public class DataNodeStatistic implements Serializable {
         }
         calculate();
 
+    }
+
+    public boolean isOverCpuUsage() {
+        return overCpuUsage;
+    }
+
+    public void setOverCpuUsage(boolean overCpuUsage) {
+        this.overCpuUsage = overCpuUsage;
+    }
+
+    public boolean isRamUsage() {
+        return ramUsage;
+    }
+
+    public void setRamUsage(boolean ramUsage) {
+        this.ramUsage = ramUsage;
     }
 
     public ArrayList<FileInfo> getFileInfos() {

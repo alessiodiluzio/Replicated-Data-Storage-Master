@@ -7,6 +7,7 @@ import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.DataNodeException;
 import com.sdcc_project.exception.ImpossibleToFindDataNodeForReplication;
 import com.sdcc_project.exception.ImpossibleToMoveFileException;
+import com.sdcc_project.monitor.Monitor;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
 import com.sdcc_project.util.FileManager;
@@ -38,6 +39,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     private static String masterAddress;
     private static long milliseconds;
     private static String completeName;
+    private static Monitor monitor;
 
     private DataNode() throws RemoteException {
         super();
@@ -52,7 +54,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         Date time = new Date();
         milliseconds = time.getTime();
-
+        monitor = Monitor.getInstance();
         masterAddress = args[0];
         address = Util.getLocalIPAddress();
         instanceID = EC2MetadataUtils.getInstanceId(); // TODO: Verificare che funzioni.
@@ -508,6 +510,8 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                         }
 
                         statistic.orderStatistics();
+                        statistic.setOverCpuUsage(monitor.isOverCpuUsage());
+                        statistic.setRamUsage(monitor.isOverRamUsage());
                         // Invia le statistiche al Master:
                         master.setStatistic(statistic);
                     }

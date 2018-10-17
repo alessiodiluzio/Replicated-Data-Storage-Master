@@ -6,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Util {
 
@@ -34,5 +37,21 @@ public class Util {
 
         }
         return null;
+    }
+
+    public static ArrayList<String> extractMinFromMap(HashMap<String,Double> map){
+        double min = 100000000;
+        String minString ="";
+        for(Map.Entry<String,Double> entry : map.entrySet()){
+            if(entry.getValue()>0 && entry.getValue()<min){
+                min = entry.getValue();
+                minString = entry.getKey();
+            }
+        }
+        ArrayList<String> result = new ArrayList<>();
+        result.add(minString);
+        result.add(Double.toString(min));
+        return result;
+
     }
 }

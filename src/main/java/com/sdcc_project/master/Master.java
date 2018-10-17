@@ -1,18 +1,25 @@
 package com.sdcc_project.master;
 
 import com.sdcc_project.aws_managing.EC2InstanceFactory;
+import com.sdcc_project.aws_managing.S3Upload;
 import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.MasterDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.entity.FileInfo;
 import com.sdcc_project.entity.FileLocation;
 import com.sdcc_project.exception.*;
+import com.sdcc_project.monitor.Monitor;
+import com.sdcc_project.monitor.State;
+import com.sdcc_project.service_interface.CloudletInterface;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
 import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.NodeType;
 import com.sdcc_project.util.Util;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -35,15 +42,23 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     //Controller
     private static EC2InstanceFactory ec2InstanceFactory;
     private static MasterDAO masterDAO;
+    private static S3Upload s3Upload;
+    private static Monitor monitor;
 
     //DataNodeInformations
     private static HashMap<String,DataNodeStatistic> dataNodesStatisticMap = new HashMap<>();
     private static HashMap<String,Long> lifeSignalMap = new HashMap<>();
 
+    //CloudletInformations
+    private static ArrayList<String> cloudletAddress = new ArrayList<>();
+    private static HashMap<String,Long> cloudletLifeSignalMap = new HashMap<>();
+    private static ArrayList<String> usableCloudlet = new ArrayList<>();
+
     // Lock:
     private static final Object statisticLock = new Object();
     private static final Object dataNodeAddressesLock = new Object();
     private static final Object lifeSignalMapLock = new Object();
+    private static final Object cloudletLifeSignalMapLock = new Object();
 
     //Util
     private static String lastChosenServer = null;
@@ -62,7 +77,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.exit(1);
         }
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
-
+        s3Upload = S3Upload.getInstance();
+        monitor = Monitor.getInstance();
         switch (args[0]){
             case "System_Startup":
                 try {
@@ -78,7 +94,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     for(int j = 0; j < Config.NUMBER_OF_DATANODES; j++) {
                         createDataNodeInstance();
                     }
-
+                    for (int i = 0;i<Config.CLOUDLET_NUMBER;i++){
+                        createCloudLetInstance();
+                    }
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
                 }
@@ -118,7 +136,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     for (int i = 0; i < Config.NUMBER_OF_DATANODES; i++) {
                         createDataNodeInstance();
                     }
-
+                    for (int i = 0;i<Config.CLOUDLET_NUMBER;i++){
+                        createCloudLetInstance();
+                    }
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
                 }
@@ -222,6 +242,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         // Avvio dei Thread:
         balancingThread.start();
         lifeThread.start();
+        cloudletLifeThread.start();
+        publishCloudletAddress.start();
     }
 
     /**
@@ -325,17 +347,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         System.out.print("Master Addresses Updated! New List: " + masterAddresses + ", " + address + "(io)\t");
     }
 
-    /*
-    private static void sendKillSignal(String dataNode_address){
-
-        try {
-            StorageInterface dataNode = (StorageInterface) registryLookup(dataNode_address, Config.dataNodeServiceName);
-            dataNode.killSignal();
-        }
-        catch (NotBoundException | IOException e) {
-            LOGGER.log(Level.WARNING,dataNode_address + " shutdowned");
-        }
-    }*/
 
     /**
      * Crea un DataNode avviandolo su una nuova istanza di Amazon EC2.
@@ -356,6 +367,18 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return newDataNodeIP;
     }
 
+
+    private static void createCloudLetInstance() {
+        String arguments = address;
+        String newCloudLetIP=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
+        cloudletAddress.add(newCloudLetIP);
+        usableCloudlet.add(newCloudLetIP);
+        System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
+        Date now = new Date();
+        cloudletLifeSignalMap.put(newCloudLetIP,now.getTime());
+        //return newCloudLetIP;
+    }
+
     /**
      * Crea un master avviandolo su una nuova istanza di Amazon EC2
      *
@@ -368,18 +391,20 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         String arguments;
         String localIPAddress = Util.getLocalIPAddress();
 
-        if(nodeType.equals("Shadow")) {
+        switch (nodeType) {
+            case "Shadow":
 
-            if(localIPAddress == null) {
-                throw new ImpossibleToCreateMasterInstance("Impossibile to get Master's Local IP Address");
-            }
-            arguments = "\"Shadow" + " " + localIPAddress + "\"";
-        }
-        else if(nodeType.equals("Main")) {
-            arguments = "\"Main" + " " + localIPAddress + "\"";
-        }
-        else { // "Splitting"
-            arguments = nodeType;
+                if (localIPAddress == null) {
+                    throw new ImpossibleToCreateMasterInstance("Impossibile to get Master's Local IP Address");
+                }
+                arguments = "\"Shadow" + " " + localIPAddress + "\"";
+                break;
+            case "Main":
+                arguments = "\"Main" + " " + localIPAddress + "\"";
+                break;
+            default:  // "Splitting"
+                arguments = nodeType;
+                break;
         }
 
         String newMasterIP = ec2InstanceFactory.createEC2Instance(NodeType.Master, arguments);
@@ -486,7 +511,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * @param filename Nome del file di cui si vuole cercare la posizione di una replica da creare/aggiornare.
      * @param version Versione del file.
      * @return Indirizzo di un DataNode su un altro Master su cui poter creare/aggiornare la replica del file.
-     * @throws ImpossibleToFindDataNodeForReplication
+     * @throws ImpossibleToFindDataNodeForReplication ...
      */
     @Override
     public String getDataNodeAddressForReplication(String filename, int version) throws ImpossibleToFindDataNodeForReplication {
@@ -497,9 +522,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         ArrayList<String> random_masterAddresses = new ArrayList<>(masterAddresses);
         Collections.shuffle(random_masterAddresses);
 
-        for(int i = 0; i < random_masterAddresses.size(); i++) {
+        for (String random_masterAddress : random_masterAddresses) {
 
-            master_address = random_masterAddresses.get(i);
+            master_address = random_masterAddress;
 
             try {
                 writeOutput("Cerco una Possibile Replica sul Master: " + master_address);
@@ -507,11 +532,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 master = (MasterInterface) registryLookup(master_address, Config.masterServiceName);
                 replica_address = master.findReplicaPosition(filename, version);
 
-                if(replica_address != null) {
+                if (replica_address != null) {
                     break; // Trovato il DataNode su cui scrivere una replica.
                 }
-            }
-            catch (RemoteException | NotBoundException e) {
+            } catch (RemoteException | NotBoundException e) {
                 writeOutput("WARNING: Impossible to Contact Master " + master_address);
                 System.out.println("WARNING: Impossible to Contact Master " + master_address);
             }
@@ -638,6 +662,30 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    @Override
+    public void cloudletLifeSignal(String cloudletAddr, State state) {
+
+        boolean find = cloudletAddress.contains(cloudletAddr);
+        System.out.println("CloudLetLifeSignal "+cloudletAddr+ " stato "+state);
+        // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
+        if(state.equals(State.BUSY)){
+            usableCloudlet.remove(cloudletAddr);
+            System.out.println("CloudLet "+cloudletAddr+ " BUSY ");
+        }
+        else if(state.equals(State.NORMAL)){
+            if(!usableCloudlet.contains(cloudletAddr))
+                usableCloudlet.add(cloudletAddr);
+        }
+        if(find){
+            Date now = new Date();
+            long timeInMillis = now.getTime();
+            synchronized (cloudletLifeSignalMapLock) {
+                cloudletLifeSignalMap.remove(cloudletAddr);
+                cloudletLifeSignalMap.put(cloudletAddr, timeInMillis);
+            }
+        }
+    }
+
     /**
      * Algoritmo Round - Robin per la distribuzione delle "prime richieste" di scrittura
      *
@@ -719,7 +767,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     // TODO: Cambiare completamente per multi-master: i file presenti sul DataNode caduto devono essere presi/copiati dai DataNode di altri Master.
     private static void handleDataNodeCrash(String address){
 
-        String replacedDataNode = createDataNodeInstance();
+        //String replacedDataNode = createDataNodeInstance();
         if(getLifeSignal(address))
             return;
         synchronized (dataNodeAddressesLock){
@@ -738,7 +786,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
             catch (FileNotFoundException e) {
                 LOGGER.log(Level.WARNING,"Failed server has none file");
-                return;
             }
 
             /*
@@ -811,6 +858,43 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         e.printStackTrace();
                     }
                 }
+        }
+    };
+
+
+    private static Thread cloudletLifeThread =  new Thread("CloudletLifeThread"){
+
+        @Override
+        public void run() {
+
+            while (!exit) {
+                HashMap<String, Long> localSignalMap;
+                synchronized (cloudletLifeSignalMapLock) {
+                    localSignalMap = new HashMap<>(cloudletLifeSignalMap);
+                }
+
+                for (Map.Entry<String, Long> entry : localSignalMap.entrySet()) {
+                    Date now = new Date();
+                    long timeInMillies = now.getTime();
+                    if (timeInMillies - entry.getValue() > Config.MAX_TIME_NOT_RESPONDING_CLOUDLET) {
+                        writeOutput("Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
+                        LOGGER.log(Level.INFO, "Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
+                        createCloudLetInstance();
+                        cloudletLifeSignalMap.remove(entry.getKey());
+                        cloudletAddress.remove(entry.getKey());
+                    }
+                }
+                int diff = Config.CLOUDLET_NUMBER - usableCloudlet.size();
+                for(int i = 0;i<diff;i++){
+                    createCloudLetInstance();
+                }
+                try{
+                    sleep(Config.LIFE_THREAD_SLEEP_TIME);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     };
 
@@ -921,25 +1005,28 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             for(Map.Entry<String,DataNodeStatistic> serverStat : localStatisticMap.entrySet()){
                 DataNodeStatistic stats = serverStat.getValue();
                 stats.orderStatistics();
-
-                //Finchè il server non sotto la soglia di richieste e size metto file nel buffer di spostamento
-                while(stats.getServerSize() > maxSize || stats.getServerRequests() > maxRequest){
-                    FileInfo fileToMove ;
-                    //Il file da spostare viene preso tra quelli piu pesanti o con piu richieste a seconda di quale soglia
-                    //viene superata
-                    if(stats.getServerSize()>maxSize){
-                        fileToMove = stats.getFilePerSize().get(0);
-                    }
-                    else {
-                        fileToMove = stats.getFilePerRequest().get(0);
-
-                    }
-                    //Aggiungo il file al buffer
-                    buffer.add(fileToMove);
-                    //Aggiorno le statistiche del server
-                    stats.remove(fileToMove.getFileName());
+                ArrayList<FileInfo> dataNodeFiles ;
+                if(stats.isOverCpuUsage())
+                {
+                    dataNodeFiles = new ArrayList<>(stats.getFilePerRequest());
+                    System.out.println(stats.getDataNodeAddress() + " soglia superata cpu ");
                 }
-                //Aggiorno la lista delle statistiche globale
+
+                else if(stats.isRamUsage()) {
+                    dataNodeFiles = new ArrayList<>(stats.getFilePerSize());
+                    System.out.println(stats.getDataNodeAddress() + " soglia superata ram ");
+                }
+                else {
+                    statisticAfterBalancing.add(stats);
+                    continue;
+                }
+                if(dataNodeFiles.isEmpty()) return buffer;
+                int nToMove = dataNodeFiles.size()/4;
+                if(nToMove==0) nToMove = 1;
+                for(int i = 0;i<nToMove;i++){
+                    buffer.add(dataNodeFiles.get(i));
+                    stats.remove(dataNodeFiles.get(i).getFileName());
+                }
                 statisticAfterBalancing.add(stats);
             }
             return buffer;
@@ -956,40 +1043,46 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             ArrayList<FileInfo> bufferRebalanced = new ArrayList<>(buffer);
             ArrayList<DataNodeStatistic> tmpStatistic = new ArrayList<>();
             //Ciclo sulle statische dei Server aggiornate dalla prima passata.
+            ArrayList<DataNodeStatistic> accettableDataNode = new ArrayList<>();
             for(DataNodeStatistic serverStat : statisticAfterBalancing){
+                if(!serverStat.isOverCpuUsage() && !serverStat.isRamUsage())
+                    accettableDataNode.add(serverStat);
+            }
+            if(accettableDataNode.size()==0)
+                return bufferRebalanced;
+            int fileToEachDataNode = buffer.size()/accettableDataNode.size();
+            //int remainingFile = buffer.size();
+            for(DataNodeStatistic serverStat : accettableDataNode){
                 //Per ogni file nel buffer
-                for(FileInfo file : buffer){
+                if(bufferRebalanced.size()-fileToEachDataNode<fileToEachDataNode || bufferRebalanced.size()-fileToEachDataNode<0)
+                    fileToEachDataNode = buffer.size();
+                for(int i = 0;i<fileToEachDataNode;i++){
                     //Se l'aggiunto del file a un server non comporta il superamento delle soglie effettuo lo spostamento
-                    if(serverStat.getServerSize() + file.getFileSize() < maxSize &&
-                            serverStat.getServerRequests() + file.getFileRequests() <maxRequest){
-                        try {
-                            if (masterDAO.serverContainsFile(file.getFileName(), serverStat.getDataNodeAddress())) {
-                                System.out.println(serverStat.getDataNodeAddress() + " contiene già " + file.getFileName());
+                    FileInfo file = bufferRebalanced.get(0);
+                    try {
+                        Date time = new Date();
+                        long timeInMillis = time.getTime();
+                        while(!getLifeSignal(serverStat.getDataNodeAddress())){
+                            Date now = new Date();
+                            if(now.getTime()-timeInMillis>1000) {
+                                LOGGER.log(Level.SEVERE, "IMPOSSIBLE TO CONTACT SERVER " + serverStat.getDataNodeAddress());
+                                break;
                             }
-                            Date time = new Date();
-                            long timeInMillis = time.getTime();
-                            while(!getLifeSignal(serverStat.getDataNodeAddress())){
-                                Date now = new Date();
-                                if(now.getTime()-timeInMillis>1000) {
-                                    LOGGER.log(Level.SEVERE, "IMPOSSIBLE TO CONTACT SERVER " + serverStat.getDataNodeAddress());
-                                    break;
-                                }
-                            }
-                            balanceFile(file.getFileName(), file.getDataNodeOwner(), serverStat.getDataNodeAddress());
-                            //Il file viene rimosso dal buffer e aggiunto alle statistiche del server a cui è stato inviato
-                            bufferRebalanced.remove(file);
-                            file.setFileRequests(Integer.toUnsignedLong(0));
-                            file.setDataNodeOwner(serverStat.getDataNodeAddress());
-                            serverStat.insert(file);
-
-                        }catch (MasterException | FileNotFoundException | DataNodeException | ImpossibleToMoveFileException e){
-                            LOGGER.log(Level.SEVERE,e.getMessage());
-                        } catch (NotBalancableFile notBalancableFile) {
-                            LOGGER.log(Level.WARNING,notBalancableFile.getMessage());
-                        } catch (AlreadyMovedFileException e) {
-                            LOGGER.log(Level.WARNING,e.getMessage());
-                            bufferRebalanced.remove(file);
                         }
+                        balanceFile(file.getFileName(), file.getDataNodeOwner(), serverStat.getDataNodeAddress());
+                        //Il file viene rimosso dal buffer e aggiunto alle statistiche del server a cui è stato inviato
+                        bufferRebalanced.remove(file);
+                        file.setFileRequests(Integer.toUnsignedLong(0));
+                        file.setDataNodeOwner(serverStat.getDataNodeAddress());
+                        serverStat.insert(file);
+
+                    }catch (MasterException | FileNotFoundException | DataNodeException | ImpossibleToMoveFileException e){
+                        LOGGER.log(Level.SEVERE,e.getMessage());
+                    } catch (NotBalancableFile notBalancableFile) {
+                        LOGGER.log(Level.WARNING,notBalancableFile.getMessage());
+                    } catch (AlreadyMovedFileException e) {
+                        LOGGER.log(Level.WARNING,e.getMessage());
+                        bufferRebalanced.remove(file);
                     }
                 }
                 tmpStatistic.add(serverStat);
@@ -1011,72 +1104,48 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
          */
         private ArrayList<FileInfo> balanceToNewDataNode(ArrayList<FileInfo> buffer) {
 
-            int count = 0;
             ArrayList<FileInfo> temp= new ArrayList<>(buffer);
             temp.sort(FileInfo.getCompByRequests());
             if(buffer.get(0).getFileSize()>maxSize || temp.get(0).getFileRequests()>maxRequest)
                 return new ArrayList<>();
-            while (!buffer.isEmpty()) {
-                if (count > 2) //Per evitare ciclo infinito
+            String newServerAddress = createDataNodeInstance();
+            Date time = new Date();
+            long timeInMillis = time.getTime();
+            while(!getLifeSignal(newServerAddress)){
+                Date now = new Date();
+                if(now.getTime()-timeInMillis>300000) {
+                    LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerAddress);
                     break;
-
-                //Creo un nuovo dataNode:
-                String newServerAddress = createDataNodeInstance();
-
-                long serverSize = 0;
-                long serverRequest = 0;
-                //Finchè il nuovo server non è saturo e il buffer è non vuoto
-                ArrayList<FileInfo> tmpBuffer = new ArrayList<>(buffer);
-                System.out.println("!! " + buffer);
-                for (FileInfo file : buffer) {
-                        //Se il server può accettare un file lo invio
-                    try{
-                        if (serverSize + file.getFileSize() < maxSize && serverRequest + file.getFileRequests() < maxRequest) {
-
-                            if (masterDAO.serverContainsFile(file.getFileName(), newServerAddress)) {
-                                System.out.println(newServerAddress+" contiene già " + file.getFileName());
-                                // TODO: A che serve?
-                            }
-
-                            Date time = new Date();
-                            long timeInMillis = time.getTime();
-                            while(!getLifeSignal(newServerAddress)){
-                                Date now = new Date();
-                                if(now.getTime() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) { // Aspetta che il DataNode si attivi.
-                                    LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerAddress);
-                                    writeOutput("SEVERE: IMPOSSIBLE TO CONTACT SERVER " + newServerAddress);
-                                    break;
-                                }
-                            }
-
-                            balanceFile(file.getFileName(), file.getDataNodeOwner(), newServerAddress);
-                                //Aggiorno carico del nuovo server
-                            System.out.println("Bilanciato " + file);
-                            serverSize = serverSize + file.getFileSize();
-                            serverRequest = serverRequest + file.getFileRequests();
-                            tmpBuffer.remove(file);
-
-                            //Altrimenti il file è inserito tra quelli non bilanciati.
-                        }
-                    }catch (MasterException e){
-                        LOGGER.log(Level.SEVERE,e.getMessage()+ " ME");
-                    }catch (NotBalancableFile e) {
-                        LOGGER.log(Level.WARNING,e.getMessage() + " NBFE");
-                    } catch (FileNotFoundException | ImpossibleToMoveFileException e) {
-                        LOGGER.log(Level.SEVERE,e.getMessage() + " FNTE");
-                    } catch (DataNodeException e) {
-                        LOGGER.log(Level.SEVERE,e.getMessage() + " DNE");
-                    } catch (AlreadyMovedFileException e) {
-                        LOGGER.log(Level.WARNING,e.getMessage());
-                        tmpBuffer.remove(file);
-                    }
                 }
-
-                buffer.clear();
-                buffer.addAll(tmpBuffer);
-                //Ripopolo il buffer con i file che non sono riuscito a ricollocare
-                count++;
             }
+            ArrayList<FileInfo> tmpBuffer = new ArrayList<>(buffer);
+            System.out.println("!! " + buffer);
+            for (FileInfo file : buffer) {
+                //Se il server può accettare un file lo invio
+                try {
+
+                    balanceFile(file.getFileName(), file.getDataNodeOwner(), newServerAddress);
+                    //Aggiorno carico del nuovo server
+                    System.out.println("Bilanciato " + file);
+                    tmpBuffer.remove(file);
+                    //Altrimenti i file è inserito tra quelli non bilanciati.
+
+                } catch (MasterException | ImpossibleToMoveFileException masterException) {
+                    LOGGER.log(Level.SEVERE, masterException.getMessage() + " ME");
+                } catch (NotBalancableFile notBalancableFile) {
+                    LOGGER.log(Level.WARNING, notBalancableFile.getMessage() + " NBFE");
+                } catch (FileNotFoundException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage() + " FNTE");
+                } catch (DataNodeException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage() + " DNE");
+                } catch (AlreadyMovedFileException e) {
+                    LOGGER.log(Level.WARNING, e.getMessage());
+                    tmpBuffer.remove(file);
+                }
+            }
+
+            buffer.clear();
+            buffer.addAll(tmpBuffer);
 
             //Ritorna i file non ricollocabili
             return buffer;
@@ -1168,6 +1237,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
 
+        //TODO DIVIDERE CLOUDLET
         /**
          * Controlla se è stato superato il limite massimo di DataNode gestibili dal Master, ed se necessario crea un nuovo Master
          *  passandogli il controllo di una parte di DataNode.
@@ -1181,7 +1251,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 dataNodes_number = dataNodeAddresses.size();
             }
 
-            if(dataNodes_number > Config.MAX_DATANODE_PER_MASTER) {
+            if(monitor.isOverRamUsage() || monitor.isOverCpuUsage()) {
 
                 // Crea il nuovo Master:
                 String newMasterAddress = "";
@@ -1326,6 +1396,119 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\t");
     }
+
+
+    @Override
+    public String getMinorLatencyCloudlet(String sourceIP) {
+        System.out.println("Ricerco latenza minore da "+sourceIP);
+        HashMap<String,Double> globalLatency = new HashMap<>();
+        ArrayList<Thread> thArray = new ArrayList<>();
+        ArrayList<String> totalAddr = new ArrayList<>(masterAddresses);
+        totalAddr.add(address);
+        for(String masterAdd : totalAddr){
+            Thread latencyThread = new Thread("LatencyThread"){
+                @Override
+                public void run() {
+                    try {
+                        System.out.println("Latenza per Master "+masterAdd);
+                        MasterInterface masterInterface = (MasterInterface) registryLookup(masterAdd,Config.masterServiceName);
+                        ArrayList<String> myResult = masterInterface.getMinorLatencyLocalCloudlet(sourceIP);
+                        String cloudletAddr = myResult.get(0);
+                        Double cloudletLat = Double.parseDouble(myResult.get(1));
+                        System.out.println("Latenza da "+cloudletAddr+ " " + cloudletLat);
+                        if(!cloudletAddr.equals(""))
+                            globalLatency.put(cloudletAddr,cloudletLat);
+                    } catch (NotBoundException | RemoteException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+            thArray.add(latencyThread);
+            latencyThread.start();
+
+        }
+        for(Thread th : thArray){
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return Util.extractMinFromMap(globalLatency).get(0);
+
+    }
+
+
+    public ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) {
+        HashMap<String,Double> latencyMap = new HashMap<>();
+        ArrayList<Thread> thArray = new ArrayList<>();
+        for(String cloudletAddr : usableCloudlet){
+            Thread latencyThread = new Thread("LatencyThread"){
+                @Override
+                public void run() {
+                    try {
+                        CloudletInterface cloudletInterface =(CloudletInterface) registryLookup(cloudletAddr,Config.cloudLetServiceName);
+                        double latency = cloudletInterface.getLatency(sourceIP);
+                        System.out.println("Latency from "+cloudletAddr + " "+latency);
+                        latencyMap.put(cloudletAddr,latency);
+                    } catch (NotBoundException | RemoteException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            };
+            thArray.add(latencyThread);
+            latencyThread.start();
+        }
+        for(Thread th : thArray){
+            try {
+                th.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return Util.extractMinFromMap(latencyMap);
+    }
+
+    @Override
+    public boolean addCloudlet(String ipAddress) {
+        if(!cloudletAddress.contains(ipAddress)) {
+            cloudletAddress.add(ipAddress);
+            usableCloudlet.add(ipAddress);
+        }
+        System.out.println("Aggiungo "+ipAddress + " a "+cloudletAddress);
+        return true;
+    }
+
+    private static Thread publishCloudletAddress = new Thread("PublishCloudletAddress"){
+        @Override
+        public void run() {
+            while (!exit) {
+                String fileName = Util.getLocalIPAddress() + ".txt";
+                File file = new File(fileName);
+                try {
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                    for (String caddr : usableCloudlet) {
+                        String line = caddr.concat("|");
+                        bw.append(line);
+                    }
+                    bw.flush();
+                    bw.close();
+                    s3Upload.uploadFile(fileName);
+                    Files.delete(Paths.get(fileName));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    };
 
     /**
      *  Thread che contatta il Master Principale per verificare che sia attivo.

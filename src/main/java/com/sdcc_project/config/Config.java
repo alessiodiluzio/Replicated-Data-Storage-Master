@@ -7,6 +7,7 @@ public class Config {
 
     // Master:
     public static final String masterServiceName = "MasterService";
+    public static final String cloudLetServiceName = "CloudLetService";
     public static final String MASTER_DATABASE_NAME = "DB_Master";
     public static final String MASTER_FILE_LOGGING_NAME = "File_Logging_Master";
     // Per creare un DataNode:
@@ -19,6 +20,7 @@ public class Config {
     public static final String OTHERS_CREATE_MASTER = "mvn exec:java@Master -Dexec.args=";
     public static final int REPLICATION_FACTORY = 1;
     public static final int NUMBER_OF_DATANODES = 1;
+    public static final int CLOUDLET_NUMBER = 1;
     public static final int NUMBER_OF_MASTERS = 3;
     public static final int BALANCING_THREAD_SLEEP_TIME = 10000;
     public static final int LIFE_THREAD_SLEEP_TIME = 2000;
@@ -42,6 +44,14 @@ public class Config {
     public static final Long requestThreshold = Integer.toUnsignedLong(20);
 
     // Comandi per lanciare DataNode e Master:
-    public static String launchDataNode = "mvn exec:java@DataNode -Dexec.args=";
-    public static String launchMaster ="mvn exec:java@Master -Dexec.args=";
+    public static final String launchDataNode = "mvn exec:java@DataNode -Dexec.args=";
+    public static final String launchMaster ="mvn exec:java@Master -Dexec.args=";
+    public static final String launchCloudlet = "mvn spring-boot:run -Dspring-boot.run.arguments=";
+    public static final long MAX_TIME_NOT_RESPONDING_CLOUDLET = 600000;
+
+
+
+    //TODO spostare in config properties
+    public static final double cpuMaxUsage = 70.0;
+    public static final double ramMaxUsage = 70.0;
 }
