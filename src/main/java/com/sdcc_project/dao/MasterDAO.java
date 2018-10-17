@@ -150,7 +150,7 @@ public class MasterDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(!resultSet.next())
                 return null;
-            result = resultSet.getString(2);
+            result = resultSet.getString(1);
             resultSet.close();
         }
         catch (SQLException e){
