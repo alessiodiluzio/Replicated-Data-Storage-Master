@@ -24,8 +24,12 @@ public class Monitor {
         return instance;
     }
 
-    private Monitor(){
+    public void startThread(){
         monitorThread.start();
+    };
+
+    private Monitor(){
+
     };
 
     private double getUsage(Components component){

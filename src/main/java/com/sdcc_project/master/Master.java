@@ -82,9 +82,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.out.println("Usage: Master System_Startup");
             System.exit(1);
         }
+        monitor = Monitor.getInstance();
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
         s3Upload = S3Upload.getInstance();
-        monitor = Monitor.getInstance();
         System.out.println("Mia istanza : "+ EC2MetadataUtils.getInstanceId());
         switch (args[0]){
             case "System_Startup":
@@ -271,6 +271,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        monitor.startThread();
         balancingThread.start();
         lifeThread.start();
         cloudletLifeThread.start();
