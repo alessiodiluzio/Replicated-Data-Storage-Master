@@ -189,6 +189,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             masterDAO.insertOrUpdateSingleFilePositionAndVersion(file_info.get(0), file_info.get(1), Integer.parseInt(file_info.get(2)));
                         }
                     }
+                    for(String cloudletAddr : cloudletAddress){
+                        CloudletInterface cloudlet = (CloudletInterface) registryLookup(cloudletAddr,Config.cloudLetServiceName);
+                        writeOutput("Invio il nuovo indirizzo del Master "+address+" alla cloudlet " +cloudletAddr);
+                        cloudlet.newMasterAddress(address);
+                    }
                     //writeOutput("DB Data:\n" + masterDAO.getAllData());
                 }
                 catch (Exception e) {
@@ -326,6 +331,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return masterAddresses;
     }
 
+    @Override
+    public ArrayList<String> getCloudletAddresses(){
+        return cloudletAddress;
+    }
+
     /**
      * Metodo che aggiorna la lista di indirizzi dei Master.
      *
@@ -418,6 +428,46 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return newMasterIP;
     }
 
+    public FileLocation getMostUpdatedFileLocation(String filename,String operation) throws FileNotFoundException {
+        ArrayList<String> toContactMaster = new ArrayList<>(masterAddresses) ;
+        toContactMaster.add(address);
+        FileLocation result = new FileLocation();
+        ArrayList<FileLocation> fileLocations = new ArrayList<>();
+        for(String addr : toContactMaster){
+            try {
+                MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
+                FileLocation fl = masterInterface.checkFile(filename,operation);
+                if(fl!=null) fileLocations.add(fl);
+            } catch (NotBoundException | RemoteException | MasterException | FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        if(fileLocations.isEmpty()){
+            if(operation.equals("W")){
+                String dataNode = findReplicaPosition(filename,1);
+                result.setResult(true);
+                result.setFileVersion(1);
+                ArrayList<String> fPos = new ArrayList<>();
+                fPos.add(dataNode);
+                result.setFilePositions(fPos);
+            }
+            else {
+                throw new FileNotFoundException("FILE NOT IN THE SYSTEM");
+            }
+        }
+        else {
+            int latestReplica = 1;
+            for(FileLocation  fLoc: fileLocations){
+                if(fLoc.getFileVersion()>latestReplica){
+                    latestReplica = fLoc.getFileVersion();
+                    result = fLoc;
+                }
+            }
+        }
+        return result;
+    }
+
+
     /**
      * Funzone che ricerca il DataNode in cui è contenuto un file richiesto dal Client.
      *
@@ -451,25 +501,16 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 catch (MasterException e) {
                     writeOutput("INFO: New File");
                     LOGGER.log(Level.INFO, "New File");
+                    return null;
                 }
                 cl.setResult(true);
-                if (filePosition != null) {
 
-                    int latestVersion = masterDAO.getFileVersion(fileName, filePosition);
-                    cl.setFileVersion(latestVersion + 1);
-                    positions.add(filePosition);
-                    cl.setFilePositions(positions); // TODO: Cambiare la FileLocation?
-                }
-                else {
-                    filePosition = roundRobinDistribution().get(0);
-                    if (filePosition == null) {
-                        cl.setResult(false);
-                    }
-                    cl.setFileVersion(1);
-                    positions.add(filePosition);
-                    cl.setFilePositions(positions);
-                }
-            }
+                int latestVersion = masterDAO.getFileVersion(fileName, filePosition);
+                cl.setFileVersion(latestVersion + 1);
+                positions.add(filePosition);
+                cl.setFilePositions(positions);
+
+        }
 
         return cl;
     }
@@ -572,7 +613,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 if(replica_address == null) {
                 // Prende un DataNode su cui replicare, con il RoundRobin:
-                    replica_address = roundRobinDistribution().get(0);
+                    replica_address = roundRobinDistribution();
                     writeOutput("Trovata una Nuova Posizione di Replicazione: " + replica_address + " - Per il File: " + filename);
                 }
                 else {
@@ -720,21 +761,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * @return un array di indirizzi estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
      */
     // TODO: Da cambiare per Multi-Master con replicazione 1 intra-master.
-    private ArrayList<String> roundRobinDistribution(){
+    private String roundRobinDistribution(){
 
-        int startPosition = -1;
-        ArrayList<String> extractedAddress = new ArrayList<>();
-        synchronized (dataNodeAddressesLock) {
-            if (lastChosenServer != null) {
-                startPosition = dataNodeAddresses.indexOf(lastChosenServer);
-            }
-            for (int i = 1; i <= Config.REPLICATION_FACTORY; i++) {
-                int index = (startPosition + i) % (dataNodeAddresses.size());
-                extractedAddress.add(dataNodeAddresses.get(index));
-                lastChosenServer = dataNodeAddresses.get(index);
-            }
+        if(lastChosenServer == null){
+            lastChosenServer = dataNodeAddresses.get(0);
+            return lastChosenServer;
         }
-        return extractedAddress;
+        int index = dataNodeAddresses.indexOf(lastChosenServer);
+        lastChosenServer = dataNodeAddresses.get(index+1);
+        return lastChosenServer;
     }
 
     /**
@@ -1329,9 +1364,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 // Prende metà degli indirizzi dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
+                int cloudlet_to_move = cloudletAddress.size() / 2;
                 ArrayList<String> dataNode_addresses = new ArrayList<>();
+                ArrayList<String> cloudlet_addresses = new ArrayList<>();
                 int index;
 
+                while(!cloudlet_addresses.isEmpty() && cloudlet_to_move>0){
+                    index = (int) (Math.random() * (cloudletAddress.size()));
+                    cloudlet_addresses.add(cloudletAddress.get(index));
+                    cloudletAddress.remove(index);
+                    cloudlet_to_move--;
+                }
                 synchronized (dataNodeAddressesLock) {
                     while(!dataNodeAddresses.isEmpty() && dataNode_to_move > 0) {
 
@@ -1355,12 +1398,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         lifeSignalMap.remove(addr);
                     }
                 }
+                for(String addr : cloudlet_addresses){
+                    cloudletLifeSignalMap.remove(addr);
+                }
 
                 try {
                     Date date = new Date();
                     long timeInMillis = date.getTime();
                     // Invia al nuovo Master gli indirizzi dei DataNode che deve gestire:
-                    while (!contactNewMaster(newMasterAddress, dataNode_addresses)) {
+                    while (!contactNewMaster(newMasterAddress, dataNode_addresses,cloudlet_addresses)) {
                         Date now = new Date();
                         if (now.getTime() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) { // Aspetta che il Master sia attivo.
                             writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
@@ -1383,7 +1429,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
 
-        private boolean contactNewMaster(String newMasterAddress, ArrayList<String> dataNode_addresses) {
+        private boolean contactNewMaster(String newMasterAddress, ArrayList<String> dataNode_addresses,ArrayList<String> cloudlet_address) {
 
             try {
                 MasterInterface master = (MasterInterface) registryLookup(newMasterAddress, Config.masterServiceName);
@@ -1391,7 +1437,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 ArrayList<String> master_addresses = new ArrayList<>(masterAddresses);
                 master_addresses.add(address);
 
-                master.dataNodesToManage_AND_listOfMasters(dataNode_addresses, master_addresses);
+                master.dataNodesToManage_AND_listOfMasters(dataNode_addresses, master_addresses,cloudlet_address);
             }
             catch (Exception e) {
                 return false;
@@ -1411,10 +1457,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * @param dataNode_addresses Indirizzi dei DataNode che il nuovo Master deve gestire.
      */
     @Override
-    public void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses) {
+    public void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses,ArrayList<String> cloudlet_addresses) {
 
         // Contatta i DataNode che deve prendersi in gestione:
         try {
+            for(String cloudletAddress : cloudlet_addresses){
+                addCloudlet(cloudletAddress);
+            }
             for (String dataNodeAddress : dataNode_addresses) {
 
                 StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
@@ -1607,6 +1656,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             ArrayList<String> temp_dataNodes;
             ArrayList<String> temp_masters;
+            ArrayList<String> temp_cloudlets;
 
             try {
                 MasterInterface master = (MasterInterface) registryLookup(mainMasterAddress, Config.masterServiceName);
@@ -1615,15 +1665,20 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 temp_dataNodes = master.getDataNodeAddresses();
                 // Prende la lista di Master:
                 temp_masters = master.getMasterAddresses();
+                // Prende la lista delle Cloudlet :
+                temp_cloudlets = master.getCloudletAddresses();
+
             }
             catch (Exception e) {
                 return false;
             }
             dataNodeAddresses.clear();
             masterAddresses.clear();
+            cloudletAddress.clear();
 
             dataNodeAddresses.addAll(temp_dataNodes);
             masterAddresses.addAll(temp_masters);
+            cloudletAddress.addAll(temp_cloudlets);
 
             return true;
         }

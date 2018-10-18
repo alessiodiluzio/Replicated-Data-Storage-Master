@@ -22,10 +22,12 @@ public interface MasterInterface extends Remote {
     void lifeSignal(String port) throws RemoteException;
     ArrayList<String> getDataNodeAddresses() throws RemoteException;
     ArrayList<String> getMasterAddresses() throws RemoteException;
-    void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses) throws RemoteException;
+    ArrayList<String> getCloudletAddresses() throws RemoteException;
+    void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses,ArrayList<String> cloudlet_address) throws RemoteException;
     void updateMasterAddresses(String newMasterAddress, String oldMasterAddress) throws RemoteException;
     String getMinorLatencyCloudlet(String sourceIP) throws RemoteException;
     ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) throws RemoteException;
     boolean addCloudlet(String ipAddress) throws RemoteException;
     void cloudletLifeSignal(String address, State state) throws RemoteException;
+    FileLocation getMostUpdatedFileLocation(String filename,String operation) throws FileNotFoundException ,RemoteException;
 }
