@@ -66,9 +66,9 @@ public class Monitor {
                     ramOverUsageTime = 0;
                     overRamUsage = false;
                 }
-                if(cpuOverUsageTime>=5)
+                if(cpuOverUsageTime>=8)
                     overCpuUsage = true;
-                if(ramOverUsageTime>=5)
+                if(ramOverUsageTime>=8)
                     overRamUsage = true;
                 try {
                     sleep(5000);
