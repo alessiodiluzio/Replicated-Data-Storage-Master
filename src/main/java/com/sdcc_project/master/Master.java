@@ -412,7 +412,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         cloudletAddress.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
         writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n");
-        Date now = new Date();
         //return newCloudLetIP;
     }
 
@@ -1023,7 +1022,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         createCloudLetInstance();
                         cloudletLifeSignalMap.remove(entry.getKey());
                         cloudletAddress.remove(entry.getKey());
-                        ec2InstanceFactory.terminateEC2Instance(entry.getKey());
+                        ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(entry.getKey()));
                         cloudletInstanceIDMap.remove(entry.getKey());
                     }
                 }

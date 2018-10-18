@@ -441,7 +441,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             while(condition){
                 sendLifeSignal();
                 try {
-                    sleep(2000);
+                    sleep(7000);
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());

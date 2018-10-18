@@ -19,7 +19,7 @@ public class Config {
     public static final int LIFE_THREAD_SLEEP_TIME = 20000;
     public static final int SHADOW_THREAD_SLEEP_TIME = 2000;
     public static final int MAX_TIME_EMPTY_DATANODE = 6000000; // 600 secondi
-    public static final int MAX_TIME_NOT_RESPONDING_DATANODE = 20000; // 3 minuti
+    public static final int MAX_TIME_NOT_RESPONDING_DATANODE = 30000; // 3 minuti
     public static final int MAX_TIME_WAITING_FOR_INSTANCE_RUNNING = 300000; // (2 minuti) Attenzione può volerci molto tempo.
 
     // DataNode:
@@ -39,10 +39,10 @@ public class Config {
     public static final String launchDataNode = "mvn exec:java@DataNode -Dexec.args=";
     public static final String launchMaster ="mvn exec:java@Master -Dexec.args=";
     public static final String launchCloudlet = "mvn spring-boot:run -Dspring-boot.run.arguments=";
-    public static final long MAX_TIME_NOT_RESPONDING_CLOUDLET = 20000;
+    public static final long MAX_TIME_NOT_RESPONDING_CLOUDLET = 30000;
 
     public static final double cpuMaxUsage = 70.0;
     public static final double ramMaxUsage = 70.0;
 
-    public static final long SYSTEM_STARTUP_TYME = 600000;
+    public static final long SYSTEM_STARTUP_TYME = 360000;
 }
