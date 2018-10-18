@@ -56,8 +56,8 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         monitor = Monitor.getInstance();
         masterAddress = args[0];
         address = Util.getLocalIPAddress();
-        instanceID = EC2MetadataUtils.getInstanceId(); // TODO: Verificare che funzioni.
-        writeOutput("MIO INSTANCE ID " + instanceID);
+        instanceID = EC2MetadataUtils.getInstanceId(); 
+
 
         String serviceName = Config.dataNodeServiceName;
 
@@ -70,6 +70,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         }
         // Creazione del file di Logging:
         file = new File(Config.DATANODE_FILE_LOGGING_NAME + ".txt");
+        writeOutput("MIO INSTANCE ID " + instanceID);
 
         try {
             completeName = "//" + address + ":" + Config.port + "/" + serviceName;
