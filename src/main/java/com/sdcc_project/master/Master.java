@@ -255,7 +255,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             @Override
             public void run() {
                 try {
+                    writeOutput("INIZIO THREAD DI STARTUP");
+                    System.out.println("INIZIO DI THREAD DI STARTUP");
                     sleep(Config.SYSTEM_STARTUP_TYME);
+                    writeOutput("FINE THREAD DI STARTUP");
+                    System.out.println("FINE THREAD DI STARTUP");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
