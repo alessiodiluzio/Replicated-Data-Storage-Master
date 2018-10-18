@@ -82,6 +82,21 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.out.println("Usage: Master System_Startup");
             System.exit(1);
         }
+
+        Thread waitThread = new Thread("Wait Thread"){
+            @Override
+            public void run() {
+                try {
+                    writeOutput("INIZIO THREAD DI STARTUP");
+                    System.out.println("INIZIO DI THREAD DI STARTUP");
+                    sleep(Config.SYSTEM_STARTUP_TYME);
+                    writeOutput("FINE THREAD DI STARTUP");
+                    System.out.println("FINE THREAD DI STARTUP");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         monitor = Monitor.getInstance();
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
         s3Upload = S3Upload.getInstance();
@@ -119,7 +134,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     e.printStackTrace();
                     LOGGER.log(Level.SEVERE, e.getMessage());
                 }
-
+                waitThread.start();
+                try {
+                    waitThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case "Main":
@@ -159,7 +179,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 catch (RemoteException | NotBoundException e){
                     writeOutput(e.getMessage());
                 }
-
+                waitThread.start();
+                try {
+                    waitThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case "Shadow":
@@ -251,26 +276,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 break;
         }
-        Thread waitThread = new Thread("Wait Thread"){
-            @Override
-            public void run() {
-                try {
-                    writeOutput("INIZIO THREAD DI STARTUP");
-                    System.out.println("INIZIO DI THREAD DI STARTUP");
-                    sleep(Config.SYSTEM_STARTUP_TYME);
-                    writeOutput("FINE THREAD DI STARTUP");
-                    System.out.println("FINE THREAD DI STARTUP");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        waitThread.start();
-        try {
-            waitThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         monitor.startThread();
         balancingThread.start();
         lifeThread.start();
@@ -799,8 +805,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             lastChosenServer = dataNodeAddresses.get(0);
             return lastChosenServer;
         }
-        int index = dataNodeAddresses.indexOf(lastChosenServer);
-        lastChosenServer = dataNodeAddresses.get(index+1);
+        int newIndex = dataNodeAddresses.indexOf(lastChosenServer)+1;
+        if(newIndex>=dataNodeAddresses.size())
+            newIndex=0;
+        lastChosenServer = dataNodeAddresses.get(newIndex);
         return lastChosenServer;
     }
 
