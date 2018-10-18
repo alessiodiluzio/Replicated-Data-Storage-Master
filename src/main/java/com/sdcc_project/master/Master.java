@@ -517,14 +517,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     public String getDataNodeAddressForReplication(String filename, int version) throws ImpossibleToFindDataNodeForReplication {
 
         MasterInterface master;
-        String master_address;
         String replica_address = null;
         ArrayList<String> random_masterAddresses = new ArrayList<>(masterAddresses);
         Collections.shuffle(random_masterAddresses);
 
-        for (String random_masterAddress : random_masterAddresses) {
-
-            master_address = random_masterAddress;
+        for (String master_address : random_masterAddresses) {
 
             try {
                 writeOutput("Cerco una Possibile Replica sul Master: " + master_address);
@@ -616,6 +613,28 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return replica_address;
     }
 
+    /**
+     * Restituisce l'indirizzo di un DataNode in cui è presente il file specificato.
+     *  Altrimenti NULL.
+     *
+     * @param filename Nome del file di cui cercare la posizione.
+     * @return Indirizzo del DataNode in cui è presente il file, o NULL.
+     */
+    @Override
+    public String getDataNodeWithFile(String filename) {
+
+        String dataNode_address = null;
+
+        try {
+            dataNode_address = masterDAO.getFilePosition(filename);
+        }
+        catch (MasterException e) {
+            writeOutput("SEVERE: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
+        }
+
+        return dataNode_address;
+    }
 
     /**
      *  Inserisce in un oggetto 'dataNodesStatistic' le informazioni sulle statistiche del DataNode.
@@ -651,6 +670,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         synchronized (dataNodeAddressesLock){
             find = dataNodeAddresses.contains(dataNodeAddress);
         }
+
         if(find){
             Date now = new Date();
             long timeInMillis = now.getTime();
@@ -662,6 +682,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    /**
+     * Inserisce/Aggiorna il segnale di vita di una Cloudlet.
+     *
+     * @param cloudletAddr Indirizzo del DataNode che ha mandato il sengale.
+     * @param state Stato della Cloudlet.
+     */
     @Override
     public void cloudletLifeSignal(String cloudletAddr, State state) {
 
@@ -676,9 +702,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             if(!usableCloudlet.contains(cloudletAddr))
                 usableCloudlet.add(cloudletAddr);
         }
+
         if(find){
             Date now = new Date();
             long timeInMillis = now.getTime();
+
             synchronized (cloudletLifeSignalMapLock) {
                 cloudletLifeSignalMap.remove(cloudletAddr);
                 cloudletLifeSignalMap.put(cloudletAddr, timeInMillis);
@@ -764,12 +792,25 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
-    // TODO: Cambiare completamente per multi-master: i file presenti sul DataNode caduto devono essere presi/copiati dai DataNode di altri Master.
+    /**
+     * Recupera i file che erano sul DataNode crashato, contattanto gli altri Master e richiedento la posizione di una
+     *  replica di ciascun file da recuperare.
+     *
+     * @param address Indirizzo del DataNode crashato.
+     */
     private static void handleDataNodeCrash(String address){
 
-        //String replacedDataNode = createDataNodeInstance();
-        if(getLifeSignal(address))
+        ArrayList<String> files_to_recover ;
+        MasterInterface master;
+
+        // Verifica nuovamente che il DataNode sia caduto:
+        if(getLifeSignal(address)) {
             return;
+        }
+
+        // Crea un DataNode su cui ripristinare i file del DataNode crashato:
+        String replaced_dataNode = createDataNodeInstance();
+
         synchronized (dataNodeAddressesLock){
             dataNodeAddresses.remove(address);
         }
@@ -779,51 +820,72 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         synchronized (lifeSignalMapLock) {
             lifeSignalMap.remove(address);
         }
-        try {
-            ArrayList<String> movedFile ;
-            try {
-                movedFile = masterDAO.getServerFiles(address);
-            }
-            catch (FileNotFoundException e) {
-                LOGGER.log(Level.WARNING,"Failed server has none file");
-            }
 
-            /*
-            for(String file : movedFile){
-                masterDAO.deleteFilePosition(file,address);
-                ArrayList<String> filePositions = masterDAO.getFilePosition(file);
-                filePositions.remove(address);
-                for(String position : filePositions){
+        // Cerca una replica di ciascun file da recuperare:
+        try {
+            files_to_recover = masterDAO.getServerFiles(address);
+
+            for(String filename : files_to_recover) {
+
+                String file_position = null;
+                masterDAO.deleteFilePosition(filename, address);
+
+                // Contatta gli altri Master per cercare un DataNode con il file da recuperare:
+                for(String master_address : masterAddresses) {
+
                     try {
-                        Date date = new Date();
-                        long timeInMillis = date.getTime();
-                        while(!getLifeSignal(replacedDataNode)){
-                            Date now = new Date();
-                            if(now.getTime()-timeInMillis>1000) {
-                                LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+replacedDataNode);
-                                break;
-                            }
+                        // Contatta un altro Master:
+                        master = (MasterInterface) registryLookup(master_address, Config.masterServiceName);
+                        file_position = master.getDataNodeWithFile(filename);
+
+                        if (file_position != null) {
+                            break; // Trovato il DataNode che possiede il file da recuperare.
                         }
-                        balanceFile(file, position, replacedDataNode);
-                        //TODO: Fare un metodo ad hoc per prendere i file da DataNode di altri Master.
-                        // TODO: La funzione balanceFile() è pensata per spostamenti tra DataNode di uno stesso Master.
-                        break;
                     }
-                    catch (FileNotFoundException | DataNodeException | NotBalancableFile | AlreadyMovedFileException | ImpossibleToMoveFileException e) {
-                        e.printStackTrace();
-                        writeOutput(e.getMessage());
+                    catch (RemoteException | NotBoundException e) {
+                        writeOutput("WARNING: Impossible to Contact Master " + master_address);
+                        System.out.println("WARNING: Impossible to Contact Master " + master_address);
                     }
                 }
+
+                // Non ha trovato nessun DataNode da cui recuperare il file:
+                if(file_position == null) {
+                    writeOutput("SEVERE: Impossible to Recover File: " + filename);
+                    LOGGER.log(Level.SEVERE, "Impossible to Recover File: " + filename);
+                    continue;
+                }
+
+                writeOutput("Trovato DataNode: " + file_position + " - Da cui Recuperare il File: " + filename);
+                System.out.println("Trovato DataNode: " + file_position + " - Da cui Recuperare il File: " + filename);
+
+                // Contatta il DataNode che possiede il file da recuperare:
+                try {
+                    StorageInterface dataNode = (StorageInterface) registryLookup(file_position, Config.dataNodeServiceName);
+                    dataNode.copyFileOnAnotherDataNode(filename, replaced_dataNode);
+                }
+                catch (NotBoundException | RemoteException e) {
+                    writeOutput("SEVERE: Impossible to Contact DataNode " + file_position);
+                    LOGGER.log(Level.SEVERE,"Impossible to Contact DataNode " + file_position);
+                    continue;
+                }
+                catch (ImpossibleToCopyFileOnDataNode e) {
+                    writeOutput("SEVERE: " + e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage());
+                    continue;
+                }
+
+                writeOutput("Recuperato il File: " + filename + " - Dal DataNode: " + file_position);
+                System.out.println("Recuperato il File: " + filename + " - Dal DataNode: " + file_position);
             }
-            System.out.println("Moved Files " + movedFile + " from " + address + " to " + replacedDataNode);
-            writeOutput("Moved Files " + movedFile + " from " + address + " to " + replacedDataNode);
-            */
         }
         catch (MasterException e) {
             e.printStackTrace();
             writeOutput(e.getMessage());
         }
-
+        catch (FileNotFoundException e) {
+            writeOutput("WARNING: " + e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage());
+        }
     }
 
     /**

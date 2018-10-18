@@ -4,9 +4,8 @@ import com.amazonaws.util.EC2MetadataUtils;
 import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.DataNodeDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
-import com.sdcc_project.exception.DataNodeException;
-import com.sdcc_project.exception.ImpossibleToFindDataNodeForReplication;
-import com.sdcc_project.exception.ImpossibleToMoveFileException;
+import com.sdcc_project.exception.*;
+import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.monitor.Monitor;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
@@ -15,7 +14,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import com.sdcc_project.exception.FileNotFoundException;
+
 import com.sdcc_project.util.Util;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -194,7 +193,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                 writeOutput("Inserito File: " + filename + " - Versione: " + updated_version);
             }
         }
-        catch (Exception e) {
+        catch (DataNodeException e) {
             writeOutput(e.getMessage());
             return false;
         }
@@ -204,7 +203,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         new_replication_factory = replication_factory - 1; // Decrementa il numero di repliche mancanti da creare/aggiornare.
 
         // Crea/Aggiorna le altre repliche del file:
-        if(new_replication_factory != 0) {
+        if(new_replication_factory > 0) {
 
             writeOutput("Cerco Altre Repliche da Creare/Aggiornare");
 
@@ -346,6 +345,69 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
     }
 
     /**
+     * Contatta un altro DataNode per passargli un file di cui deve essere ricreata una replica.
+     *
+     * @param filename Nome del file che deve essere copiato sull'altro DataNdde.
+     * @param replaced_dataNode Indirizzo del DataNode su cui si deve copiare il file.
+     * @throws ImpossibleToCopyFileOnDataNode ...
+     */
+    @Override
+    public void copyFileOnAnotherDataNode(String filename, String replaced_dataNode) throws ImpossibleToCopyFileOnDataNode {
+
+        String base64;
+        String data;
+        int version;
+        boolean result;
+
+        try {
+            synchronized (dataNodeLock){
+                base64 = dataNodeDAO.getFileString(filename,false);
+                version = dataNodeDAO.getFileVersion(filename);
+            }
+            data = FileManager.decodeString(base64);
+
+            Date date = new Date();
+            long timeInMillis = date.getTime();
+            while (!getLifeSignal(replaced_dataNode)) {
+                Date now = new Date();
+                if (now.getTime() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) {
+                    writeOutput("SEVERE: Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
+                    throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
+                }
+            }
+
+            StorageInterface dataNode = (StorageInterface) registryLookup(replaced_dataNode, Config.dataNodeServiceName);
+            result = dataNode.write(filename, data, version, 1);
+        }
+        catch (RemoteException | NotBoundException e) {
+            throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
+        }
+        catch (FileNotFoundException e) {
+            throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - File Not Found");
+        }
+        catch (DataNodeException e) {
+            throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - " + e.getMessage());
+        }
+
+        if(!result) {
+            throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - Can't Write File");
+        }
+
+        writeOutput("File: " + filename + " Copied on DataNode: " + replaced_dataNode + " with Success");
+    }
+
+    private boolean getLifeSignal(String dataNode_address) {
+
+        try {
+            StorageInterface dataNode = (StorageInterface) registryLookup(dataNode_address, Config.dataNodeServiceName);
+            return dataNode.lifeSignal();
+        }
+        catch (NotBoundException | RemoteException e) {
+            return false;
+        }
+    }
+
+    /**
      * Invia al Master un segnale per fargli sapere che è ancora attivo.
      *
      */
@@ -361,6 +423,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         }
     }
 
+    @Override
     public boolean lifeSignal() {
         return true;
     }
@@ -384,36 +447,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             }
         }
     };
-
-    /**
-     * Funzione per attendere la terminazione del Thread per l'invio delle statistiche al Master e del Thread per il
-     *  salvataggio del DB su disco.
-     *
-     */
-    @Override
-    public void killSignal() {
-
-        condition = false;
-        try {
-            registry.unbind(completeName);
-            UnicastRemoteObject.unexportObject(this, true);
-        }
-        catch (RemoteException | NotBoundException e) {
-            writeOutput(e.getMessage());
-        }
-         {
-            try {
-                statisticThread.join();
-                saveDBThread.join();
-                lifeThread.join();
-            }
-            catch (InterruptedException e) {
-                writeOutput(e.getMessage());
-            }
-        }
-        writeOutput("SHUTDOWN");
-        System.exit(1);
-    }
 
     /**
      * Funzione per fare il logging dell'output di ogni DataNode.

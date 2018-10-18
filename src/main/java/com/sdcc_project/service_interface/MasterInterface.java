@@ -17,6 +17,7 @@ public interface MasterInterface extends Remote {
     void writeAck(String filename, String dataNode_address, int version) throws RemoteException;
     String getDataNodeAddressForReplication(String filename, int version) throws RemoteException, ImpossibleToFindDataNodeForReplication;
     String findReplicaPosition(String filename, int version) throws RemoteException;
+    String getDataNodeWithFile(String filename) throws RemoteException;
     void setStatistic(DataNodeStatistic dataNodeStatistic) throws RemoteException;
     void lifeSignal(String port) throws RemoteException;
     ArrayList<String> getDataNodeAddresses() throws RemoteException;

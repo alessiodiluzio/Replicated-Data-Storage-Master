@@ -94,22 +94,23 @@ public class MasterDAO {
         }
     }
 
-    public ArrayList<String> getServerFiles(String port) throws FileNotFoundException, MasterException {
+    public ArrayList<String> getServerFiles(String address) throws FileNotFoundException, MasterException {
 
         String query = "SELECT filename FROM MasterTable WHERE dataNodeAddress = ?";
         ArrayList<String> result = new ArrayList<>();
+
         try(PreparedStatement preparedStatement=connection.prepareStatement(query)){
-            preparedStatement.setString(1,port);
+            preparedStatement.setString(1, address);
             ResultSet set = preparedStatement.executeQuery();
             while (set.next()){
                 result.add(set.getString(1));
             }
             if(result.isEmpty())
-                throw new FileNotFoundException("No file in server "+port);
+                throw new FileNotFoundException("No file in server " + address);
             return result;
         }catch (SQLException e){
             e.printStackTrace();
-            throw new MasterException("SQL ERROR "+port);
+            throw new MasterException("SQL ERROR " + address);
         }
 
     }
@@ -135,9 +136,8 @@ public class MasterDAO {
 
     /**
      * Funzione che restituisce una posizione del file, memorizzata nel DB.
-     * Restituisce un'array con gli indirizzi delle repliche.
      *
-     * @param filename Nome del file di cui recuperare le informazioni di posizione.
+     * @param filename Nome del file di cui recuperare la posizione.
      * @return Ritorna una posizione del file.
      */
     public String getFilePosition(String filename) throws MasterException {
@@ -155,13 +155,11 @@ public class MasterDAO {
         }
         catch (SQLException e){
             e.printStackTrace();
-            throw new MasterException("Impossible to retrieve file positions "+filename);
+            throw new MasterException("Impossible to Find Position of File: " + filename);
         }
 
         return result;
     }
-
-
 
     public boolean serverContainsFile(String filename, String port) throws MasterException {
 

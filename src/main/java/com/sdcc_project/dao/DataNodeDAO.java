@@ -102,11 +102,11 @@ public class DataNodeDAO {
                 resultSet.close();
                 return result;
             }
-            throw new FileNotFoundException("Impossible to find "+fileName);
+            throw new FileNotFoundException("Impossible to Find File: " + fileName);
         }
         catch (SQLException e){
             Util.writeOutput(e.getMessage(), file);
-            throw new DataNodeException("Internal to find " + fileName);
+            throw new DataNodeException("Internal Error to Find File: " + fileName);
         }
     }
 
@@ -155,6 +155,34 @@ public class DataNodeDAO {
                 esql.printStackTrace();
                 throw new DataNodeException("Impossible to Insert " + fileName);
             }
+        }
+    }
+
+    /**
+     * Restituisce la versione di un file.
+     *
+     * @param filename Nome del file di cui si vuole la versione.
+     * @return Versione del file.
+     * @throws FileNotFoundException ...
+     * @throws DataNodeException ...
+     */
+    public int getFileVersion(String filename) throws FileNotFoundException, DataNodeException {
+
+        String query = "SELECT version FROM DataNodeTable WHERE filename = ?";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, filename);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                int version = resultSet.getInt(1);
+                resultSet.close();
+                return version;
+            }
+            throw new FileNotFoundException("Impossible to Find File: " + filename);
+        }
+        catch (SQLException e){
+            Util.writeOutput(e.getMessage(), file);
+            throw new DataNodeException("Internal Error to Find File: " + filename);
         }
     }
 
