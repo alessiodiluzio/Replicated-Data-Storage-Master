@@ -87,7 +87,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     masterConfiguration("Main");
 
                     // Creazione degli altri Master:
-                    for(int i = 0; i < Config.NUMBER_OF_MASTERS-1; i++) {
+                    for(int i = 0; i < Config.REPLICATION_FACTORY-1; i++) {
                         createMasterInstance("Main");
                     }
                     System.out.print("Master Addresses: " + masterAddresses + ", " + address + "(io)\t");

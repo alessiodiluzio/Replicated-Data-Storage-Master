@@ -11,9 +11,10 @@ public class Config {
     public static final String MASTER_DATABASE_NAME = "DB_Master";
     public static final String MASTER_FILE_LOGGING_NAME = "File_Logging_Master";
 
+    public static final int REPLICATION_FACTORY = 3;
+
     public static final int NUMBER_OF_DATANODES = 1;
     public static final int CLOUDLET_NUMBER = 1;
-    public static final int NUMBER_OF_MASTERS = 3;
     public static final int BALANCING_THREAD_SLEEP_TIME = 10000;
     public static final int LIFE_THREAD_SLEEP_TIME = 20000;
     public static final int SHADOW_THREAD_SLEEP_TIME = 2000;
