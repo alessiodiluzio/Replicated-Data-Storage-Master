@@ -984,6 +984,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     masterInterface.ping();
                 } catch (NotBoundException | RemoteException e) {
                     try {
+                        System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
                         ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
                         createMasterInstance("Shadow");
                     } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
