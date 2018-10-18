@@ -251,13 +251,30 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 break;
         }
-
-        // Avvio dei Thread:
+        Thread waitThread = new Thread("Wait Thread"){
+            @Override
+            public void run() {
+                try {
+                    sleep(Config.SYSTEM_STARTUP_TYME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        waitThread.start();
+        try {
+            waitThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         balancingThread.start();
         lifeThread.start();
         cloudletLifeThread.start();
         publishCloudletAddress.start();
+
     }
+
+
 
     /**
      * Setta le informazioni base del Master.
@@ -381,7 +398,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         writeOutput("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address);
         System.out.println("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address);
         Date now = new Date();
-        lifeSignalMap.put(newDataNodeIP, now.getTime());
+
 
         return newDataNodeIP;
     }
@@ -393,11 +410,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         String newCloudLetIP = newInstanceInfo.get(1);
         cloudletInstanceIDMap.put(newCloudLetIP,newInstanceInfo.get(0));
         cloudletAddress.add(newCloudLetIP);
-        usableCloudlet.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
         writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n");
         Date now = new Date();
-        cloudletLifeSignalMap.put(newCloudLetIP,now.getTime());
         //return newCloudLetIP;
     }
 
@@ -722,8 +737,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
         synchronized (dataNodeAddressesLock){
-            find = dataNodeAddresses.contains(dataNodeAddress);
+           find = dataNodeAddress.contains(dataNodeAddress);
         }
+
 
         if(find){
             Date now = new Date();
@@ -964,6 +980,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     }
                 MasterInterface masterInterface = null;
                 try {
+                    Date date = new Date();
                     masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
                     masterInterface.ping();
                 } catch (NotBoundException | RemoteException e) {
