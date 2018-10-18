@@ -56,7 +56,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         monitor = Monitor.getInstance();
         masterAddress = args[0];
         address = Util.getLocalIPAddress();
-        instanceID = EC2MetadataUtils.getInstanceId(); 
+        instanceID = EC2MetadataUtils.getInstanceId();
 
 
         String serviceName = Config.dataNodeServiceName;

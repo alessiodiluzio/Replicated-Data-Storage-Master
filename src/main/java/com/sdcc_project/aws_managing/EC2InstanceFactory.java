@@ -63,8 +63,8 @@ public class EC2InstanceFactory {
         return ami;
     }
 
-    public String createEC2Instance(NodeType nodeType, String arguments){
-
+    public ArrayList<String> createEC2Instance(NodeType nodeType, String arguments){
+        ArrayList<String> result = new ArrayList<>();
         String userData = getUserDataScript(nodeType,arguments);
 
         RunInstancesRequest runInstancesRequest =
@@ -81,6 +81,7 @@ public class EC2InstanceFactory {
         Instance instance = runInstancesResult.getReservation().getInstances().get(0);
 
         String instanceId = instance.getInstanceId();
+        result.add(instanceId);
         long waitedTime = 0;
         while(getInstanceStatus(instanceId)!=16){
             waitFor(1000);
@@ -109,11 +110,8 @@ public class EC2InstanceFactory {
                     .map(Instance::getPrivateIpAddress)
                     .orElse(null);
         }
-        return address;
-
-
-
-
+        result.add(address);
+        return result;
     }
 
     private  void waitFor(long milliseconds){
@@ -181,21 +179,21 @@ public class EC2InstanceFactory {
     /**
      * Termina l'instanza di un DataNode.
      *
-     * @param dataNode_instanceID ID dell'instanza da terminare.
+     * @param instanceID ID dell'instanza da terminare.
      * @return Successo/Fallimento
      */
-    public boolean terminateDataNodeEC2Instance(String dataNode_instanceID) {
+    public boolean terminateEC2Instance(String instanceID) {
 
         ArrayList<String> instanceIds = new ArrayList<>();
 
-        instanceIds.add(dataNode_instanceID);
+        instanceIds.add(instanceID);
         TerminateInstancesRequest deleteRequest = new TerminateInstancesRequest(instanceIds);
 
         TerminateInstancesResult deleteResponse = amazonEC2Client.terminateInstances(deleteRequest);
 
         for(InstanceStateChange item : deleteResponse.getTerminatingInstances()) {
 
-            if(item.getInstanceId().equals(dataNode_instanceID)){
+            if(item.getInstanceId().equals(instanceID)){
                 return true;
             }
         }

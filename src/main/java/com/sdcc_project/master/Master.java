@@ -39,6 +39,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static String address;
     private static ArrayList<String> dataNodeAddresses = new ArrayList<>();
     private static ArrayList<String> masterAddresses = new ArrayList<>();
+    private static HashMap<String,String> dataNodeInstanceIDMap = new HashMap<>();
+    private static HashMap<String,String> cloudletInstanceIDMap = new HashMap();
 
     //Controller
     private static EC2InstanceFactory ec2InstanceFactory;
@@ -66,6 +68,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static boolean exit = false;
     private static final Logger LOGGER = Logger.getLogger(Master.class.getName());
     private static File file;
+
+    private static String shadowMasterAddress;
+    private static String shadowMasterInstanceID;
 
     private Master() throws RemoteException {
         super();
@@ -368,7 +373,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static String createDataNodeInstance(){
 
         String arguments = address;
-        String newDataNodeIP =  ec2InstanceFactory.createEC2Instance(NodeType.DataNode,arguments);
+        ArrayList<String> newInstanceInfo =  ec2InstanceFactory.createEC2Instance(NodeType.DataNode,arguments);
+        String newDataNodeIP = newInstanceInfo.get(1);
+        dataNodeInstanceIDMap.put(newDataNodeIP,newInstanceInfo.get(0));
         dataNodeAddresses.add(newDataNodeIP);
 
         writeOutput("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address);
@@ -382,7 +389,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
     private static void createCloudLetInstance() {
         String arguments = address;
-        String newCloudLetIP=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
+        ArrayList<String> newInstanceInfo=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
+        String newCloudLetIP = newInstanceInfo.get(1);
+        cloudletInstanceIDMap.put(newCloudLetIP,newInstanceInfo.get(0));
         cloudletAddress.add(newCloudLetIP);
         usableCloudlet.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
@@ -419,8 +428,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 arguments = nodeType;
                 break;
         }
-
-        String newMasterIP = ec2InstanceFactory.createEC2Instance(NodeType.Master, arguments);
+        ArrayList<String> newMasterInfo = ec2InstanceFactory.createEC2Instance(NodeType.Master, arguments);
+        String newMasterIP = newMasterInfo.get(1);
+        if(nodeType.equals("Shadow")) {
+            shadowMasterAddress = newMasterIP;
+            shadowMasterInstanceID = newMasterInfo.get(0);
+        }
         if(nodeType.equals("Main")){
             masterAddresses.add(newMasterIP);
         }
@@ -441,7 +454,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
                 FileLocation fl = masterInterface.checkFile(filename,operation);
                 System.out.println("File "+filename+" master "+addr+" posizione : "+fl.getFilePositions().get(0));
-                if(fl!=null) fileLocations.add(fl);
+                if(fl.getFilePositions().get(0)!=null) fileLocations.add(fl);
             } catch (NotBoundException | RemoteException | MasterException | FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -472,6 +485,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return result;
     }
 
+    @Override
+    public boolean ping() {
+        return true;
+    }
+
 
     /**
      * Funzone che ricerca il DataNode in cui è contenuto un file richiesto dal Client.
@@ -480,7 +498,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      * @return Indirizzo del DataNode responsabile del file.
      */
     @Override
-    public FileLocation checkFile(String fileName, String operation) throws MasterException, FileNotFoundException {
+    public FileLocation checkFile(String fileName, String operation) throws MasterException,FileNotFoundException {
 
         FileLocation cl = new FileLocation();
         if (operation.equals("R")) {
@@ -498,17 +516,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 String filePosition ;
                 ArrayList<String> positions = new ArrayList<>();
-
-                try {
-                    filePosition = masterDAO.getFilePosition(fileName);
-                }
-                catch (MasterException e) {
-                    writeOutput("INFO: New File");
-                    LOGGER.log(Level.INFO, "New File");
-                    return null;
-                }
+                filePosition = masterDAO.getFilePosition(fileName);
                 cl.setResult(true);
-
                 int latestVersion = masterDAO.getFileVersion(fileName, filePosition);
                 cl.setFileVersion(latestVersion + 1);
                 positions.add(filePosition);
@@ -858,6 +867,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         synchronized (lifeSignalMapLock) {
             lifeSignalMap.remove(address);
         }
+        ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(address));
+        dataNodeInstanceIDMap.remove(address);
 
         // Cerca una replica di ciascun file da recuperare:
         try {
@@ -951,7 +962,20 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             handleDataNodeCrash(entry.getKey());
                         }
                     }
-                    try{
+                MasterInterface masterInterface = null;
+                try {
+                    masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
+                    masterInterface.ping();
+                } catch (NotBoundException | RemoteException e) {
+                    try {
+                        ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
+                        createMasterInstance("Shadow");
+                    } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
+                        impossibleToCreateMasterInstance.printStackTrace();
+                    }
+                }
+
+                try{
                         sleep(Config.LIFE_THREAD_SLEEP_TIME);
                     }
                     catch (InterruptedException e) {
@@ -982,6 +1006,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         createCloudLetInstance();
                         cloudletLifeSignalMap.remove(entry.getKey());
                         cloudletAddress.remove(entry.getKey());
+                        ec2InstanceFactory.terminateEC2Instance(entry.getKey());
+                        cloudletInstanceIDMap.remove(entry.getKey());
                     }
                 }
                 int diff = Config.CLOUDLET_NUMBER - usableCloudlet.size();
@@ -1302,7 +1328,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                                 LOGGER.log(Level.INFO,"EMPTY DATANODE " + stats.getDataNodeAddress() + " TERMINATED WITH SUCCESS!");
 
                                 // Terminazione dell'instanza del DataNode ucciso:
-                                boolean success = ec2InstanceFactory.terminateDataNodeEC2Instance(dataNode_instanceID);
+                                boolean success = ec2InstanceFactory.terminateEC2Instance(dataNode_instanceID);
                                 if(!success){
                                     throw new ImpossibleToTerminateEC2InstanceException(dataNode_instanceID);
                                 }
@@ -1658,6 +1684,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
             }
         }
+
+
 
         private boolean contactMainMaster() {
 
