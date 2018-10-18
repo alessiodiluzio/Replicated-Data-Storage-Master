@@ -58,7 +58,6 @@ public class EC2InstanceFactory {
         for(Image img : images){
             if(img.getName().equals(amiName)){
                 ami = img.getImageId();
-                System.out.println("Image ID: " +ami);
             }
         }
         return ami;
@@ -87,8 +86,6 @@ public class EC2InstanceFactory {
             waitFor(1000);
             waitedTime += 1000;
         }
-        System.out.println("Tempo Atteso " + waitedTime +" Instance State : "+getInstanceStatus(instanceId));
-
         String address = "";
         if(nodeType.equals(NodeType.CloudLet)){
             address = amazonEC2Client.describeInstances(new DescribeInstancesRequest()

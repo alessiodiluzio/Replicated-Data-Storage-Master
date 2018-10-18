@@ -1,5 +1,6 @@
 package com.sdcc_project.master;
 
+import com.amazonaws.util.EC2MetadataUtils;
 import com.sdcc_project.aws_managing.EC2InstanceFactory;
 import com.sdcc_project.aws_managing.S3Upload;
 import com.sdcc_project.config.Config;
@@ -79,6 +80,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
         s3Upload = S3Upload.getInstance();
         monitor = Monitor.getInstance();
+        System.out.println("Mia istanza : "+ EC2MetadataUtils.getInstanceId());
         switch (args[0]){
             case "System_Startup":
                 try {
@@ -175,6 +177,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
 
                 writeOutput("DataNode Addresses:\n" + dataNodeAddresses);
+                writeOutput("Cloudlet Address:\n"+cloudletAddress);
                 try {
                     for (String dataNodeAddress : dataNodeAddresses) {
                         StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
@@ -327,7 +330,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     @Override
     public ArrayList<String> getMasterAddresses() {
 
-        // TODO: synchronized ?
         return masterAddresses;
     }
 
@@ -384,6 +386,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         cloudletAddress.add(newCloudLetIP);
         usableCloudlet.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
+        writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n");
         Date now = new Date();
         cloudletLifeSignalMap.put(newCloudLetIP,now.getTime());
         //return newCloudLetIP;
@@ -422,8 +425,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             masterAddresses.add(newMasterIP);
         }
 
-        writeOutput("Nuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP);
-        System.out.print("Nuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP);
+        writeOutput("\nNuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP+"\n\n");
+        System.out.print("\nNuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP+"\n\n");
 
         return newMasterIP;
     }
@@ -489,10 +492,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             cl.setFileVersion(latestVersion);
             return cl;
         }
-        // TODO: Da cambiare per Multi-Master con replicazione 1 intra-master.
         if (operation.equals("W")) {
 
-                String filePosition = null;
+                String filePosition ;
                 ArrayList<String> positions = new ArrayList<>();
 
                 try {
@@ -760,7 +762,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      *
      * @return un array di indirizzi estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
      */
-    // TODO: Da cambiare per Multi-Master con replicazione 1 intra-master.
     private String roundRobinDistribution(){
 
         if(lastChosenServer == null){
@@ -1018,7 +1019,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         public void run() {
 
             while (!exit) {
-                writeOutput("balancingThread");
 
                 // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
                 try {
@@ -1048,6 +1048,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 //System.out.println("____________CICLO-FIRST_____________");
                 for(DataNodeStatistic dns : statisticAfterBalancing){
                     System.out.println(dns);
+                    writeOutput(dns.toString());
                 }
                 System.out.println("\n");
                 //System.out.println("File to be moved " + fileToBeMoved);
@@ -1061,7 +1062,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     for (DataNodeStatistic dns : statisticAfterBalancing)
                         System.out.println(dns);*/
                     System.out.println("File to new server " + fileToNewServer);
-
+                    writeOutput("File to new server "+fileToNewServer);
                     //Se ho ancora file da riposizionare creo nuovi DataNode a cui mandarli.
                     if(!fileToNewServer.isEmpty()) {
                         /*
@@ -1107,11 +1108,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 {
                     dataNodeFiles = new ArrayList<>(stats.getFilePerRequest());
                     System.out.println(stats.getDataNodeAddress() + " soglia superata cpu ");
+                    writeOutput(stats.getDataNodeAddress() + " soglia superata cpu ");
                 }
 
                 else if(stats.isRamUsage()) {
                     dataNodeFiles = new ArrayList<>(stats.getFilePerSize());
                     System.out.println(stats.getDataNodeAddress() + " soglia superata ram ");
+                    writeOutput(stats.getDataNodeAddress() + " soglia superata ram ");
                 }
                 else {
                     statisticAfterBalancing.add(stats);
@@ -1334,7 +1337,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
 
-        //TODO DIVIDERE CLOUDLET
+
         /**
          * Controlla se è stato superato il limite massimo di DataNode gestibili dal Master, ed se necessario crea un nuovo Master
          *  passandogli il controllo di una parte di DataNode.
@@ -1369,7 +1372,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 ArrayList<String> cloudlet_addresses = new ArrayList<>();
                 int index;
 
-                while(!cloudlet_addresses.isEmpty() && cloudlet_to_move>0){
+                while(!cloudletAddress.isEmpty() && cloudlet_to_move>0){
                     index = (int) (Math.random() * (cloudletAddress.size()));
                     cloudlet_addresses.add(cloudletAddress.get(index));
                     cloudletAddress.remove(index);
@@ -1464,6 +1467,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             for(String cloudletAddress : cloudlet_addresses){
                 addCloudlet(cloudletAddress);
             }
+            writeOutput("CLOUDLET ADDRESSES\n"+cloudlet_addresses);
             for (String dataNodeAddress : dataNode_addresses) {
 
                 StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
@@ -1484,6 +1488,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 // Informa il DataNode del cambio di indirizzo del Master:
                 dataNode.changeMasterAddress(address);
             }
+            writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
         }
         catch (Exception e) {
             writeOutput(e.getMessage());

@@ -71,7 +71,7 @@ public class Monitor {
                 if(ramOverUsageTime>=5)
                     overRamUsage = true;
                 try {
-                    sleep(15000);
+                    sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
