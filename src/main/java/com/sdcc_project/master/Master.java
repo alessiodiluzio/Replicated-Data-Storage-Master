@@ -440,6 +440,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             try {
                 MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
                 FileLocation fl = masterInterface.checkFile(filename,operation);
+                System.out.println("File "+filename+" master "+addr+" posizione : "+fl.getFilePositions().get(0));
                 if(fl!=null) fileLocations.add(fl);
             } catch (NotBoundException | RemoteException | MasterException | FileNotFoundException e) {
                 e.printStackTrace();
@@ -448,6 +449,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         if(fileLocations.isEmpty()){
             if(operation.equals("W")){
                 String dataNode = findReplicaPosition(filename,1);
+                System.out.println("Nuova scrittura a "+dataNode);
                 result.setResult(true);
                 result.setFileVersion(1);
                 ArrayList<String> fPos = new ArrayList<>();
