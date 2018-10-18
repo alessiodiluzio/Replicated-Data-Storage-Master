@@ -528,6 +528,8 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         @Override
         public void run() {
             while (condition){
+                Date date = new Date();
+                long now = date.getTime();
                 try {
                     MasterInterface master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
 
@@ -559,10 +561,15 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                 }
 
                 try {
-                    synchronized (dataNodeLock){
-                        dataNodeDAO.resetStatistic();
-                    }
                     sleep(Config.STATISTIC_THREAD_SLEEP_TIME);
+                    synchronized (dataNodeLock){
+                        if(now+Config.STATISTIC_THREAD_SLEEP_TIME>60000) {
+                            dataNodeDAO.resetStatistic();
+                            Date nDate = new Date();
+                            now =  nDate.getTime();
+                        }
+                    }
+
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());
