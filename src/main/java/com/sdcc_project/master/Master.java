@@ -266,6 +266,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
+                    firstShadow = true;
                 }
                 catch (MasterException e) {
                     writeOutput("SPLITTING MASTER SHUTDOWN: " + e.getMessage());
@@ -1086,7 +1087,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         @Override
         public void run() {
-
+            if(splittingStartup){
+                try {
+                    sleep(Config.SYSTEM_STARTUP_TYME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                splittingStartup = false;
+            }
             while (!exit) {
                 HashMap<String, Long> localSignalMap;
                 synchronized (cloudletLifeSignalMapLock) {
