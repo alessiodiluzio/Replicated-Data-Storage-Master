@@ -18,7 +18,7 @@ import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.NodeType;
 import com.sdcc_project.util.Util;
-import sun.rmi.runtime.Log;
+
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -518,6 +518,36 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
     @Override
     public boolean ping() {
+        return true;
+    }
+
+    @Override
+    public boolean delete(String filename) {
+        deleteFromMaster(filename);
+        for(String masterAddr : masterAddresses){
+            try {
+                MasterInterface masterInterface = (MasterInterface) registryLookup(masterAddr,Config.masterServiceName);
+                masterInterface.deleteFromMaster(filename);
+            } catch (NotBoundException | RemoteException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteFromMaster(String filename) {
+        try {
+            String dataNode = masterDAO.getFilePosition(filename);
+            if(dataNode!=null){
+                StorageInterface storageInterface = (StorageInterface) registryLookup(dataNode,Config.dataNodeServiceName);
+                return storageInterface.delete(filename);
+            }
+        } catch (MasterException | RemoteException | NotBoundException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 

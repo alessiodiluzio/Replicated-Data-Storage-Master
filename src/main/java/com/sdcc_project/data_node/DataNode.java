@@ -121,6 +121,17 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return instanceID;
     }
 
+    @Override
+    public boolean delete(String filename) {
+        try {
+            dataNodeDAO.deleteFile(filename);
+        } catch (DataNodeException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Lettura di un file da memoria.
      *
@@ -559,7 +570,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                 }catch (NotBoundException e){
                     writeOutput("NOT BOUND EXCEPTION\n" + e.getMessage());
                 }
-
+                /*
                 try {
                     sleep(Config.STATISTIC_THREAD_SLEEP_TIME);
                     synchronized (dataNodeLock){
@@ -573,7 +584,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());
-                }
+                }*/
             }
         }
     };
