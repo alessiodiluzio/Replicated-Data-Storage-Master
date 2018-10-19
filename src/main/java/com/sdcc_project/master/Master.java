@@ -277,6 +277,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 break;
         }
 
+        shadowLifeThread.start();
         monitor.startThread();
         balancingThread.start();
         lifeThread.start();
@@ -651,7 +652,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 if(replica_address == null) {
                 // Prende un DataNode su cui replicare, con il RoundRobin:
-                    replica_address = roundRobinDistribution();
+                    replica_address = getRandomAliveDataNode();
                     writeOutput("Trovata una Nuova Posizione di Replicazione: " + replica_address + " - Per il File: " + filename);
                 }
                 else {
@@ -799,17 +800,24 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      *
      * @return un array di indirizzi estratte tramite round robin di dimensione pari al coefficente di replicazione(interno)
      */
-    private String roundRobinDistribution(){
-
-        if(lastChosenServer == null){
-            lastChosenServer = dataNodeAddresses.get(0);
-            return lastChosenServer;
+    private String getRandomAliveDataNode(){
+        ArrayList<String> aliveDataNode = new ArrayList<>();
+        HashMap<String,Long> localSignalMap ;
+        synchronized (lifeSignalMapLock){
+            localSignalMap = new HashMap<>(lifeSignalMap);
         }
-        int newIndex = dataNodeAddresses.indexOf(lastChosenServer)+1;
-        if(newIndex>=dataNodeAddresses.size())
-            newIndex=0;
-        lastChosenServer = dataNodeAddresses.get(newIndex);
-        return lastChosenServer;
+
+        for (Map.Entry<String, Long> entry : localSignalMap.entrySet()) {
+            Date now = new Date();
+            long timeInMillies = now.getTime();
+            if (timeInMillies - entry.getValue() < Config.MAX_TIME_NOT_RESPONDING_DATANODE) {
+                aliveDataNode.add(entry.getKey());
+            }
+        }
+        Collections.shuffle(aliveDataNode);
+        if(aliveDataNode.isEmpty())
+            return null;
+        return aliveDataNode.get(0);
     }
 
     /**
@@ -883,8 +891,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             return;
         }
 
-        // Crea un DataNode su cui ripristinare i file del DataNode crashato:
-        String replaced_dataNode = createDataNodeInstance();
+
 
         synchronized (dataNodeAddressesLock){
             dataNodeAddresses.remove(address);
@@ -895,6 +902,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         synchronized (lifeSignalMapLock) {
             lifeSignalMap.remove(address);
         }
+        // Crea un DataNode su cui ripristinare i file del DataNode crashato:
+        String replaced_dataNode = createDataNodeInstance();
         ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(address));
         dataNodeInstanceIDMap.remove(address);
 
@@ -965,6 +974,31 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    private static Thread shadowLifeThread = new Thread("ShadowLifeThread"){
+        @Override
+        public void run() {
+            MasterInterface masterInterface = null;
+            try {
+                Date date = new Date();
+                masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
+                masterInterface.ping();
+            } catch (NotBoundException | RemoteException e) {
+                try {
+                    System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
+                    ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
+                    createMasterInstance("Shadow");
+                    try {
+                        sleep(Config.SYSTEM_STARTUP_TYME);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
+                    impossibleToCreateMasterInstance.printStackTrace();
+                }
+            }
+        }
+    };
+
     /**
      *  Il Thread si occupa di verificare che tutti i DataNode siano ancora attivi.
      *
@@ -990,20 +1024,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                             handleDataNodeCrash(entry.getKey());
                         }
                     }
-                MasterInterface masterInterface = null;
-                try {
-                    Date date = new Date();
-                    masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
-                    masterInterface.ping();
-                } catch (NotBoundException | RemoteException e) {
-                    try {
-                        System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
-                        ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
-                        createMasterInstance("Shadow");
-                    } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
-                        impossibleToCreateMasterInstance.printStackTrace();
-                    }
-                }
 
                 try{
                         sleep(Config.LIFE_THREAD_SLEEP_TIME);
@@ -1543,6 +1563,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 // Informa il DataNode del cambio di indirizzo del Master:
                 dataNode.changeMasterAddress(address);
             }
+            if(dataNode_addresses.isEmpty())
+                createDataNodeInstance();
+            if(cloudlet_addresses.isEmpty())
+                createCloudLetInstance();
             writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
         }
         catch (Exception e) {
