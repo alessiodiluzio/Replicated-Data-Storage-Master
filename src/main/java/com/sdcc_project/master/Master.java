@@ -485,6 +485,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         if(fileLocations.isEmpty()){
+            System.out.println("NUOVO FILE");
             if(operation.equals("W")){
                 String dataNode = findReplicaPosition(filename,1);
                 System.out.println("Nuova scrittura a "+dataNode);
@@ -499,14 +500,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         else {
-            int latestReplica = 1;
+            System.out.println("Cerco Replica piu aggiornata");
+            int latestReplica = 0;
             for(FileLocation  fLoc: fileLocations){
+                System.out.println(fLoc);
                 if(fLoc.getFileVersion()>latestReplica){
                     latestReplica = fLoc.getFileVersion();
                     result = fLoc;
                 }
             }
         }
+        System.out.println("Copia piu aggiornata : ->\n"+result);
         return result;
     }
 

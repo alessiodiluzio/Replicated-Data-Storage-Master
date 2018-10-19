@@ -33,4 +33,13 @@ public class FileLocation implements Serializable {
     public void setFileVersion(int fileVersion) {
         this.fileVersion = fileVersion;
     }
+
+    @Override
+    public String toString() {
+        return "FileLocation{" +
+                "filePositions=" + filePositions +
+                ", result=" + result +
+                ", fileVersion=" + fileVersion +
+                '}';
+    }
 }

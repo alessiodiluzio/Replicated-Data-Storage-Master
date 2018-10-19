@@ -86,7 +86,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             writeOutput("SEVERE: Impossible to bind to master - " + e.getMessage());
             System.exit(0);
         }
-
+        monitor.startThread();
         statisticThread.start();
         saveDBThread.start();
         lifeThread.start();
