@@ -73,6 +73,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static String shadowMasterAddress;
     private static String shadowMasterInstanceID;
 
+    private static boolean firstShadow = false;
+
     private Master() throws RemoteException {
         super();
     }
@@ -201,6 +203,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     // Quando lo Shadow Thread termina vuol dire che il Master principale è caduto.
                     // Lo Shadow Master deve quindi prendere il suo posto.
                     shadowThread.join();
+                    firstShadow = true;
                 }
                 catch (Exception e) {
                     writeOutput("SHADOW MASTER SHUTDOWN: " + e.getMessage());
@@ -979,23 +982,34 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static Thread shadowLifeThread = new Thread("ShadowLifeThread"){
         @Override
         public void run() {
-            MasterInterface masterInterface = null;
-            try {
-                Date date = new Date();
-                masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
-                masterInterface.ping();
-            } catch (NotBoundException | RemoteException e) {
-                try {
-                    System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
-                    ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
-                    createMasterInstance("Shadow");
+            while (!exit) {
+                if(firstShadow){
                     try {
                         sleep(Config.SYSTEM_STARTUP_TYME);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
-                    impossibleToCreateMasterInstance.printStackTrace();
+                    firstShadow= false;
+
+                }
+                MasterInterface masterInterface;
+                try {
+                    Date date = new Date();
+                    masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
+                    masterInterface.ping();
+                } catch (NotBoundException | RemoteException e) {
+                    try {
+                        System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
+                        ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
+                        createMasterInstance("Shadow");
+                        try {
+                            sleep(Config.SYSTEM_STARTUP_TYME);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
+                        impossibleToCreateMasterInstance.printStackTrace();
+                    }
                 }
             }
         }
@@ -1439,9 +1453,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     writeOutput(e.getMessage());
                     e.printStackTrace();
                 }
-                writeOutput("Creato nuovo Master all'indirizzo: " + newMasterAddress);
-                System.out.println("Creato nuovo Master all'indirizzo: " + newMasterAddress);
-
+                
                 // Prende metà degli indirizzi dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
                 int cloudlet_to_move = cloudletAddress.size() / 2;
@@ -1717,8 +1729,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         public void run() {
 
             while (!exit) {
-                writeOutput("shadowThread");
-
                 try {
                     Date date = new Date();
                     long timeInMillis = date.getTime();
