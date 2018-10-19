@@ -82,7 +82,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     public static void main(String args[]){
 
         if(args.length < 1){
-            System.out.println("Usage: Master System_Startup");
+            System.out.println("Usage: mvn exec:java@Master -Dexec.args=System_Startup");
             System.exit(1);
         }
 
@@ -100,11 +100,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
             }
         };
+
         monitor = Monitor.getInstance();
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
         s3Upload = S3Upload.getInstance();
         System.out.println("Mia istanza : "+ EC2MetadataUtils.getInstanceId());
+
         switch (args[0]){
+
             case "System_Startup":
                 try {
                     masterConfiguration("Main");
@@ -280,6 +283,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
 
                 break;
+
+            default:
+                System.out.println("Usage: mvn exec:java@Master -Dexec.args=System_Startup");
+                System.exit(1);
         }
 
         shadowLifeThread.start();
@@ -288,7 +295,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         lifeThread.start();
         cloudletLifeThread.start();
         publishCloudletAddress.start();
-
     }
 
 
