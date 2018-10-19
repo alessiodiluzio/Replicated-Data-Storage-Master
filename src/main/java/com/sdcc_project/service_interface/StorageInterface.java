@@ -4,6 +4,7 @@ import com.sdcc_project.exception.DataNodeException;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.exception.ImpossibleToCopyFileOnDataNode;
 import com.sdcc_project.exception.ImpossibleToMoveFileException;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -21,5 +22,5 @@ public interface StorageInterface extends Remote {
     boolean isEmpty() throws RemoteException;
     void terminate() throws RemoteException;
     String getInstanceID() throws RemoteException;
-    boolean delete(String filename);
+    boolean delete(String filename) throws RemoteException;
 }

@@ -31,6 +31,6 @@ public interface MasterInterface extends Remote {
     void cloudletLifeSignal(String address, State state) throws RemoteException;
     FileLocation getMostUpdatedFileLocation(String filename, String operation) throws FileNotFoundException,RemoteException;
     boolean ping() throws RemoteException;
-    boolean delete(String filename);
-    boolean deleteFromMaster(String filename);
+    boolean delete(String filename) throws RemoteException;
+    boolean deleteFromMaster(String filename) throws RemoteException;
 }
