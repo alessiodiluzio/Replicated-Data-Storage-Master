@@ -270,6 +270,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
                     firstShadow = true;
+                    splittingStartup = true;
                 }
                 catch (MasterException e) {
                     writeOutput("SPLITTING MASTER SHUTDOWN: " + e.getMessage());
@@ -547,6 +548,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     public boolean deleteFromMaster(String filename) {
         try {
             String dataNode = masterDAO.getFilePosition(filename);
+            masterDAO.deleteFilePosition(filename);
             if(dataNode!=null){
                 StorageInterface storageInterface = (StorageInterface) registryLookup(dataNode,Config.dataNodeServiceName);
                 return storageInterface.delete(filename);
@@ -1625,7 +1627,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 createDataNodeInstance();
             if(cloudlet_addresses.isEmpty()) {
                 createCloudLetInstance();
-                splittingStartup = true;
             }
             writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
         }
