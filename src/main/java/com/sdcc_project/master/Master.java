@@ -65,7 +65,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static final Object cloudletLifeSignalMapLock = new Object();
 
     //Util
-    private static String lastChosenServer = null;
     private static boolean exit = false;
     private static final Logger LOGGER = Logger.getLogger(Master.class.getName());
     private static File file;
@@ -74,6 +73,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static String shadowMasterInstanceID;
 
     private static boolean firstShadow = false;
+    private static boolean splittingStartup = false;
 
     private Master() throws RemoteException {
         super();
@@ -1579,8 +1579,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
             if(dataNode_addresses.isEmpty())
                 createDataNodeInstance();
-            if(cloudlet_addresses.isEmpty())
-                usableCloudlet.add(createCloudLetInstance());
+            if(cloudlet_addresses.isEmpty()) {
+                createCloudLetInstance();
+                splittingStartup = true;
+            }
             writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
         }
         catch (Exception e) {
@@ -1693,6 +1695,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static Thread publishCloudletAddress = new Thread("PublishCloudletAddress"){
         @Override
         public void run() {
+            if(splittingStartup){
+                try {
+                    sleep(Config.SYSTEM_STARTUP_TYME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                splittingStartup = false;
+            }
             while (!exit) {
                 String fileName = Util.getLocalIPAddress() + ".txt";
                 File file = new File(fileName);
