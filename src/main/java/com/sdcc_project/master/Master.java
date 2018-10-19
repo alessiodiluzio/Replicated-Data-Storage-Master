@@ -420,7 +420,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
 
-    private static void createCloudLetInstance() {
+    private static String createCloudLetInstance() {
         String arguments = address;
         ArrayList<String> newInstanceInfo=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
         String newCloudLetIP = newInstanceInfo.get(1);
@@ -428,7 +428,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         cloudletAddress.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
         writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n");
-        //return newCloudLetIP;
+        return newCloudLetIP;
     }
 
     /**
@@ -1453,7 +1453,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     writeOutput(e.getMessage());
                     e.printStackTrace();
                 }
-                
+
                 // Prende metà degli indirizzi dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
                 int cloudlet_to_move = cloudletAddress.size() / 2;
@@ -1580,7 +1580,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             if(dataNode_addresses.isEmpty())
                 createDataNodeInstance();
             if(cloudlet_addresses.isEmpty())
-                createCloudLetInstance();
+                usableCloudlet.add(createCloudLetInstance());
             writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
         }
         catch (Exception e) {
