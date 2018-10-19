@@ -480,7 +480,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
                 FileLocation fl = masterInterface.checkFile(filename,operation);
                 if(fl.getFilePositions().get(0)!=null) fileLocations.add(fl);
-            } catch (NotBoundException | RemoteException | MasterException | FileNotFoundException e) {
+            } catch (NotBoundException  e) {
+
+            } catch (MasterException | RemoteException e) {
                 e.printStackTrace();
             }
         }
