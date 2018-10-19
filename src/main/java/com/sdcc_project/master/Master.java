@@ -485,10 +485,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         if(fileLocations.isEmpty()){
-            System.out.println("NUOVO FILE");
             if(operation.equals("W")){
                 String dataNode = findReplicaPosition(filename,1);
-                System.out.println("Nuova scrittura a "+dataNode);
                 result.setResult(true);
                 result.setFileVersion(1);
                 ArrayList<String> fPos = new ArrayList<>();
@@ -500,7 +498,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         else {
-            System.out.println("Cerco Replica piu aggiornata");
             int latestReplica = 0;
             for(FileLocation  fLoc: fileLocations){
                 System.out.println(fLoc);
@@ -510,7 +507,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
             }
         }
-        System.out.println("Copia piu aggiornata : ->\n"+result);
         return result;
     }
 
@@ -1074,8 +1070,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         //Statistiche dei Server dopo il bilanciamento
         ArrayList<DataNodeStatistic> statisticAfterBalancing = new ArrayList<>();
 
-        long maxRequest = Config.dataNodeMaxRequest - Config.requestThreshold;
-        long maxSize = Config.dataNodeMemory - Config.loadThreshold;
+
 
         @Override
         public void run() {
@@ -1268,8 +1263,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             ArrayList<FileInfo> temp= new ArrayList<>(buffer);
             temp.sort(FileInfo.getCompByRequests());
-            if(buffer.get(0).getFileSize()>maxSize || temp.get(0).getFileRequests()>maxRequest)
-                return new ArrayList<>();
             String newServerAddress = createDataNodeInstance();
             Date time = new Date();
             long timeInMillis = time.getTime();

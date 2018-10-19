@@ -29,12 +29,6 @@ public class Config {
     public static final String DATANODE_DATABASE_NAME = "DB_DataNode";
     public static final String DATANODE_FILE_LOGGING_NAME = "File_Logging_DataNode";
 
-    // Soglie:
-    public static final Long dataNodeMemory = Integer.toUnsignedLong(1000);
-    public static final Long loadThreshold = Integer.toUnsignedLong(20);
-    public static final Long dataNodeMaxRequest = Integer.toUnsignedLong(1000);
-    public static final Long requestThreshold = Integer.toUnsignedLong(20);
-
     // Comandi per lanciare DataNode e Master:
     public static final String launchDataNode = "mvn exec:java@DataNode -Dexec.args=";
     public static final String launchMaster ="mvn exec:java@Master -Dexec.args=";
