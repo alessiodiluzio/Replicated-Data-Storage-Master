@@ -18,6 +18,7 @@ import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.NodeType;
 import com.sdcc_project.util.Util;
+import sun.rmi.runtime.Log;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -480,9 +481,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
                 FileLocation fl = masterInterface.checkFile(filename,operation);
                 if(fl.getFilePositions().get(0)!=null) fileLocations.add(fl);
-            } catch (NotBoundException  e) {
+            } catch (FileNotFoundException  e) {
+                LOGGER.log(Level.WARNING,e.getMessage());
 
-            } catch (MasterException | RemoteException e) {
+            } catch (MasterException | RemoteException | NotBoundException e) {
                 e.printStackTrace();
             }
         }
