@@ -943,15 +943,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         if(state.equals(State.BUSY)){
             usableCloudlet.remove(cloudletAddr);
             System.out.println("CloudLet "+cloudletAddr+ " BUSY ");
+            Util.writeOutput("CloudLet "+cloudletAddr+ " BUSY ",file);
+        }
+        if(state.equals(State.FREE) && usableCloudlet.size()>systemProperties.getStart_number_of_cloudlet_for_master()){
+            System.out.println("CANCELLO CLOUDLET");
+            Util.writeOutput("CANCELLO CLOUDLET",file);
+            handleCloudletShutdown(cloudletAddr);
         }
         else if(state.equals(State.NORMAL) || state.equals(State.FREE)){
             if(!usableCloudlet.contains(cloudletAddr))
                 usableCloudlet.add(cloudletAddr);
-        }else if(state.equals(State.FREE) && usableCloudlet.size()>systemProperties.getStart_number_of_cloudlet_for_master()){
-            System.out.println("CANCELLO CLOUDLET");
-            handleCloudletShutdown(cloudletAddr);
         }
-
         if(find){
             synchronized (cloudletLifeSignalMapLock) {
                 cloudletLifeSignalMap.remove(cloudletAddr);
@@ -959,6 +961,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         System.out.println("Usable cloudlet "+usableCloudlet);
+        Util.writeOutput("Usable cloudlet "+usableCloudlet+ " " +cloudletAddress,file);
     }
 
     private void handleCloudletShutdown(String cloudletAddr) {

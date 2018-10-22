@@ -86,10 +86,16 @@ public class Monitor {
                 }
                 if(cpuUsage <=systemProperties.getCpuMinUsage()){
                     cpuUnderUsageTime++;
-                }else cpuUnderUsageTime =0;
+                }else {
+                    cpuUnderUsageTime =0;
+                    underUsage = false;
+                }
                 if(memoryUsage <=systemProperties.getRamMinUsage()){
                     ramUnderUsageTime++;
-                }else ramUnderUsageTime = 0;
+                }else {
+                    ramUnderUsageTime = 0;
+                    underUsage = false;
+                }
                 if(cpuOverUsageTime>=8)
                     overCpuUsage = true;
                 if(ramOverUsageTime>=8)
