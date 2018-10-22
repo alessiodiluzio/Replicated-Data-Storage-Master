@@ -949,6 +949,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.out.println("CANCELLO CLOUDLET");
             Util.writeOutput("CANCELLO CLOUDLET",file);
             handleCloudletShutdown(cloudletAddr);
+            return;
         }
         else if(state.equals(State.NORMAL) || state.equals(State.FREE)){
             if(!usableCloudlet.contains(cloudletAddr))
