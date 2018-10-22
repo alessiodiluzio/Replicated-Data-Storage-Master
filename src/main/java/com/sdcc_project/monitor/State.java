@@ -4,5 +4,6 @@ public enum State {
 
     BUSY,
     NORMAL,
-    FREE
+    FREE,
+    DELETING
 }

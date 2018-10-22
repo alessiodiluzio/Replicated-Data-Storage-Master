@@ -253,9 +253,11 @@ public class MasterDAO {
 
     }
 
+
     /**
      * Funzione per chudere la connessione con MapDB.
      */
+    /*
     public void closeDBConnection() {
 
         try {
@@ -263,7 +265,7 @@ public class MasterDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Ricarica dal disco il Database con le informazioni di posizione dei file.

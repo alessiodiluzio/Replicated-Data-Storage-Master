@@ -10,6 +10,7 @@ import com.amazonaws.services.ec2.model.*;
 import com.sdcc_project.config.Config;
 import com.sdcc_project.util.NodeType;
 import com.sdcc_project.util.SystemProperties;
+import com.sdcc_project.util.Util;
 import org.apache.commons.codec.binary.Base64;
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class EC2InstanceFactory {
         systemProperties = SystemProperties.getInstance();
         AWS_CREDENTIALS = new BasicAWSCredentials(
                 systemProperties.getAws_access_key(),
-                systemProperties.getInstance().getAws_secret_key()
+                systemProperties.getAws_secret_key()
         );
         amazonEC2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(AWS_CREDENTIALS))
@@ -40,21 +41,17 @@ public class EC2InstanceFactory {
         return istanza;
     }
 
-    private String getAmiID(Regions region,NodeType nodeType){
+    private String getAmiID(Regions region){
         AmazonEC2 amazonEC2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(AWS_CREDENTIALS))
                 .withRegion(region)
                 .build();
-        DescribeImagesRequest request = new DescribeImagesRequest().withFilters(new LinkedList<Filter>());
+        DescribeImagesRequest request = new DescribeImagesRequest().withFilters(new LinkedList<>());
         request.getFilters().add(new Filter().withName("owner-id").withValues(systemProperties.getAws_account_id()));
         DescribeImagesResult describeImagesResult= amazonEC2Client.describeImages(request);
         List<Image> images = describeImagesResult.getImages();
         String ami = "";
-        String amiName="";
-        if(nodeType.equals(NodeType.Master) || nodeType.equals(NodeType.DataNode))
-            amiName = systemProperties.getAws_ec2_master_instance_ami_name();
-        else if(nodeType.equals(NodeType.CloudLet))
-            amiName = systemProperties.getAws_ec2_cloudlet_instance_ami_name();
+        String amiName= systemProperties.getAws_ec2_instance_ami_name();
         for(Image img : images){
             if(img.getName().equals(amiName)){
                 ami = img.getImageId();
@@ -69,7 +66,7 @@ public class EC2InstanceFactory {
 
         RunInstancesRequest runInstancesRequest =
                 new RunInstancesRequest();
-        runInstancesRequest.withImageId(getAmiID(systemProperties.getRegion(),nodeType))
+        runInstancesRequest.withImageId(getAmiID(systemProperties.getRegion()))
                 .withInstanceType(InstanceType.T2Micro)
                 .withMinCount(1)
                 .withMaxCount(1)
@@ -82,14 +79,10 @@ public class EC2InstanceFactory {
 
         String instanceId = instance.getInstanceId();
         result.add(instanceId);
-        long waitedTime = 0;
         while(getInstanceStatus(instanceId)!=16){
-            waitFor(1000);
-            waitedTime += 1000;
+            waitFor();
         }
-        String address = "";
-        if(nodeType.equals(NodeType.CloudLet)){
-            address = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
+        String address  = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
                     .withInstanceIds(instanceId))
                     .getReservations()
                     .stream()
@@ -98,45 +91,36 @@ public class EC2InstanceFactory {
                     .findFirst()
                     .map(Instance::getPublicIpAddress)
                     .orElse(null);
-        }
-        else {
-            address = amazonEC2Client.describeInstances(new DescribeInstancesRequest()
-                    .withInstanceIds(instanceId))
-                    .getReservations()
-                    .stream()
-                    .map(Reservation::getInstances)
-                    .flatMap(List::stream)
-                    .findFirst()
-                    .map(Instance::getPrivateIpAddress)
-                    .orElse(null);
-        }
+
         result.add(address);
         return result;
     }
 
-    private  void waitFor(long milliseconds){
+    private  void waitFor(){
 
-        Date startDate = new Date();
-        long startTime = startDate.getTime();
-        long comparisonTime = startDate.getTime();
 
-        while(comparisonTime-startTime<milliseconds){
-            Date comparisonDate = new Date();
-            comparisonTime = comparisonDate.getTime();
+        long startTime = Util.getTimeInMillies();
+        long comparisonTime = Util.getTimeInMillies();
+
+        while(comparisonTime-startTime< (long) 1000){
+            comparisonTime = Util.getTimeInMillies();
         }
     }
 
     private  Integer getInstanceStatus(String instanceId) {
-
-        DescribeInstancesRequest describeInstanceRequest = new DescribeInstancesRequest().withInstanceIds(instanceId);
-        DescribeInstancesResult describeInstanceResult = amazonEC2Client.describeInstances(describeInstanceRequest);
-        InstanceState state = describeInstanceResult.getReservations().get(0).getInstances().get(0).getState();
-
-        return state.getCode();
+        try {
+            DescribeInstancesRequest describeInstanceRequest = new DescribeInstancesRequest().withInstanceIds(instanceId);
+            DescribeInstancesResult describeInstanceResult = amazonEC2Client.describeInstances(describeInstanceRequest);
+            InstanceState state = describeInstanceResult.getReservations().get(0).getInstances().get(0).getState();
+            return state.getCode();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     private  String getUserDataScript(NodeType nodeType,String arguments){
-        String command=null;
+        String command;
         ArrayList<String> lines = new ArrayList<>();
         lines.add("#! /bin/bash");
         if(nodeType.equals(NodeType.DataNode)){
@@ -156,11 +140,10 @@ public class EC2InstanceFactory {
             lines.add("java -jar /home/ubuntu/DownloadCloudletFromS3-1.0-SNAPSHOT-jar-with-dependencies.jar");
             lines.add("cd /home/ubuntu/ && unzip cloudlet.zip && cd cloudlet && mvn compile && "+command+arguments);
         }
-        String str = new String(Base64.encodeBase64(join(lines, "\n").getBytes()));
-        return str;
+        return new String(Base64.encodeBase64(join(lines).getBytes()));
     }
 
-    private String join(Collection<String> s, String delimiter) {
+    private String join(Collection<String> s) {
 
         StringBuilder builder = new StringBuilder();
         Iterator<String> iter = s.iterator();
@@ -170,7 +153,7 @@ public class EC2InstanceFactory {
             if (!iter.hasNext()) {
                 break;
             }
-            builder.append(delimiter);
+            builder.append("\n");
         }
 
         return builder.toString();
@@ -187,15 +170,19 @@ public class EC2InstanceFactory {
         ArrayList<String> instanceIds = new ArrayList<>();
 
         instanceIds.add(instanceID);
-        TerminateInstancesRequest deleteRequest = new TerminateInstancesRequest(instanceIds);
+        try {
+            TerminateInstancesRequest deleteRequest = new TerminateInstancesRequest(instanceIds);
 
-        TerminateInstancesResult deleteResponse = amazonEC2Client.terminateInstances(deleteRequest);
+            TerminateInstancesResult deleteResponse = amazonEC2Client.terminateInstances(deleteRequest);
 
-        for(InstanceStateChange item : deleteResponse.getTerminatingInstances()) {
+            for (InstanceStateChange item : deleteResponse.getTerminatingInstances()) {
 
-            if(item.getInstanceId().equals(instanceID)){
-                return true;
+                if (item.getInstanceId().equals(instanceID)) {
+                    return true;
+                }
             }
+        }catch (Exception e){
+            return false;
         }
 
         return false;

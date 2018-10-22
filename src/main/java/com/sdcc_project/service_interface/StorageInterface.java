@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public interface StorageInterface extends Remote {
 
     byte[] read(String file) throws RemoteException, FileNotFoundException, DataNodeException;
@@ -23,4 +24,5 @@ public interface StorageInterface extends Remote {
     void terminate() throws RemoteException;
     String getInstanceID() throws RemoteException;
     boolean delete(String filename) throws RemoteException;
+    void shutDown(ArrayList<String> aliveDataNode) throws RemoteException;
 }

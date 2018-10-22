@@ -1,12 +1,9 @@
 package com.sdcc_project.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,21 +21,6 @@ public class Util {
         }
     }
 
-    public static String getLocalIPAddress(){
-        InetAddress ip;
-        try {
-
-            ip = InetAddress.getLocalHost();
-            return ip.getHostAddress();
-
-        } catch (UnknownHostException e) {
-
-            e.printStackTrace();
-
-        }
-        return null;
-    }
-
     public static ArrayList<String> extractMinFromMap(HashMap<String,Double> map){
         double min = 100000000;
         String minString ="";
@@ -53,5 +35,24 @@ public class Util {
         result.add(Double.toString(min));
         return result;
 
+    }
+
+    public static String getPublicIPAddress() {
+        URL whatismyip ;
+        try {
+            whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+
+            return in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Long getTimeInMillies(){
+        Date now = new Date();
+        return now.getTime();
     }
 }

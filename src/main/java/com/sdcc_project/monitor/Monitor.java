@@ -1,6 +1,7 @@
 package com.sdcc_project.monitor;
 
 import com.sdcc_project.config.Config;
+import com.sdcc_project.util.SystemProperties;
 import com.sdcc_project.util.Util;
 
 import java.io.BufferedReader;
@@ -11,11 +12,10 @@ import java.io.InputStreamReader;
 public class Monitor {
 
     private static Monitor instance;
-    private double cpuUsage;
-    private double memoryUsage;
-    private boolean running = true;
     private boolean overCpuUsage = false;
     private boolean overRamUsage = false;
+    private boolean underUsage = false;
+    private SystemProperties systemProperties;
     private File file = new File("Monitor.txt");
 
     public static Monitor getInstance(){
@@ -26,14 +26,14 @@ public class Monitor {
 
     public void startThread(){
         monitorThread.start();
-    };
+    }
 
     private Monitor(){
-
-    };
+        systemProperties = SystemProperties.getInstance();
+    }
 
     private double getUsage(Components component){
-        String command = "";
+        String command ;
         if(component.equals(Components.CPU))
             command = "bash /home/ubuntu/get_cpu_usage.sh 5";
         else command = "bash /home/ubuntu/get_memory_usage.sh";
@@ -53,29 +53,39 @@ public class Monitor {
         public void run() {
             int cpuOverUsageTime = 0;
             int ramOverUsageTime = 0;
-            while (running){
-                cpuUsage = getUsage(Components.CPU);
-                memoryUsage = getUsage(Components.RAM);
-                System.out.println("Uso Locale : CPU "+cpuUsage + " RAM " + memoryUsage);
-                Util.writeOutput("Uso Locale : CPU "+cpuUsage + " RAM " + memoryUsage,file);
-                if(cpuUsage>= Config.cpuMaxUsage)
+            int cpuUnderUsageTime = 0;
+            int ramUnderUsageTime = 0;
+            while (true){
+                double cpuUsage = getUsage(Components.CPU);
+                double memoryUsage = getUsage(Components.RAM);
+                System.out.println("Uso Locale : CPU "+ cpuUsage + " RAM " + memoryUsage);
+                Util.writeOutput("Uso Locale : CPU "+ cpuUsage + " RAM " + memoryUsage,file);
+                if(cpuUsage >= systemProperties.getCpuMaxUsage())
                     cpuOverUsageTime++;
                 else {
                     cpuOverUsageTime = 0;
                     overCpuUsage = false;
                 }
-                if(cpuUsage>= Config.ramMaxUsage)
+                if(memoryUsage >= systemProperties.getRamMaxUsage())
                     ramOverUsageTime++;
                 else {
                     ramOverUsageTime = 0;
                     overRamUsage = false;
                 }
+                if(cpuUsage <=systemProperties.getCpuMinUsage()){
+                    cpuUnderUsageTime++;
+                }else cpuUnderUsageTime =0;
+                if(memoryUsage <=systemProperties.getRamMinUsage()){
+                    ramUnderUsageTime++;
+                }else ramUnderUsageTime = 0;
                 if(cpuOverUsageTime>=8)
                     overCpuUsage = true;
                 if(ramOverUsageTime>=8)
                     overRamUsage = true;
+                if(cpuUnderUsageTime>=20 && ramUnderUsageTime >=20)
+                    underUsage = true;
                 try {
-                    sleep(5000);
+                    sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,9 +93,6 @@ public class Monitor {
         }
     };
 
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
 
     public boolean isOverCpuUsage() {
         return overCpuUsage;
@@ -95,19 +102,9 @@ public class Monitor {
         return overRamUsage;
     }
 
-    public double getCpuUsage() {
-        return cpuUsage;
-    }
 
-    public void setCpuUsage(double cpuUsage) {
-        this.cpuUsage = cpuUsage;
-    }
 
-    public double getMemoryUsage() {
-        return memoryUsage;
-    }
-
-    public void setMemoryUsage(double memoryUsage) {
-        this.memoryUsage = memoryUsage;
+    public boolean isUnderUsage() {
+        return underUsage;
     }
 }

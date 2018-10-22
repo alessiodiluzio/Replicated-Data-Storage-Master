@@ -3,13 +3,16 @@ package com.sdcc_project.entity;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * Statistiche e informazione di un dato file nel sistema
+ */
 public class FileInfo implements Serializable {
     private String fileName;
     private Long fileRequests;
     private Long fileSize;
     private String dataNodeOwner;
 
-    public FileInfo(String fileName, Long fileRequests, Long fileSize, String dataNodeOwner) {
+    FileInfo(String fileName, Long fileRequests, Long fileSize, String dataNodeOwner) {
 
         this.fileName = fileName;
         this.fileRequests = fileRequests;
@@ -29,7 +32,7 @@ public class FileInfo implements Serializable {
         return fileName;
     }
 
-    public Long getFileRequests() {
+    Long getFileRequests() {
         return fileRequests;
     }
 
@@ -37,11 +40,11 @@ public class FileInfo implements Serializable {
         this.fileRequests = fileRequests;
     }
 
-    public Long getFileSize() {
+    Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(Long fileSize) {
+    void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

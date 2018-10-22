@@ -3,7 +3,11 @@ package com.sdcc_project.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ *
+ * Posizione di un file nel sistema.
+ */
+@SuppressWarnings("unused")
 public class FileLocation implements Serializable {
 
     private ArrayList<String> filePositions ;

@@ -11,6 +11,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 public interface MasterInterface extends Remote {
 
     FileLocation checkFile(String fileName, String operation) throws RemoteException, FileNotFoundException, MasterException;
@@ -27,10 +28,12 @@ public interface MasterInterface extends Remote {
     void updateMasterAddresses(String newMasterAddress, String oldMasterAddress) throws RemoteException;
     String getMinorLatencyCloudlet(String sourceIP) throws RemoteException;
     ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) throws RemoteException;
-    boolean addCloudlet(String ipAddress) throws RemoteException;
+    void addCloudlet(String ipAddress) throws RemoteException;
     void cloudletLifeSignal(String address, State state) throws RemoteException;
     FileLocation getMostUpdatedFileLocation(String filename, String operation) throws FileNotFoundException,RemoteException;
-    boolean ping() throws RemoteException;
+    void ping() throws RemoteException;
     boolean delete(String filename) throws RemoteException;
-    boolean deleteFromMaster(String filename) throws RemoteException;
+    void deleteFromMaster(String filename) throws RemoteException;
+    void shutdownCloudletSignal(String address) throws RemoteException;
+    void shutdownDataNodeSignal(String address) throws RemoteException;
 }

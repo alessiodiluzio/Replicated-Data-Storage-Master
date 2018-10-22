@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * Contiene le statistiche relative a un DataNode
+ * - File Contenuti con rispettive richieste e peso
+ * - Statisiche sull'uso delle risorse di CPU e RAM
+ */
 public class DataNodeStatistic implements Serializable {
 
     private Long serverRequests = 0L;
     private Long serverSize = 0L;
     private boolean overCpuUsage = false;
     private boolean ramUsage = false;
+    private boolean underUsage = false;
 
     private ArrayList<FileInfo> fileInfos = new ArrayList<>();
     private ArrayList<FileInfo> filePerSize = new ArrayList<>();
@@ -33,7 +39,8 @@ public class DataNodeStatistic implements Serializable {
         }
         else{
             fileInfos.remove(fileInfo);
-            fileInfo.setFileRequests(fileInfo.getFileRequests()+1);
+            long request = fileInfo.getFileRequests() +1;
+            fileInfo.setFileRequests(request);
             fileInfos.add(fileInfo);
         }
         calculate();
@@ -56,6 +63,14 @@ public class DataNodeStatistic implements Serializable {
 
     }
 
+    public boolean isUnderUsage() {
+        return underUsage;
+    }
+
+    public void setUnderUsage(boolean underUsage) {
+        this.underUsage = underUsage;
+    }
+
     public boolean isOverCpuUsage() {
         return overCpuUsage;
     }
@@ -76,12 +91,9 @@ public class DataNodeStatistic implements Serializable {
         return fileInfos;
     }
 
-    public Long getServerRequests() {
-        return serverRequests;
-    }
 
 
-    public Long getServerSize() {
+    private Long getServerSize() {
         return serverSize;
     }
 
@@ -118,7 +130,7 @@ public class DataNodeStatistic implements Serializable {
     }
 
 
-    private FileInfo arrayContainsFileName(String fileName,ArrayList<FileInfo> fileInfo){
+    private FileInfo arrayContainsFileName(String fileName, ArrayList<FileInfo> fileInfo){
         for(FileInfo info : fileInfo){
             if(info.getFileName().equals(fileName))
                 return info;
@@ -156,7 +168,7 @@ public class DataNodeStatistic implements Serializable {
 
     }
 
-    public void calculate(){
+    private void calculate(){
         long size = 0;
         long request = 0;
         for(FileInfo info : fileInfos){
@@ -174,6 +186,8 @@ public class DataNodeStatistic implements Serializable {
                 +" - Files: " +fileInfos;
     }
 
+    /*
+
     public void resetRequest() {
         ArrayList<FileInfo> tmp = new ArrayList<>(fileInfos);
         for(FileInfo fileInfo : tmp){
@@ -186,5 +200,5 @@ public class DataNodeStatistic implements Serializable {
             filePerRequest.add(fileInfo);
         }
         serverRequests = 0L;
-    }
+    }*/
 }

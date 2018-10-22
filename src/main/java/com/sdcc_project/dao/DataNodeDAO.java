@@ -272,7 +272,8 @@ public class DataNodeDAO {
         }
     }
 
+    /*
     public void resetStatistic() {
         dataNodeStatistic.resetRequest();
-    }
+    }*/
 }

@@ -1,6 +1,5 @@
 package com.sdcc_project.aws_managing;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -14,11 +13,10 @@ import com.sdcc_project.util.SystemProperties;
 
 
 import java.io.File;
-import java.io.IOException;
+
 
 public class S3Upload {
 
-    private static AWSCredentials AWS_CREDENTIALS;
     private SystemProperties systemProperties;
     private AmazonS3 amazonS3Client;
     private static S3Upload instance;
@@ -27,7 +25,7 @@ public class S3Upload {
 
     private S3Upload(){
         systemProperties = SystemProperties.getInstance();
-        AWS_CREDENTIALS = new BasicAWSCredentials(
+        AWSCredentials AWS_CREDENTIALS = new BasicAWSCredentials(
                 systemProperties.getAws_access_key(),
                 systemProperties.getAws_secret_key()
         );
@@ -44,7 +42,7 @@ public class S3Upload {
         return instance;
     }
 
-    public  void uploadFile(String fileName) throws IOException {
+    public  void uploadFile(String fileName) {
         String fileObjKeyName =systemProperties.getAws_s3_cloudlet_address_folder_name()+"/"+fileName ;
         try {
 
@@ -53,11 +51,7 @@ public class S3Upload {
             metadata.addUserMetadata("x-amz-meta-title", "Master and DataNode code");
             request.setMetadata(metadata);
             amazonS3Client.putObject(request);
-        }
-        catch(AmazonServiceException e) {
-            e.printStackTrace();
-        }
-        catch(SdkClientException e) {
+        } catch(SdkClientException e) {
             e.printStackTrace();
         }
     }

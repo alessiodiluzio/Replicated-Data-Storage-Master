@@ -17,8 +17,8 @@ import com.sdcc_project.service_interface.StorageInterface;
 import java.io.*;
 import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.util.NodeType;
+import com.sdcc_project.util.SystemProperties;
 import com.sdcc_project.util.Util;
-
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,7 +41,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static ArrayList<String> dataNodeAddresses = new ArrayList<>();
     private static ArrayList<String> masterAddresses = new ArrayList<>();
     private static HashMap<String,String> dataNodeInstanceIDMap = new HashMap<>();
-    private static HashMap<String,String> cloudletInstanceIDMap = new HashMap();
+    private static HashMap<String,String> cloudletInstanceIDMap = new HashMap<>();
 
     //Controller
     private static EC2InstanceFactory ec2InstanceFactory;
@@ -63,6 +63,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static final Object dataNodeAddressesLock = new Object();
     private static final Object lifeSignalMapLock = new Object();
     private static final Object cloudletLifeSignalMapLock = new Object();
+    private static final Object startupMapLock = new Object();
 
     //Util
     private static boolean exit = false;
@@ -71,9 +72,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
     private static String shadowMasterAddress;
     private static String shadowMasterInstanceID;
+    private static HashMap<String,Long> startupMap = new HashMap<>();
 
-    private static boolean firstShadow = false;
-    private static boolean splittingStartup = false;
+    private static boolean splitDone = false;
+
+    private static SystemProperties systemProperties ;
 
     private Master() throws RemoteException {
         super();
@@ -85,27 +88,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             System.out.println("Usage: mvn exec:java@Master -Dexec.args=System_Startup");
             System.exit(1);
         }
-
-        Thread waitThread = new Thread("Wait Thread"){
-            @Override
-            public void run() {
-                try {
-                    writeOutput("INIZIO THREAD DI STARTUP");
-                    System.out.println("INIZIO DI THREAD DI STARTUP");
-                    sleep(Config.SYSTEM_STARTUP_TYME);
-                    writeOutput("FINE THREAD DI STARTUP");
-                    System.out.println("FINE THREAD DI STARTUP");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
+        systemProperties = SystemProperties.getInstance();
         monitor = Monitor.getInstance();
         ec2InstanceFactory = EC2InstanceFactory.getInstance();
         s3Upload = S3Upload.getInstance();
         System.out.println("Mia istanza : "+ EC2MetadataUtils.getInstanceId());
-
+        System.setProperty("java.rmi.server.hostname", Objects.requireNonNull(Util.getPublicIPAddress()));
         switch (args[0]){
 
             case "System_Startup":
@@ -113,20 +101,24 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     masterConfiguration("Main");
 
                     // Creazione degli altri Master:
-                    for(int i = 0; i < Config.REPLICATION_FACTORY-1; i++) {
+                    int masterToCreate = systemProperties.getStart_number_of_master();
+                    if(masterToCreate<systemProperties.getReplication_factory())
+                        masterToCreate = systemProperties.getReplication_factory();
+                    for(int i = 0; i < masterToCreate-1; i++) {
                         createMasterInstance("Main");
                     }
-                    System.out.print("Master Addresses: " + masterAddresses + ", " + address + "(io)\t");
+                    System.out.print("Master Addresses: " + masterAddresses + ", " + address + "(io)\n");
 
                     // Creazione dei propri DataNode:
-                    for(int j = 0; j < Config.NUMBER_OF_DATANODES; j++) {
+                    for(int j = 0; j < systemProperties.getStart_number_of_data_node_for_master(); j++) {
                         createDataNodeInstance();
                     }
-                    for (int i = 0;i<Config.CLOUDLET_NUMBER;i++){
+                    for (int i = 0;i< systemProperties.getStart_number_of_cloudlet_for_master();i++){
                         createCloudLetInstance();
                     }
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
+
                 }
                 catch (MasterException e) {
                     e.printStackTrace();
@@ -139,12 +131,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 catch (ImpossibleToCreateMasterInstance e) {
                     e.printStackTrace();
                     LOGGER.log(Level.SEVERE, e.getMessage());
-                }
-                waitThread.start();
-                try {
-                    waitThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 break;
 
@@ -163,33 +149,27 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     masterAddresses.remove(address);
                     masterAddresses.add(startupMasterAddress);
 
-                    writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\t");
+                    Util.writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\n",file);
 
                     // Creazione dei DataNode:
-                    for (int i = 0; i < Config.NUMBER_OF_DATANODES; i++) {
+                    for (int i = 0; i < systemProperties.getStart_number_of_data_node_for_master(); i++) {
                         createDataNodeInstance();
                     }
-                    for (int i = 0;i<Config.CLOUDLET_NUMBER;i++){
+                    for (int i = 0;i<systemProperties.getStart_number_of_cloudlet_for_master();i++){
                         createCloudLetInstance();
                     }
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
                 }
                 catch (MasterException e) {
-                    writeOutput("MAIN MASTER SHUTDOWN: " + e.getMessage());
+                    Util.writeOutput("MAIN MASTER SHUTDOWN: " + e.getMessage(),file);
                     System.exit(1);
                 }
                 catch (ImpossibleToCreateMasterInstance e) {
-                    writeOutput("SEVERE: " + e.getMessage());
+                    Util.writeOutput("SEVERE: " + e.getMessage(),file);
                 }
                 catch (RemoteException | NotBoundException e){
-                    writeOutput(e.getMessage());
-                }
-                waitThread.start();
-                try {
-                    waitThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Util.writeOutput(e.getMessage(),file);
                 }
                 break;
 
@@ -206,20 +186,23 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     // Quando lo Shadow Thread termina vuol dire che il Master principale è caduto.
                     // Lo Shadow Master deve quindi prendere il suo posto.
                     shadowThread.join();
-                    firstShadow = true;
+                    Util.writeOutput("Usable Cloudlet fine shadow thread "+usableCloudlet,file);
                 }
                 catch (Exception e) {
-                    writeOutput("SHADOW MASTER SHUTDOWN: " + e.getMessage());
+                    Util.writeOutput("SHADOW MASTER SHUTDOWN: " + e.getMessage(),file);
                     System.exit(1);
                 }
 
-                writeOutput("DataNode Addresses:\n" + dataNodeAddresses);
-                writeOutput("Cloudlet Address:\n"+cloudletAddress);
+                Util.writeOutput("DataNode Addresses:\n" + dataNodeAddresses,file);
+                Util.writeOutput("Cloudlet Address:\n"+cloudletAddress + " " +usableCloudlet,file);
                 try {
                     for (String dataNodeAddress : dataNodeAddresses) {
+                        synchronized (startupMapLock){
+                            startupMap.put(dataNodeAddress,Util.getTimeInMillies());
+                        }
                         StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
                         // Informa il DataNode del cambio di indirizzo del Master:
-                        writeOutput("Invio il nuovo indirizzo del Master " + address + " al DataNode " + dataNodeAddress);
+                        Util.writeOutput("Invio il nuovo indirizzo del Master " + address + " al DataNode " + dataNodeAddress,file);
                         dataNode.changeMasterAddress(address);
                         ArrayList<ArrayList<String>> db_data;
                         // Prende le informazioni dal DataNode:
@@ -230,17 +213,23 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         }
                     }
                     for(String cloudletAddr : cloudletAddress){
+                        synchronized (startupMapLock){
+                            startupMap.put(cloudletAddr,Util.getTimeInMillies());
+                        }
                         CloudletInterface cloudlet = (CloudletInterface) registryLookup(cloudletAddr,Config.cloudLetServiceName);
-                        writeOutput("Invio il nuovo indirizzo del Master "+address+" alla cloudlet " +cloudletAddr);
+                        Util.writeOutput("Invio il nuovo indirizzo del Master "+address+" alla cloudlet " +cloudletAddr,file);
                         cloudlet.newMasterAddress(address);
+                        synchronized (cloudletLifeSignalMapLock) {
+                            cloudletLifeSignalMap.put(cloudletAddr, Util.getTimeInMillies());
+                        }
                     }
                     //writeOutput("DB Data:\n" + masterDAO.getAllData());
                 }
                 catch (Exception e) {
-                    writeOutput(e.getMessage());
+                    Util.writeOutput(e.getMessage(),file);
                 }
 
-                writeOutput("Master Addresses:\n" + masterAddresses + ", " + address + "(io)\t");
+                Util.writeOutput("Master Addresses:\n" + masterAddresses + ", " + address + "(io)\n",file);
                 // Contatta gli altri Master per farsi conoscere:
                 try {
                     for (String masterAddress : masterAddresses) {
@@ -253,12 +242,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
+
                 }
                 catch (NotBoundException | RemoteException e) {
-                    writeOutput(e.getMessage());
+                    Util.writeOutput(e.getMessage(),file);
                 }
                 catch (ImpossibleToCreateMasterInstance e){
-                    writeOutput("SEVERE: " + e.getMessage());
+                    Util.writeOutput("SEVERE: " + e.getMessage(),file);
                 }
 
                 break;
@@ -269,18 +259,44 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                     // Creazione dello Shadow Master:
                     createMasterInstance("Shadow");
-                    firstShadow = true;
-                    splittingStartup = true;
+
+                    Thread splitWaitThread = new Thread("SplitWaitThread"){
+                        @Override
+                        public void run() {
+                            int slippedTime = 0;
+                            while (!splitDone){
+                                if(slippedTime>Config.SYSTEM_STARTUP_TYME){
+                                    System.out.println("ABORT SPLITTING");
+                                    String instanceID = EC2MetadataUtils.getInstanceId();
+                                    ec2InstanceFactory.terminateEC2Instance(instanceID);
+                                }
+                                Util.writeOutput("WAITING FOR SPLITTING COMPLETION",file);
+                                try {
+                                    sleep(5000);
+                                    slippedTime += 5000;
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };
+                    splitWaitThread.start();
+                    try {
+                        splitWaitThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 catch (MasterException e) {
-                    writeOutput("SPLITTING MASTER SHUTDOWN: " + e.getMessage());
+                    Util.writeOutput("SPLITTING MASTER SHUTDOWN: " + e.getMessage(),file);
                     System.exit(1);
                 }
                 catch (ImpossibleToCreateMasterInstance e){
-                    writeOutput("SEVERE: " + e.getMessage());
+                    Util.writeOutput("SEVERE: " + e.getMessage(),file);
                 }
                 catch (RemoteException e){
-                    writeOutput(e.getMessage());
+                    Util.writeOutput(e.getMessage(),file);
                 }
 
                 break;
@@ -289,7 +305,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 System.out.println("Usage: mvn exec:java@Master -Dexec.args=System_Startup");
                 System.exit(1);
         }
-
+        for(Map.Entry<String,Long> entry : startupMap.entrySet()) {
+            System.out.println("IP " + entry.getKey() + " ORA LANCIO " + entry.getValue());
+        }
         shadowLifeThread.start();
         monitor.startThread();
         balancingThread.start();
@@ -310,7 +328,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static void masterConfiguration(String masterType) throws MasterException, RemoteException {
 
         masterDAO = MasterDAO.getInstance(Config.MASTER_DATABASE_NAME);
-        address = Util.getLocalIPAddress();
+        address = Util.getPublicIPAddress();
         String serviceName = Config.masterServiceName;
         String completeName = "//" + address + ":" + Config.port + "/" + serviceName;
         //System.out.println(completeName);
@@ -321,7 +339,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         System.out.println(masterType + " Master Bound");
         file = new File(Config.MASTER_FILE_LOGGING_NAME + ".txt");
-        writeOutput(masterType + " Master lanciato all'indirizzo: " + address);
+        Util.writeOutput(masterType + " Master lanciato all'indirizzo: " + address,file);
     }
 
     /**
@@ -341,23 +359,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return registry.lookup(completeName);
     }
 
-    /**
-     * Funzione per fare il logging dell'output di ogni DataNode.
-     *
-     * @param message Output del DataNode da appendere nel file
-     */
-    @SuppressWarnings("all")
-    private static void writeOutput(String message){
-
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file,true))) {
-            message+="\n";
-            bw.append(message);
-            bw.flush();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Metodo che restituisce tutti gli indirizzi dei DataNode gestiti dal Master.
@@ -366,6 +367,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      */
     @Override
     public ArrayList<String> getDataNodeAddresses() {
+
+        synchronized (startupMapLock) {
+            if (startupMap.containsKey(shadowMasterAddress)) {
+                startupMap.remove(shadowMasterAddress);
+                System.out.println("FINE STARTUP SHADOW getDataNodeAddresses");
+            }
+        }
+
 
         synchronized (dataNodeAddressesLock) {
 
@@ -376,11 +385,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     @Override
     public ArrayList<String> getMasterAddresses() {
 
+
         return masterAddresses;
     }
 
     @Override
     public ArrayList<String> getCloudletAddresses(){
+
         return cloudletAddress;
     }
 
@@ -401,8 +412,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             masterAddresses.add(newMasterAddress);
         }
 
-        writeOutput("Master Addresses Updated! New List: " + masterAddresses + ", " + address + "(io)\t");
-        System.out.print("Master Addresses Updated! New List: " + masterAddresses + ", " + address + "(io)\t");
+        Util.writeOutput("Master Addresses Updated! New List: " + masterAddresses + ", " + address + "(io)\n",file);
+        System.out.print("Master Addresses Updated! New List: " + masterAddresses + ", " + address + "(io)\n");
     }
 
 
@@ -418,25 +429,29 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         String newDataNodeIP = newInstanceInfo.get(1);
         dataNodeInstanceIDMap.put(newDataNodeIP,newInstanceInfo.get(0));
         dataNodeAddresses.add(newDataNodeIP);
-
-        writeOutput("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address);
+        Util.writeOutput("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address,file);
         System.out.println("Nuovo DataNode lanciato all'indirizzo: " + newDataNodeIP + " - Indirizzo del Master: " + address);
-        Date now = new Date();
-
-
+        synchronized (startupMapLock) {
+            startupMap.put(newDataNodeIP, Util.getTimeInMillies());
+        }
         return newDataNodeIP;
     }
 
 
-    private static String createCloudLetInstance() {
-        String arguments = address;
+    private static void createCloudLetInstance() {
+        String arguments = address+","+systemProperties.getReplication_factory();
         ArrayList<String> newInstanceInfo=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
         String newCloudLetIP = newInstanceInfo.get(1);
         cloudletInstanceIDMap.put(newCloudLetIP,newInstanceInfo.get(0));
         cloudletAddress.add(newCloudLetIP);
         System.out.println("Launched cloudlet at "+newCloudLetIP+"\n\n");
-        writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n");
-        return newCloudLetIP;
+        Util.writeOutput("Launched cloudlet at "+newCloudLetIP+"\n\n",file);
+        synchronized (startupMapLock) {
+            startupMap.put(newCloudLetIP,Util.getTimeInMillies());
+            Util.writeOutput("CloudletIP "+newCloudLetIP + " "+startupMap.get(newCloudLetIP),file);
+
+        }
+        //return newCloudLetIP;
     }
 
     /**
@@ -449,7 +464,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static String createMasterInstance(String nodeType) throws ImpossibleToCreateMasterInstance {
 
         String arguments;
-        String localIPAddress = Util.getLocalIPAddress();
+        String localIPAddress = Util.getPublicIPAddress();
 
         switch (nodeType) {
             case "Shadow":
@@ -471,12 +486,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         if(nodeType.equals("Shadow")) {
             shadowMasterAddress = newMasterIP;
             shadowMasterInstanceID = newMasterInfo.get(0);
+            synchronized (startupMapLock) {
+                startupMap.put(shadowMasterAddress, Util.getTimeInMillies());
+            }
         }
         if(nodeType.equals("Main")){
             masterAddresses.add(newMasterIP);
         }
 
-        writeOutput("\nNuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP+"\n\n");
+        Util.writeOutput("\nNuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP+"\n\n",file);
         System.out.print("\nNuovo Master -" + nodeType + "- lanciato all'indirizzo: " + newMasterIP+"\n\n");
 
         return newMasterIP;
@@ -525,8 +543,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
     @Override
-    public boolean ping() {
-        return true;
+    public void ping() {
+
     }
 
     @Override
@@ -545,19 +563,45 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
     @Override
-    public boolean deleteFromMaster(String filename) {
+    public void deleteFromMaster(String filename) {
         try {
             String dataNode = masterDAO.getFilePosition(filename);
             masterDAO.deleteFilePosition(filename);
             if(dataNode!=null){
                 StorageInterface storageInterface = (StorageInterface) registryLookup(dataNode,Config.dataNodeServiceName);
-                return storageInterface.delete(filename);
+                storageInterface.delete(filename);
             }
         } catch (MasterException | RemoteException | NotBoundException e) {
             e.printStackTrace();
-            return false;
+
         }
-        return true;
+
+    }
+
+    @Override
+    public void shutdownCloudletSignal(String address)  {
+        System.out.println("Cloudlet "+address+ "CANCELLATA");
+        synchronized (cloudletLifeSignalMapLock){
+            cloudletLifeSignalMap.remove(address);
+        }
+        usableCloudlet.remove(address);
+        cloudletAddress.remove(address);
+        System.out.println("Uccisione Cloudlet " + ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(address)));
+    }
+
+    @Override
+    public void shutdownDataNodeSignal(String address)  {
+        System.out.println("DATA NODE "+address+" CANCELLATO ");
+        ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(address));
+        synchronized (dataNodeAddressesLock){
+            dataNodeAddresses.remove(address);
+        }
+        synchronized (statisticLock){
+            dataNodesStatisticMap.remove(address);
+        }
+        synchronized (lifeSignalMapLock){
+            lifeSignalMap.remove(address);
+        }
     }
 
 
@@ -624,7 +668,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         catch (MasterException e) {
-            writeOutput(e.getMessage());
+            Util.writeOutput(e.getMessage(),file);
             LOGGER.log(Level.SEVERE, e.getMessage());
         }
     }
@@ -648,8 +692,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         for (String master_address : random_masterAddresses) {
 
             try {
-                writeOutput("Cerco una Possibile Replica sul Master: " + master_address);
-                System.out.println("Cerco una Possibile Replica sul Master: " + master_address);
+                Util.writeOutput("Cerco una Possibile Replica sul Master: " + master_address,file);
+                //System.out.println("Cerco una Possibile Replica sul Master: " + master_address);
                 master = (MasterInterface) registryLookup(master_address, Config.masterServiceName);
                 replica_address = master.findReplicaPosition(filename, version);
 
@@ -657,8 +701,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     break; // Trovato il DataNode su cui scrivere una replica.
                 }
             } catch (RemoteException | NotBoundException e) {
-                writeOutput("WARNING: Impossible to Contact Master " + master_address);
-                System.out.println("WARNING: Impossible to Contact Master " + master_address);
+                Util.writeOutput("WARNING: Impossible to Contact Master " + master_address,file);
+                ///System.out.println("WARNING: Impossible to Contact Master " + master_address);
             }
         }
 
@@ -666,8 +710,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             throw new ImpossibleToFindDataNodeForReplication("Impossible to Find DataNode for Replication");
         }
 
-        writeOutput("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename);
-        System.out.println("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename);
+        Util.writeOutput("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename,file);
+       // System.out.println("Trovato DataNode: " + replica_address + " - Su cui Creare/Aggiornare una Replica del File: " + filename);
 
         return replica_address;
     }
@@ -697,15 +741,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 if(replica_address == null) {
                 // Prende un DataNode su cui replicare, con il RoundRobin:
                     replica_address = getRandomAliveDataNode();
-                    writeOutput("Trovata una Nuova Posizione di Replicazione: " + replica_address + " - Per il File: " + filename);
+                    Util.writeOutput("Trovata una Nuova Posizione di Replicazione: " + replica_address + " - Per il File: " + filename,file);
                 }
                 else {
-                    writeOutput("Già Presente una Replica: " + replica_address + " - Del il File: " + filename);
+                    Util.writeOutput("Già Presente una Replica: " + replica_address + " - Del il File: " + filename,file);
                     return null; // Possiede già una replica del file.
                 }
             }
             catch (MasterException e) {
-                writeOutput(e.getMessage());
+                Util.writeOutput(e.getMessage(),file);
                 System.out.println(e.getMessage());
             }
 
@@ -721,15 +765,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     if(fileVersion >= version) {
                         return null; // Replica già aggiornata.
                     }
-                    writeOutput("Trovata una Replica da Aggiornare: " + replica_address + " - Del il File: " + filename);
+                    Util.writeOutput("Trovata una Replica da Aggiornare: " + replica_address + " - Del il File: " + filename,file);
                 }
                 else {
-                    writeOutput("Nessuna Replica da Aggiornare Trovata - Per il File: " + filename);
+                    Util.writeOutput("Nessuna Replica da Aggiornare Trovata - Per il File: " + filename,file);
                     return null; // Non ha nessuna replica di quel file.
                 }
             }
             catch (MasterException e) {
-                writeOutput(e.getMessage());
+                Util.writeOutput(e.getMessage(),file);
                 System.out.println(e.getMessage());
             }
         }
@@ -753,7 +797,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             dataNode_address = masterDAO.getFilePosition(filename);
         }
         catch (MasterException e) {
-            writeOutput("SEVERE: " + e.getMessage());
+            Util.writeOutput("SEVERE: " + e.getMessage(),file);
             LOGGER.log(Level.SEVERE, e.getMessage());
         }
 
@@ -792,17 +836,16 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
         synchronized (dataNodeAddressesLock){
-           find = dataNodeAddress.contains(dataNodeAddress);
+           find = dataNodeAddresses.contains(dataNodeAddress);
         }
-
-
+        synchronized(startupMapLock) {
+            startupMap.remove(dataNodeAddress);
+        }
         if(find){
-            Date now = new Date();
-            long timeInMillis = now.getTime();
-
             synchronized (lifeSignalMapLock) {
                 lifeSignalMap.remove(dataNodeAddress);
-                lifeSignalMap.put(dataNodeAddress, timeInMillis);
+                lifeSignalMap.put(dataNodeAddress, Util.getTimeInMillies());
+                //System.out.println("Inserisco "+dataNodeAddress + " in lifesingalmap");
             }
         }
     }
@@ -817,7 +860,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     public void cloudletLifeSignal(String cloudletAddr, State state) {
 
         boolean find = cloudletAddress.contains(cloudletAddr);
+        synchronized (startupMapLock) {
+            startupMap.remove(cloudletAddr);
+        }
         System.out.println("CloudLetLifeSignal "+cloudletAddr+ " stato "+state);
+        Util.writeOutput("CloudLetLifeSignal "+cloudletAddr+ " stato "+state,file);
         // Verifica che l'indirizzo compare nell'elenco di DataNode gestito da questo Master:
         if(state.equals(State.BUSY)){
             usableCloudlet.remove(cloudletAddr);
@@ -826,16 +873,26 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         else if(state.equals(State.NORMAL)){
             if(!usableCloudlet.contains(cloudletAddr))
                 usableCloudlet.add(cloudletAddr);
+        }else if(state.equals(State.FREE) && usableCloudlet.size()>systemProperties.getStart_number_of_cloudlet_for_master()){
+            System.out.println("CANCELLO CLOUDLET");
+            handleCloudletShutdown(cloudletAddr);
         }
 
         if(find){
-            Date now = new Date();
-            long timeInMillis = now.getTime();
-
             synchronized (cloudletLifeSignalMapLock) {
                 cloudletLifeSignalMap.remove(cloudletAddr);
-                cloudletLifeSignalMap.put(cloudletAddr, timeInMillis);
+                cloudletLifeSignalMap.put(cloudletAddr, Util.getTimeInMillies());
             }
+        }
+        System.out.println("Usable cloudlet "+usableCloudlet);
+    }
+
+    private void handleCloudletShutdown(String cloudletAddr) {
+        try {
+            CloudletInterface cloudletInterface = (CloudletInterface) registryLookup(cloudletAddr,Config.cloudLetServiceName);
+            cloudletInterface.shutdownSignal();
+        } catch (NotBoundException | RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -852,12 +909,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
 
         for (Map.Entry<String, Long> entry : localSignalMap.entrySet()) {
-            Date now = new Date();
-            long timeInMillies = now.getTime();
-            if (timeInMillies - entry.getValue() < Config.MAX_TIME_NOT_RESPONDING_DATANODE) {
+            if (Util.getTimeInMillies() - entry.getValue() < Config.MAX_TIME_NOT_RESPONDING_DATANODE) {
                 aliveDataNode.add(entry.getKey());
             }
         }
+        //System.out.println("Alive Data Node "+aliveDataNode);
         Collections.shuffle(aliveDataNode);
         if(aliveDataNode.isEmpty())
             return null;
@@ -873,8 +929,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
      */
     private static void balanceFile(String filename, String old_address, String new_serverAddress) throws MasterException, FileNotFoundException, DataNodeException, NotBalancableFile, AlreadyMovedFileException, ImpossibleToMoveFileException {
 
-        writeOutput("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address);
-        System.out.println("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address);
+        Util.writeOutput("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address,file);
+        //System.out.println("Tento di mandare " + filename + " in " + new_serverAddress + " da " + old_address);
 
         if (masterDAO.serverContainsFile(filename, new_serverAddress)) {
             throw new NotBalancableFile("A replica of this file " + filename + " is already in the server " + new_serverAddress);
@@ -885,8 +941,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         sendFileToDataNode(filename, new_serverAddress, old_address);
 
-        System.out.println("Spostato " + filename + " da " + old_address + " in " + new_serverAddress);
-        writeOutput("Spostato " + filename + " da " + old_address + " in " + new_serverAddress);
+        //System.out.println("Spostato " + filename + " da " + old_address + " in " + new_serverAddress);
+        Util.writeOutput("Spostato " + filename + " da " + old_address + " in " + new_serverAddress,file);
     }
 
     /**
@@ -932,11 +988,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         // Verifica nuovamente che il DataNode sia caduto:
         if(getLifeSignal(address)) {
+            System.out.println("SEGNALE DI VITA");
             return;
         }
+        System.out.println("HANDLE DATA NODE CRASH");
 
-
-
+        synchronized (startupMapLock) {
+            startupMap.remove(address);
+        }
         synchronized (dataNodeAddressesLock){
             dataNodeAddresses.remove(address);
         }
@@ -973,19 +1032,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         }
                     }
                     catch (RemoteException | NotBoundException e) {
-                        writeOutput("WARNING: Impossible to Contact Master " + master_address);
+                        Util.writeOutput("WARNING: Impossible to Contact Master " + master_address,file);
                         System.out.println("WARNING: Impossible to Contact Master " + master_address);
                     }
                 }
 
                 // Non ha trovato nessun DataNode da cui recuperare il file:
                 if(file_position == null) {
-                    writeOutput("SEVERE: Impossible to Recover File: " + filename);
+                    Util.writeOutput("SEVERE: Impossible to Recover File: " + filename,file);
                     LOGGER.log(Level.SEVERE, "Impossible to Recover File: " + filename);
                     continue;
                 }
 
-                writeOutput("Trovato DataNode: " + file_position + " - Da cui Recuperare il File: " + filename);
+                Util.writeOutput("Trovato DataNode: " + file_position + " - Da cui Recuperare il File: " + filename,file);
                 System.out.println("Trovato DataNode: " + file_position + " - Da cui Recuperare il File: " + filename);
 
                 // Contatta il DataNode che possiede il file da recuperare:
@@ -994,26 +1053,26 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     dataNode.copyFileOnAnotherDataNode(filename, replaced_dataNode);
                 }
                 catch (NotBoundException | RemoteException e) {
-                    writeOutput("SEVERE: Impossible to Contact DataNode " + file_position);
+                    Util.writeOutput("SEVERE: Impossible to Contact DataNode " + file_position,file);
                     LOGGER.log(Level.SEVERE,"Impossible to Contact DataNode " + file_position);
                     continue;
                 }
                 catch (ImpossibleToCopyFileOnDataNode e) {
-                    writeOutput("SEVERE: " + e.getMessage());
+                    Util.writeOutput("SEVERE: " + e.getMessage(),file);
                     LOGGER.log(Level.SEVERE, e.getMessage());
                     continue;
                 }
 
-                writeOutput("Recuperato il File: " + filename + " - Dal DataNode: " + file_position);
+                Util.writeOutput("Recuperato il File: " + filename + " - Dal DataNode: " + file_position,file);
                 System.out.println("Recuperato il File: " + filename + " - Dal DataNode: " + file_position);
             }
         }
         catch (MasterException e) {
             e.printStackTrace();
-            writeOutput(e.getMessage());
+            Util.writeOutput(e.getMessage(),file);
         }
         catch (FileNotFoundException e) {
-            writeOutput("WARNING: " + e.getMessage());
+            Util.writeOutput("WARNING: " + e.getMessage(),file);
             LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
@@ -1021,37 +1080,49 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static Thread shadowLifeThread = new Thread("ShadowLifeThread"){
         @Override
         public void run() {
+            HashMap<String,Long> localStartupMap;
             while (!exit) {
-                if(firstShadow){
+                synchronized (startupMapLock){
+                    localStartupMap = new HashMap<>(startupMap);
+                }
+                while(localStartupMap.containsKey(shadowMasterAddress)){
+                    System.out.println("STARTUP SHADOW");
+                    if(Util.getTimeInMillies()-localStartupMap.get(shadowMasterAddress)>Config.SYSTEM_STARTUP_TYME){
+                        System.out.println("FINE STARTUP SHADOW");
+                        break;
+                    }
                     try {
-                        sleep(Config.SYSTEM_STARTUP_TYME);
+                        sleep(30000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    firstShadow= false;
-
+                    synchronized (startupMapLock){
+                        localStartupMap = new HashMap<>(startupMap);
+                    }
                 }
-                MasterInterface masterInterface;
                 try {
-                    Date date = new Date();
-                    masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
+
+                    MasterInterface masterInterface = (MasterInterface) registryLookup(shadowMasterAddress, Config.masterServiceName);
                     masterInterface.ping();
+
+
                 } catch (NotBoundException | RemoteException e) {
+                    System.out.println("SHADOW MASTER DEAD");
                     try {
-                        System.out.println("MORTO LO SHADOW LO UCCIDO E NE CREO UN ALTRO");
                         ec2InstanceFactory.terminateEC2Instance(shadowMasterInstanceID);
                         createMasterInstance("Shadow");
-                        try {
-                            sleep(Config.SYSTEM_STARTUP_TYME);
-                        } catch (InterruptedException e1) {
-                            e1.printStackTrace();
-                        }
                     } catch (ImpossibleToCreateMasterInstance impossibleToCreateMasterInstance) {
                         impossibleToCreateMasterInstance.printStackTrace();
                     }
                 }
+
+                try {
+                    sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+            }
     };
 
     /**
@@ -1070,11 +1141,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     }
 
                     for (Map.Entry<String, Long> entry : localSignalMap.entrySet()) {
-
-                        Date now = new Date();
-                        long timeInMillies = now.getTime();
+                        long timeInMillies = Util.getTimeInMillies();
+                        System.out.println("Signal Map : " +entry.getKey()+ " "+entry.getValue());
                         if (timeInMillies - entry.getValue() > Config.MAX_TIME_NOT_RESPONDING_DATANODE) {
-                            writeOutput("DATANODE " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
+                            Util.writeOutput("DATANODE " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()),file);
                             LOGGER.log(Level.INFO, "DATANODE " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
                             handleDataNodeCrash(entry.getKey());
                         }
@@ -1095,14 +1165,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         @Override
         public void run() {
-            if(splittingStartup){
-                try {
-                    sleep(Config.SYSTEM_STARTUP_TYME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                splittingStartup = false;
-            }
             while (!exit) {
                 HashMap<String, Long> localSignalMap;
                 synchronized (cloudletLifeSignalMapLock) {
@@ -1110,22 +1172,63 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
 
                 for (Map.Entry<String, Long> entry : localSignalMap.entrySet()) {
-                    Date now = new Date();
-                    long timeInMillies = now.getTime();
+                    long timeInMillies = Util.getTimeInMillies();
                     if (timeInMillies - entry.getValue() > Config.MAX_TIME_NOT_RESPONDING_CLOUDLET) {
-                        writeOutput("Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
+                        Util.writeOutput("Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()),file);
                         LOGGER.log(Level.INFO, "Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
                         createCloudLetInstance();
+                        usableCloudlet.remove(entry.getKey());
                         cloudletLifeSignalMap.remove(entry.getKey());
                         cloudletAddress.remove(entry.getKey());
                         ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(entry.getKey()));
                         cloudletInstanceIDMap.remove(entry.getKey());
+                        synchronized (startupMapLock) {
+                            startupMap.remove(entry.getKey());
+                        }
                     }
                 }
-                int diff = Config.CLOUDLET_NUMBER - usableCloudlet.size();
-                for(int i = 0;i<diff;i++){
+                HashMap<String,Long> localStartupMap;
+                synchronized (startupMapLock){
+                    localStartupMap = new HashMap<>(startupMap);
+                }
+                int launchedCloudlet = 0;
+                System.out.println("Dimensione mappa startup " + localStartupMap.size());
+                Util.writeOutput("Dimensione mappa startup" + localStartupMap.size(),file);
+                for(Map.Entry<String,Long> entry : localStartupMap.entrySet()){
+                    if(cloudletAddress.contains(entry.getKey())) {
+                        System.out.println("La mappa di startup contiene la cloudlet "+entry.getKey());
+                        Util.writeOutput("La mappa di startup contiene la cloudlet "+entry.getKey(),file);
+                        if (Util.getTimeInMillies() - entry.getValue() < Config.SYSTEM_STARTUP_TYME) {
+                            System.out.println("La cloudlet "+entry.getKey()+" è in fase di startup");
+                            launchedCloudlet++;
+                        }
+                        else {
+                            Util.writeOutput("La mappa di startup contiene la cloudlet scaduta"+entry.getKey()+" "+(Util.getTimeInMillies()-entry.getValue()),file);
+                            System.out.println("La mappa di startup contiene mappa scaduta "+entry.getKey()+" "+(Util.getTimeInMillies()-entry.getValue()));
+                            cloudletLifeSignalMap.remove(entry.getKey());
+                            cloudletAddress.remove(entry.getKey());
+                            ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(entry.getKey()));
+                            cloudletInstanceIDMap.remove(entry.getKey());
+                            usableCloudlet.remove(entry.getKey());
+                        }
+                    }
+                }
+                if(usableCloudlet.size()==0 && launchedCloudlet == 0) {
+                    System.out.println("Nessuna cloudlet attiva");
+                    Util.writeOutput("Nessuna cloudlet attiva",file);
                     createCloudLetInstance();
                 }
+                else {
+                    Util.writeOutput("Non cè bisogno di lanciare una cloudlet",file);
+                    System.out.println("Non c'è bisogno di lanciare una cloudlet");
+                }
+                /*
+                int diff = Config.CLOUDLET_NUMBER - usableCloudlet.size()-launchedCloudlet;
+                System.out.println("DIFF "+diff);
+                writeOutput("DIFF "+diff);
+                for(int i = 0;i<diff;i++){
+                    createCloudLetInstance();
+                }*/
                 try{
                     sleep(Config.LIFE_THREAD_SLEEP_TIME);
                 }
@@ -1160,17 +1263,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             while (!exit) {
 
                 // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
-                try {
-                    deleteEmptyDataNode();
-                }
-                catch (ImpossibleToTerminateDatanodeException e) {
-                    writeOutput("SEVERE: IMPOSSIBLE TO TERMINATE DataNode " + e.getMessage());
-                    LOGGER.log(Level.SEVERE,"SEVERE: IMPOSSIBLE TO TERMINATE DataNode " + e.getMessage());
-                }
-                catch (ImpossibleToTerminateEC2InstanceException e) {
-                    writeOutput("SEVERE: IMPOSSIBLE TO TERMINATE EC2 Instance " + e.getMessage());
-                    LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO TERMINATE EC2 Instance " + e.getMessage());
-                }
+                deleteEmptyDataNode();
 
                 synchronized (statisticLock){
                     //Ad ogni ciclo la mappa delle statistiche è azzerata e popolata con le statistiche aggiornate
@@ -1187,7 +1280,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 //System.out.println("____________CICLO-FIRST_____________");
                 for(DataNodeStatistic dns : statisticAfterBalancing){
                     System.out.println(dns);
-                    writeOutput(dns.toString());
+                    Util.writeOutput(dns.toString(),file);
                 }
                 System.out.println("\n");
                 //System.out.println("File to be moved " + fileToBeMoved);
@@ -1201,7 +1294,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     for (DataNodeStatistic dns : statisticAfterBalancing)
                         System.out.println(dns);*/
                     System.out.println("File to new server " + fileToNewServer);
-                    writeOutput("File to new server "+fileToNewServer);
+                    Util.writeOutput("File to new server "+fileToNewServer,file);
                     //Se ho ancora file da riposizionare creo nuovi DataNode a cui mandarli.
                     if(!fileToNewServer.isEmpty()) {
                         /*
@@ -1224,10 +1317,52 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 // Crea un nuovo Master se necessario:
                 splitMaster();
-
-                writeOutput("DataNode Ancora Gestiti: " + dataNodeAddresses);
+                searchUnderUsageDataNode();
+                Util.writeOutput("DataNode Ancora Gestiti: " + dataNodeAddresses,file);
                 System.out.println("DataNode Ancora Gestiti: " + dataNodeAddresses);
+
             }
+        }
+
+        private void searchUnderUsageDataNode(){
+            if(dataNodeAddresses.size()<= systemProperties.getStart_number_of_data_node_for_master())
+                return;
+            String toShutdownDataNode = null;
+            ArrayList<String> aliveDataNode = new ArrayList<>();
+            for(DataNodeStatistic dns : statisticAfterBalancing){
+                if(dns.isUnderUsage()){
+                    toShutdownDataNode = dns.getDataNodeAddress();
+                    System.out.println("UNDER USED DATA NODE "+toShutdownDataNode);
+                    break;
+                }
+            }
+            if(toShutdownDataNode==null)
+                return;
+            synchronized (dataNodeAddressesLock){
+                dataNodeAddresses.remove(toShutdownDataNode);
+            }
+            synchronized (lifeSignalMapLock){
+                lifeSignalMap.remove(toShutdownDataNode);
+                for (Map.Entry<String, Long> entry : lifeSignalMap.entrySet()) {
+                    if (Util.getTimeInMillies() - entry.getValue() < Config.MAX_TIME_NOT_RESPONDING_DATANODE) {
+                        aliveDataNode.add(entry.getKey());
+                    }
+                }
+            }
+            synchronized (statisticLock){
+                dataNodesStatisticMap.remove(toShutdownDataNode);
+            }
+            try {
+                System.out.println(aliveDataNode+ " mandati a data node da spegnere 1"+toShutdownDataNode);
+                StorageInterface storageInterface = (StorageInterface) registryLookup(toShutdownDataNode,Config.dataNodeServiceName);
+                storageInterface.shutDown(aliveDataNode);
+                System.out.println(aliveDataNode+ " mandati a data node da spegnere 2"+toShutdownDataNode);
+                masterDAO.deleteAllAddress(toShutdownDataNode);
+            } catch (NotBoundException | RemoteException | MasterException e) {
+                e.printStackTrace();
+            }
+
+
         }
 
         /**
@@ -1247,13 +1382,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 {
                     dataNodeFiles = new ArrayList<>(stats.getFilePerRequest());
                     System.out.println(stats.getDataNodeAddress() + " soglia superata cpu ");
-                    writeOutput(stats.getDataNodeAddress() + " soglia superata cpu ");
+                    Util.writeOutput(stats.getDataNodeAddress() + " soglia superata cpu ",file);
                 }
 
                 else if(stats.isRamUsage()) {
                     dataNodeFiles = new ArrayList<>(stats.getFilePerSize());
                     System.out.println(stats.getDataNodeAddress() + " soglia superata ram ");
-                    writeOutput(stats.getDataNodeAddress() + " soglia superata ram ");
+                    Util.writeOutput(stats.getDataNodeAddress() + " soglia superata ram ",file);
                 }
                 else {
                     statisticAfterBalancing.add(stats);
@@ -1299,11 +1434,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     //Se l'aggiunto del file a un server non comporta il superamento delle soglie effettuo lo spostamento
                     FileInfo file = bufferRebalanced.get(0);
                     try {
-                        Date time = new Date();
-                        long timeInMillis = time.getTime();
+                        long timeInMillis = Util.getTimeInMillies();
                         while(!getLifeSignal(serverStat.getDataNodeAddress())){
-                            Date now = new Date();
-                            if(now.getTime()-timeInMillis>1000) {
+                            if(Util.getTimeInMillies()-timeInMillis>10000) {
                                 LOGGER.log(Level.SEVERE, "IMPOSSIBLE TO CONTACT SERVER " + serverStat.getDataNodeAddress());
                                 break;
                             }
@@ -1346,11 +1479,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             ArrayList<FileInfo> temp= new ArrayList<>(buffer);
             temp.sort(FileInfo.getCompByRequests());
             String newServerAddress = createDataNodeInstance();
-            Date time = new Date();
-            long timeInMillis = time.getTime();
+            long timeInMillis =Util.getTimeInMillies();
             while(!getLifeSignal(newServerAddress)){
-                Date now = new Date();
-                if(now.getTime()-timeInMillis>300000) {
+                if(Util.getTimeInMillies()-timeInMillis>300000) {
                     LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT SERVER "+newServerAddress);
                     break;
                 }
@@ -1392,7 +1523,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
          *  Uccide i DataNode che sono vuoti da un lungo periodo di tempo.
          *
          */
-        private void deleteEmptyDataNode() throws ImpossibleToTerminateDatanodeException, ImpossibleToTerminateEC2InstanceException {
+        private void deleteEmptyDataNode()  {
 
             HashMap<String, DataNodeStatistic> localStatsMap;
 
@@ -1406,7 +1537,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
                 if(stats.getFileInfos().isEmpty() && stats.getMilliseconds_timer() > Config.MAX_TIME_EMPTY_DATANODE) {
 
-                    writeOutput("Empty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer());
+                    Util.writeOutput("Empty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer(),file);
                     System.out.println("Empty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer());
                     // Rimuove dalla lista di indirizzi globale l'indirizzo del DataNode:
                     synchronized (dataNodeAddressesLock) {
@@ -1419,41 +1550,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         isEmpty = dataNode.isEmpty();
                     }
                     catch (NotBoundException | IOException e) {
-                        writeOutput("SEVERE: IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress());
+                        Util.writeOutput("SEVERE: IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress(),file);
                         LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress());
                     }
                     if(isEmpty){
-                        String dataNode_instanceID = null;
-                        try {
-                            StorageInterface dataNode = (StorageInterface) registryLookup(stats.getDataNodeAddress(), Config.dataNodeServiceName);
-                            dataNode_instanceID = dataNode.getInstanceID();
-                            dataNode.terminate(); // Il DataNode viene terminato.
-                        }
-                        catch (NotBoundException | RemoteException e){
-
-                            // DataNode terminato correttamente:
-                            if(e.getCause().toString().equals("java.io.EOFException")){
-                                writeOutput("INFO: EMPTY DATANODE " + stats.getDataNodeAddress() + " TERMINATED WITH SUCCESS!");
-                                LOGGER.log(Level.INFO,"EMPTY DATANODE " + stats.getDataNodeAddress() + " TERMINATED WITH SUCCESS!");
-
-                                // Terminazione dell'instanza del DataNode ucciso:
-                                boolean success = ec2InstanceFactory.terminateEC2Instance(dataNode_instanceID);
-                                if(!success){
-                                    throw new ImpossibleToTerminateEC2InstanceException(dataNode_instanceID);
-                                }
-
-                                writeOutput("INFO: EC2 INSTANCE " + dataNode_instanceID + " TERMINATED WITH SUCCESS!");
-                                LOGGER.log(Level.INFO,"EC2 INSTANCE " + dataNode_instanceID + " TERMINATED WITH SUCCESS!");
-                            }
-                            // DataNode NON terminato correttamente:
-                            else {
-                                // Rinserisce l'indirizzo del DataNode in quelle globali:
-                                synchronized (dataNodeAddressesLock) {
-                                    dataNodeAddresses.add(stats.getDataNodeAddress());
-                                }
-                                throw new ImpossibleToTerminateDatanodeException(stats.getDataNodeAddress());
-                            }
-                        }
+                        //String dataNode_instanceID = null;
+                        ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(stats.getDataNodeAddress()));
                         // Rimuove le statistiche di quel DataNode:
                         synchronized (statisticLock) {
                             dataNodesStatisticMap.remove(stats.getDataNodeAddress());
@@ -1496,13 +1598,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     newMasterAddress = createMasterInstance("Splitting");
                 }
                 catch (ImpossibleToCreateMasterInstance e) {
-                    writeOutput(e.getMessage());
+                    Util.writeOutput(e.getMessage(),file);
                     e.printStackTrace();
                 }
 
                 // Prende metà degli indirizzi dei DataNode:
                 int dataNode_to_move = dataNodes_number / 2;
                 int cloudlet_to_move = cloudletAddress.size() / 2;
+                System.out.println("number of Cloudlet to move " +cloudlet_to_move);
                 ArrayList<String> dataNode_addresses = new ArrayList<>();
                 ArrayList<String> cloudlet_addresses = new ArrayList<>();
                 int index;
@@ -1510,6 +1613,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 while(!cloudletAddress.isEmpty() && cloudlet_to_move>0){
                     index = (int) (Math.random() * (cloudletAddress.size()));
                     cloudlet_addresses.add(cloudletAddress.get(index));
+                    System.out.println("Cloudlet to move "+cloudlet_addresses);
                     cloudletAddress.remove(index);
                     cloudlet_to_move--;
                 }
@@ -1534,6 +1638,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 synchronized (lifeSignalMapLock) {
                     for (String addr : dataNode_addresses) {
                         lifeSignalMap.remove(addr);
+                        System.out.println("LFMAP "+lifeSignalMap.get(addr));
                     }
                 }
                 for(String addr : cloudlet_addresses){
@@ -1541,13 +1646,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 }
 
                 try {
-                    Date date = new Date();
-                    long timeInMillis = date.getTime();
+                    long timeInMillis = Util.getTimeInMillies();
                     // Invia al nuovo Master gli indirizzi dei DataNode che deve gestire:
                     while (!contactNewMaster(newMasterAddress, dataNode_addresses,cloudlet_addresses)) {
-                        Date now = new Date();
-                        if (now.getTime() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) { // Aspetta che il Master sia attivo.
-                            writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
+                        if (Util.getTimeInMillies() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) { // Aspetta che il Master sia attivo.
+                            Util.writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterAddress,file);
                             LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
                             return;
                         }
@@ -1558,7 +1661,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                         masterDAO.deleteAllAddress(address);
                     }
 
-                    writeOutput("DataNode Spostati: " + dataNode_addresses);
+                    Util.writeOutput("DataNode Spostati: " + dataNode_addresses,file);
                     System.out.println("DataNode Spostati: " + dataNode_addresses);
                 }
                 catch (Exception e){
@@ -1599,10 +1702,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         // Contatta i DataNode che deve prendersi in gestione:
         try {
-            for(String cloudletAddress : cloudlet_addresses){
-                addCloudlet(cloudletAddress);
+            Util.writeOutput("Nuove cloudlet "+cloudlet_addresses,file);
+            for(String cloudletAddr : cloudlet_addresses){
+                addCloudlet(cloudletAddr);
+                CloudletInterface cloudletInterface = (CloudletInterface) registryLookup(cloudletAddr,Config.cloudLetServiceName);
+                cloudletInterface.newMasterAddress(address);
+                Util.writeOutput("Comunico il nuovo indirizzo alla cloudlet "+cloudletAddr,file);
             }
-            writeOutput("CLOUDLET ADDRESSES\n"+cloudlet_addresses);
+            Util.writeOutput("CLOUDLET ADDRESSES\n"+usableCloudlet,file);
             for (String dataNodeAddress : dataNode_addresses) {
 
                 StorageInterface dataNode = (StorageInterface) registryLookup(dataNodeAddress, Config.dataNodeServiceName);
@@ -1625,13 +1732,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
             if(dataNode_addresses.isEmpty())
                 createDataNodeInstance();
-            if(cloudlet_addresses.isEmpty()) {
-                createCloudLetInstance();
-            }
-            writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses);
+            splitDone = true;
+            Util.writeOutput("DATANODE ADDRESSES\n"+dataNodeAddresses,file);
         }
         catch (Exception e) {
-            writeOutput(e.getMessage());
+            Util.writeOutput(e.getMessage(),file);
         }
 
         // Contatta gli altri Master per farsi conoscere:
@@ -1647,10 +1752,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
         catch (Exception e) {
-            writeOutput(e.getMessage());
+            Util.writeOutput(e.getMessage(),file);
         }
 
-        writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\t");
+        Util.writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\n",file);
     }
 
 
@@ -1728,39 +1833,39 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
     @Override
-    public boolean addCloudlet(String ipAddress) {
+    public void addCloudlet(String ipAddress) {
         if(!cloudletAddress.contains(ipAddress)) {
             cloudletAddress.add(ipAddress);
             usableCloudlet.add(ipAddress);
+            synchronized (cloudletLifeSignalMapLock){
+                cloudletLifeSignalMap.put(ipAddress,Util.getTimeInMillies());
+            }
+            synchronized (startupMapLock){
+                startupMap.put(ipAddress,Util.getTimeInMillies());
+            }
         }
+        Util.writeOutput("Aggiungo "+ipAddress + " a "+cloudletAddress,file);
         System.out.println("Aggiungo "+ipAddress + " a "+cloudletAddress);
-        return true;
     }
 
     private static Thread publishCloudletAddress = new Thread("PublishCloudletAddress"){
         @Override
         public void run() {
-            if(splittingStartup){
-                try {
-                    sleep(Config.SYSTEM_STARTUP_TYME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                splittingStartup = false;
-            }
             while (!exit) {
-                String fileName = Util.getLocalIPAddress() + ".txt";
+                String fileName = Util.getPublicIPAddress() + ".txt";
                 File file = new File(fileName);
                 try {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-                    for (String caddr : usableCloudlet) {
-                        String line = caddr.concat("|");
-                        bw.append(line);
+                    if(!usableCloudlet.isEmpty()) {
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                        for (String caddr : usableCloudlet) {
+                            String line = caddr.concat("|");
+                            bw.append(line);
+                        }
+                        bw.flush();
+                        bw.close();
+                        s3Upload.uploadFile(fileName);
+                        Files.delete(Paths.get(fileName));
                     }
-                    bw.flush();
-                    bw.close();
-                    s3Upload.uploadFile(fileName);
-                    Files.delete(Paths.get(fileName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1785,16 +1890,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             while (!exit) {
                 try {
-                    Date date = new Date();
-                    long timeInMillis = date.getTime();
+                    long timeInMillis = Util.getTimeInMillies();
                     while (!contactMainMaster()) {
-                        Date now = new Date();
-                        if (now.getTime() - timeInMillis > 1000) {
-                            writeOutput("INFO: IMPOSSIBLE TO CONTACT Main Master " + mainMasterAddress);
+                        if (Util.getTimeInMillies() - timeInMillis > 10000) {
+                            Util.writeOutput("INFO: IMPOSSIBLE TO CONTACT Main Master " + mainMasterAddress,file);
                             return; // Il Thread termina.
                         }
-                    }
 
+                    }
                     sleep(Config.SHADOW_THREAD_SLEEP_TIME);
                 }
                 catch (InterruptedException e) {
@@ -1828,10 +1931,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             dataNodeAddresses.clear();
             masterAddresses.clear();
             cloudletAddress.clear();
+            usableCloudlet.clear();
 
             dataNodeAddresses.addAll(temp_dataNodes);
             masterAddresses.addAll(temp_masters);
             cloudletAddress.addAll(temp_cloudlets);
+            usableCloudlet.addAll(temp_cloudlets);
+
+            Util.writeOutput("Usable cloudlet " +usableCloudlet,file);
+
 
             return true;
         }

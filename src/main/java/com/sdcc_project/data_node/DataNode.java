@@ -5,17 +5,19 @@ import com.sdcc_project.config.Config;
 import com.sdcc_project.dao.DataNodeDAO;
 import com.sdcc_project.entity.DataNodeStatistic;
 import com.sdcc_project.exception.*;
-import com.sdcc_project.exception.FileNotFoundException;
 import com.sdcc_project.monitor.Monitor;
 import com.sdcc_project.service_interface.MasterInterface;
 import com.sdcc_project.service_interface.StorageInterface;
 import com.sdcc_project.util.FileManager;
-import java.io.*;
+import com.sdcc_project.util.Util;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import com.sdcc_project.util.Util;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -23,7 +25,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Date;
+
 import static java.rmi.registry.LocateRegistry.createRegistry;
 
 public class DataNode extends UnicastRemoteObject implements StorageInterface {
@@ -51,13 +53,13 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             System.exit(1);
         }
 
-        Date time = new Date();
-        milliseconds = time.getTime();
+
+        milliseconds = Util.getTimeInMillies();
         monitor = Monitor.getInstance();
         masterAddress = args[0];
-        address = Util.getLocalIPAddress();
+        address = Util.getPublicIPAddress();
         instanceID = EC2MetadataUtils.getInstanceId();
-
+        System.setProperty("java.rmi.server.hostname",address);
 
         String serviceName = Config.dataNodeServiceName;
 
@@ -132,6 +134,75 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return true;
     }
 
+    @Override
+    public void shutDown(ArrayList<String> aliveDataNode) throws RemoteException {
+        boolean ok = true;
+        try {
+            writeOutput("SEQUENZA DI SHUTDOWN");
+            condition = false;
+            try {
+                lifeThread.join();
+                statisticThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ArrayList<ArrayList<String>> allFiles = dataNodeDAO.getAllFilesInformation(address);
+            writeOutput(allFiles.toString());
+            int fileToEachDataNode =  allFiles.size()/aliveDataNode.size();
+            if(fileToEachDataNode<allFiles.size()){
+                fileToEachDataNode = allFiles.size();
+            }
+            for(String address : aliveDataNode){
+                if(allFiles.isEmpty()) break;
+                for(int i = 0;i<fileToEachDataNode;i++){
+                    ArrayList<String> fileToMove = allFiles.get(0);
+                    try {
+                        writeOutput(fileToMove.toString());
+                        moveFile(fileToMove.get(0),address,Integer.parseInt(fileToMove.get(2)));
+                        allFiles.remove(0);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        writeOutput(e.getMessage());
+
+                    } catch (ImpossibleToMoveFileException e) {
+                        e.printStackTrace();
+                        writeOutput(e.getMessage());
+                        ok = false;
+                    }
+                }
+                if(fileToEachDataNode<allFiles.size())
+                    fileToEachDataNode = allFiles.size();
+                else if(allFiles.size()-fileToEachDataNode<fileToEachDataNode){
+                    fileToEachDataNode = allFiles.size();
+                }
+            }
+            if(ok){
+                Thread shutDown = new Thread("shutDown"){
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            MasterInterface masterInterface = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
+                            masterInterface.shutdownDataNodeSignal(address);
+                        } catch (RemoteException | NotBoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                shutDown.start();
+
+            }
+        } catch (DataNodeException e) {
+            e.printStackTrace();
+            writeOutput(e.getMessage());
+        }
+    }
+
     /**
      * Lettura di un file da memoria.
      *
@@ -203,7 +274,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         try {
             synchronized (dataNodeLock) {
                 dataNodeDAO.setFileString(filename, updated_base64, updated_version); // Inserisce/Aggiorna il file.
-                writeOutput("Inserito File: " + filename + " - Versione: " + updated_version);
+                writeOutput("Inserito File: " + filename + "- Data: "+data+" - Versione: " + updated_version);
             }
         }
         catch (DataNodeException e) {
@@ -285,7 +356,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
      *
      * @param fileName Nome del file che è stato salvato.
      */
-    private boolean sendCompletedWrite(String fileName, int version) {
+    private void sendCompletedWrite(String fileName, int version) {
 
         MasterInterface master;
 
@@ -300,11 +371,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             writeOutput("WARNING: IMPOSSIBLE TO CONTACT Master " + masterAddress + "- Waiting...");
             try {
                 // Attende TOT secondi:
-                Date date = new Date();
-                long timeInMillis = date.getTime();
+
+                long timeInMillis = Util.getTimeInMillies();
                 while (true) {
-                    Date now = new Date();
-                    if (now.getTime() - timeInMillis > 2000) {
+
+                    if (Util.getTimeInMillies() - timeInMillis > 2000) {
                         break;
                     }
                 }
@@ -313,11 +384,9 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             }
             catch (RemoteException | NotBoundException e2){
                 writeOutput("SEVERE: IMPOSSIBLE TO ACK Master " + masterAddress);
-                return false;
             }
         }
 
-        return true;
     }
 
     /**
@@ -379,11 +448,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             }
             data = FileManager.decodeString(base64);
 
-            Date date = new Date();
-            long timeInMillis = date.getTime();
+
+            long timeInMillis = Util.getTimeInMillies();
             while (!getLifeSignal(replaced_dataNode)) {
-                Date now = new Date();
-                if (now.getTime() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) {
+
+                if (Util.getTimeInMillies() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) {
                     writeOutput("SEVERE: Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
                     throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
                 }
@@ -539,8 +608,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         @Override
         public void run() {
             while (condition){
-                Date date = new Date();
-                long now = date.getTime();
                 try {
                     MasterInterface master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
 
@@ -548,43 +615,45 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                         DataNodeStatistic statistic = dataNodeDAO.getDataNodeStatistic();
                         writeOutput(statistic.toString());
                         // Inserisce il valore del timer nelle statistiche. Lo azzera se le statistiche NON sono vuote:
-                        Date time = new Date();
+
                         if(statistic.getFileInfos().isEmpty()){
-                            statistic.setMilliseconds_timer(time.getTime() - milliseconds);
+                            statistic.setMilliseconds_timer(Util.getTimeInMillies() - milliseconds);
                         }
                         else {
-                            milliseconds = time.getTime();
+                            milliseconds = Util.getTimeInMillies();
                             statistic.setMilliseconds_timer(0);
                         }
 
                         statistic.orderStatistics();
                         statistic.setOverCpuUsage(monitor.isOverCpuUsage());
                         statistic.setRamUsage(monitor.isOverRamUsage());
+                        statistic.setUnderUsage(monitor.isUnderUsage());
                         // Invia le statistiche al Master:
                         master.setStatistic(statistic);
                     }
                 }
                 catch (RemoteException e) {
                     writeOutput("WARNING: Impossible to contact Master " + masterAddress);
-                    continue; // Se non riesce a contattare il Master, semplicemente a questo giro non gli invia le statistiche.
+                     // Se non riesce a contattare il Master, semplicemente a questo giro non gli invia le statistiche.
                 }catch (NotBoundException e){
                     writeOutput("NOT BOUND EXCEPTION\n" + e.getMessage());
                 }
-                /*
+
                 try {
                     sleep(Config.STATISTIC_THREAD_SLEEP_TIME);
+                    /*
                     synchronized (dataNodeLock){
                         if(now+Config.STATISTIC_THREAD_SLEEP_TIME>60000) {
                             dataNodeDAO.resetStatistic();
                             Date nDate = new Date();
                             now =  nDate.getTime();
                         }
-                    }
+                    }*/
 
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());
-                }*/
+                }
             }
         }
     };

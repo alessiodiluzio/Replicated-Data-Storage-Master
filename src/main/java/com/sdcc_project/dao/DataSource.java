@@ -25,7 +25,7 @@ public class DataSource {
      * @return la connessione al db.
      * @throws Exception eccezione in caso di problemi alla connessione al database
      */
-    public Connection getConnection(String dbURI) throws Exception {
+    Connection getConnection(String dbURI) throws Exception {
 
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         return DriverManager.getConnection(dbURI);
