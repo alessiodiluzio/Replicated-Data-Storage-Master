@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Classe che offre la funzionalità di parsing del file di config del sistema
+ */
 public class SystemProperties {
     private static SystemProperties instance;
 

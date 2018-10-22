@@ -14,14 +14,16 @@ import com.sdcc_project.util.SystemProperties;
 
 import java.io.File;
 
-
+/**
+ * Classe che gestisce l'interazione con il servizio di Amazon S3
+ */
 public class S3Upload {
 
     private SystemProperties systemProperties;
     private AmazonS3 amazonS3Client;
     private static S3Upload instance;
-
     private String bucketName;
+
 
     private S3Upload(){
         systemProperties = SystemProperties.getInstance();
@@ -42,6 +44,12 @@ public class S3Upload {
         return instance;
     }
 
+    /**
+     * Carica un file in una repository di EC2
+     * Viene usato dal master per segnalare gli indirizzi IP delle cloudlet attive del sistema
+     * per il discovery da parte di un dispositivo esterno
+     * @param fileName nome del file (l'indirizzo ip pubblico del master che pubblica gli indirizzi)
+     */
     public  void uploadFile(String fileName) {
         String fileObjKeyName =systemProperties.getAws_s3_cloudlet_address_folder_name()+"/"+fileName ;
         try {

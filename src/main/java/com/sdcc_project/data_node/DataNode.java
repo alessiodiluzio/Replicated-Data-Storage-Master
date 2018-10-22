@@ -28,6 +28,17 @@ import java.util.ArrayList;
 
 import static java.rmi.registry.LocateRegistry.createRegistry;
 
+/**
+ * Nodo del sistema che si occupa di :
+ *
+ * <ul>
+ *     <li>Memorizzare il contenuto di un file e eventuali aggiornamenti</li>
+ *     <li>Restituire il contenuto del file se richiesto</li>
+ * </ul>
+ *
+ * Ogni DataNode è gestito da un Master dal sistema
+ *
+ */
 public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
     private static Registry registry;
@@ -46,13 +57,16 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         super();
     }
 
+    /**
+     * Viene avviato il nodo,pubblica l'interfaccia sul registro RMI e lanciati i Thread di Gestione
+     * @param args Indirizzo del Master di competenza.
+     */
     public static void main(String args[]) {
 
         if(args.length != 1){
             System.out.println("Usage: DataNode <master_address>");
             System.exit(1);
         }
-
 
         milliseconds = Util.getTimeInMillies();
         monitor = Monitor.getInstance();
@@ -76,7 +90,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
         try {
             completeName = "//" + address + ":" + Config.port + "/" + serviceName;
-            //writeOutput(completeName);
             DataNode dataNode = new DataNode();
 
             // Connessione dell'istanza con l'RMI Registry.
@@ -88,9 +101,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             writeOutput("SEVERE: Impossible to bind to master - " + e.getMessage());
             System.exit(0);
         }
+        //Avvio del Thread che monitora l'utilizzo del risorse HW dell'istanza in cui è eseguito il nodo
         monitor.startThread();
+        //Thread che invia al master le statistiche del nodo (File Contenuti,Peso di ogni file,Richieste per ogni file...
         statisticThread.start();
-        saveDBThread.start();
+        //Thread che invia un segnale di vita al master
         lifeThread.start();
     }
 
@@ -102,6 +117,10 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return registry.lookup(completeName);
     }
 
+    /**
+     * Servizio RMI
+     * @return I nomi di tutti i file contenuti nel DB del DataNode
+     */
     @Override
     public ArrayList<ArrayList<String>> getDatabaseData() {
 
@@ -117,12 +136,22 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return filesInfo;
     }
 
+    /**
+     * Servizio RMI
+     * @return InstanceID dell'istanza EC2 in cui è eseguito il nodo
+     */
     @Override
     public String getInstanceID() {
 
         return instanceID;
     }
 
+    /**
+     * Servizio RMI
+     * Cancella un file dal DataNode
+     * @param filename nome del file da cancellare
+     * @return riuscita dell'operazione
+     */
     @Override
     public boolean delete(String filename) {
         try {
@@ -134,8 +163,14 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         return true;
     }
 
+    /**
+     * Servizio RMI
+     * Avvia la sequenza di spegnimento del Nodo (usata in caso di sottoutilizzo delle risorse)
+     * Il DataNode invia le proprie repliche ad altri DataNode e viene spento.
+     * @param aliveDataNode DataNode a cui propagare i file contenuti in questo nodo.
+     */
     @Override
-    public void shutDown(ArrayList<String> aliveDataNode) throws RemoteException {
+    public void shutDown(ArrayList<String> aliveDataNode)  {
         boolean ok = true;
         try {
             writeOutput("SEQUENZA DI SHUTDOWN");
@@ -452,7 +487,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             long timeInMillis = Util.getTimeInMillies();
             while (!getLifeSignal(replaced_dataNode)) {
 
-                if (Util.getTimeInMillies() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) {
+                if (Util.getTimeInMillies() - timeInMillis > Config.SYSTEM_STARTUP_TYME) {
                     writeOutput("SEVERE: Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
                     throw new ImpossibleToCopyFileOnDataNode("Impossible to Copy File on: " + replaced_dataNode + " - DataNode Not Active");
                 }
@@ -478,6 +513,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         writeOutput("File: " + filename + " Copied on DataNode: " + replaced_dataNode + " with Success");
     }
 
+    /**
+     * Verifica lo stato di attività di un altro DataNode del sistema
+     * @param dataNode_address indirizzo del DataNode da monitorare
+     * @return true se il DataNode è attivo False altrimenti
+     */
     private boolean getLifeSignal(String dataNode_address) {
 
         try {
@@ -505,6 +545,11 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         }
     }
 
+    /**
+     * Servizio RMI
+     * Ping del Master per verificare che il DataNode è ancora attivo
+     * @return true
+     */
     @Override
     public boolean lifeSignal() {
         return true;
@@ -521,7 +566,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             while(condition){
                 sendLifeSignal();
                 try {
-                    sleep(7000);
+                    sleep(Config.LIFE_THREAD_SLEEP_TIME);
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());
@@ -596,11 +641,12 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
     /**
      * Il Thread si occupa di inviare periodicamente al Master le statistiche del DataNode, quali:
-     *
-     *  - Numero di richieste ricevute.
-     *  - Dimensione dei file memorizzati (in totale).
-     *  - Numero di richieste di un file (per ogni singolo file).
-     *  - Dimensione di un file (per ogni singolo file).
+     *   <ul>
+     *      <li>Numero di richieste ricevute</li>
+     *      <li>Dimensione dei file memorizzati (in totale).</li>
+     *      <li>Numero di richieste di un file (per ogni singolo file).</li>
+     *      <li>Dimensione di un file (per ogni singolo file).</li>
+     *  </ul>
      *
      */
     private static Thread statisticThread = new Thread("statisticThread"){
@@ -610,7 +656,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             while (condition){
                 try {
                     MasterInterface master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
-
                     synchronized (dataNodeLock) {
                         DataNodeStatistic statistic = dataNodeDAO.getDataNodeStatistic();
                         writeOutput(statistic.toString());
@@ -641,15 +686,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
                 try {
                     sleep(Config.STATISTIC_THREAD_SLEEP_TIME);
-                    /*
-                    synchronized (dataNodeLock){
-                        if(now+Config.STATISTIC_THREAD_SLEEP_TIME>60000) {
-                            dataNodeDAO.resetStatistic();
-                            Date nDate = new Date();
-                            now =  nDate.getTime();
-                        }
-                    }*/
-
                 }
                 catch (InterruptedException e) {
                     writeOutput(e.getMessage());
@@ -658,28 +694,6 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
         }
     };
 
-    /**
-     * Il Thread si occupa di salvare periodicamente le informazioni del DB in-memory del DataNode
-     *  nel DB persistente su disco.
-     *
-     */
-    private static Thread saveDBThread = new Thread("saveDBThread"){
-
-        @Override
-        public void run() {
-            while (condition){
-                synchronized (dataNodeLock) {
-                    dataNodeDAO.saveDB();
-                }
-                try {
-                    sleep(Config.SAVE_DB_THREAD_SLEEP_TIME);
-                }
-                catch (InterruptedException e) {
-                    writeOutput(e.getMessage());
-                }
-            }
-        }
-    };
 
 
 }

@@ -7,8 +7,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe che contiene alcune funzioni di utilità.
+ */
 public class Util {
 
+    /**
+     * Scrive un messaggio su un file
+     * (Usato per il log)
+     * @param message messaggio da scrivere
+     * @param file file di output
+     */
     public static void writeOutput(String message, File file){
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file,true))) {
@@ -21,6 +30,11 @@ public class Util {
         }
     }
 
+    /**
+     * Estrae l'entry che ha come valore il minimo tra gli altri nella mappa
+     * @param map Mappa da cui estrarre il minimo
+     * @return Entry relativa al valore minimo
+     */
     public static ArrayList<String> extractMinFromMap(HashMap<String,Double> map){
         double min = 100000000;
         String minString ="";
@@ -37,6 +51,10 @@ public class Util {
 
     }
 
+    /**
+     * Richiede l'IP pubblico dell'istanza in cui è in esecuzione un nodo del sistema
+     * @return indirizzo Ip pubblico trovato
+     */
     public static String getPublicIPAddress() {
         URL whatismyip ;
         try {
@@ -51,6 +69,9 @@ public class Util {
         return null;
     }
 
+    /**
+     * @return Tempo attuale in millisecondi
+     */
     public static Long getTimeInMillies(){
         Date now = new Date();
         return now.getTime();

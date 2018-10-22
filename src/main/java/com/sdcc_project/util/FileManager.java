@@ -25,15 +25,23 @@ public class FileManager {
         }
     }
 
-
+    /**
+     * Codifica una stringa in base 64
+     * @param toBeEncodedString stringa da codificare
+     * @return stringa codificata
+     */
     public static String encodeString(String toBeEncodedString){
 
-        //File file = new File(path);
-        //Path filelocation = file.toPath();
         byte[] data = toBeEncodedString.getBytes();
         return Base64.getEncoder().encodeToString(data);
     }
 
+    /**
+     * Decodifica una stringa in base 64
+     *
+     * @param base64String stringa codificata
+     * @return stringa decodificata
+     */
     public static String decodeString(String base64String){
         byte[] decocedByte = Base64.getDecoder().decode(base64String);
         return new String(decocedByte);
@@ -52,15 +60,11 @@ public class FileManager {
         return Base64.getDecoder().decode(fileDataString.getBytes());
     }
 
-    /*
-    public static long getFileSizeMB(File file){
-        // Get the number of bytes in the file
-        long sizeInBytes = file.length();
-        //transform in MB
-        return sizeInBytes / (1024 * 1024);
-    }*/
-
-
+    /**
+     * Calcola il peso in byte di una stringa
+     * @param string stringa di cui calcolare il peso
+     * @return peso calcolato
+     */
     public static long getStringMemorySize(String string){
         return Integer.toUnsignedLong(8 * ((((string.length()) * 2) + 45) / 8)); // (1024 * 1024);
 

@@ -6,8 +6,10 @@ import java.util.Comparator;
 
 /**
  * Contiene le statistiche relative a un DataNode
- * - File Contenuti con rispettive richieste e peso
- * - Statisiche sull'uso delle risorse di CPU e RAM
+ *   <ul>
+ *   <li>File Contenuti con rispettive richieste e peso</li>
+ *   <li>Statisiche sull'uso delle risorse di CPU e RAM</li>
+ *   </ul>
  */
 public class DataNodeStatistic implements Serializable {
 
@@ -186,19 +188,4 @@ public class DataNodeStatistic implements Serializable {
                 +" - Files: " +fileInfos;
     }
 
-    /*
-
-    public void resetRequest() {
-        ArrayList<FileInfo> tmp = new ArrayList<>(fileInfos);
-        for(FileInfo fileInfo : tmp){
-            fileInfos.remove(fileInfo);
-            filePerRequest.remove(fileInfo);
-            filePerRequest.remove(fileInfo);
-            fileInfo.setFileRequests(0L);
-            fileInfos.add(fileInfo);
-            filePerRequest.add(fileInfo);
-            filePerRequest.add(fileInfo);
-        }
-        serverRequests = 0L;
-    }*/
 }

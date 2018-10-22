@@ -24,7 +24,7 @@ public interface MasterInterface extends Remote {
     ArrayList<String> getDataNodeAddresses() throws RemoteException;
     ArrayList<String> getMasterAddresses() throws RemoteException;
     ArrayList<String> getCloudletAddresses() throws RemoteException;
-    void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses, ArrayList<String> cloudlet_address) throws RemoteException;
+    void initializationInformations(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses, ArrayList<String> cloudlet_address) throws RemoteException;
     void updateMasterAddresses(String newMasterAddress, String oldMasterAddress) throws RemoteException;
     String getMinorLatencyCloudlet(String sourceIP) throws RemoteException;
     ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) throws RemoteException;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 /**
  *
  * Posizione di un file nel sistema.
+ * Il Master la invia a una CloudLet richiedente che sa su quale DataNode scrivere/leggere un File.
  */
 @SuppressWarnings("unused")
 public class FileLocation implements Serializable {

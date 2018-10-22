@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * Statistiche e informazione di un dato file nel sistema
+ * Statistiche e informazioni di un dato file nel sistema
  */
 public class FileInfo implements Serializable {
     private String fileName;

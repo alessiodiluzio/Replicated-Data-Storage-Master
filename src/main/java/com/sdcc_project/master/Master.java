@@ -33,6 +33,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.rmi.registry.LocateRegistry.createRegistry;
 
+/**
+ * Nodo del sistema che si occupa di :
+ * <ul>
+ *     <li>Gestione ciclo di vita DataNode</li>
+ *     <li>Mappaggio tra nome di un file e Repliche</li>
+ *     <li>Comunicazione con altri Master</li>
+ *     <li>Risposta alle richieste di una Cloudlet</li>
+ *  </ul>
+ *  Tipi di Master :
+ *  <ul>
+ *      <li>System_Startup --> Avvio di tutto il sistema crea gli altri Master,I propri DataNode le proprie CLoudlet
+ *      e il proprio ShadowMaster</li>
+ *      <li>Main --> Crea i propri DataNode,CLoudlet e ShadowMaster</li>
+ *      <li>Splitting --> Creato per bilanciare il carico su un altro Master da cui riceve una parte di Cloudlet e DataNode</li>
+ *      <li>Shadow --> Master "ombra" che controlla lo stato di vita un altro master e lo sostituisce in caso di fallimento</li>
+ *  </ul>
+ *
+ */
 public class Master extends UnicastRemoteObject implements MasterInterface {
 
     //Addresses
@@ -69,19 +87,25 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     private static boolean exit = false;
     private static final Logger LOGGER = Logger.getLogger(Master.class.getName());
     private static File file;
+    private static SystemProperties systemProperties;
 
+
+    //Shadow Master informations
     private static String shadowMasterAddress;
     private static String shadowMasterInstanceID;
     private static HashMap<String,Long> startupMap = new HashMap<>();
 
     private static boolean splitDone = false;
 
-    private static SystemProperties systemProperties ;
 
     private Master() throws RemoteException {
         super();
     }
 
+    /**
+     * Avvio del sistema,registrazione dell'interfaccia RMI e avvio thread di gestione
+     * @param args Tipo del Master da avviare.
+     */
     public static void main(String args[]){
 
         if(args.length < 1){
@@ -186,6 +210,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     // Quando lo Shadow Thread termina vuol dire che il Master principale è caduto.
                     // Lo Shadow Master deve quindi prendere il suo posto.
                     shadowThread.join();
+                    for(String cAddr : usableCloudlet){
+                        startupMap.put(cAddr,Util.getTimeInMillies());
+                    }
                     Util.writeOutput("Usable Cloudlet fine shadow thread "+usableCloudlet,file);
                 }
                 catch (Exception e) {
@@ -309,11 +336,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         for(Map.Entry<String,Long> entry : startupMap.entrySet()) {
             System.out.println("IP " + entry.getKey() + " ORA LANCIO " + entry.getValue());
         }
+        //Monitora lo stato di salute del master shadow
         shadowLifeThread.start();
+        //Monitora lo stato di utilizzo delle risorse HW dell'istanza in cui è eseguito il nodo
         monitor.startThread();
+        //Thread che si occupa di bilanciare il carico del sistema
         balancingThread.start();
+        //Monitora lo stato di attività dei DataNode gestiti
         lifeThread.start();
+        //Monitora lo stato di attività delle cloudlet gestite
         cloudletLifeThread.start();
+        //Thread che pubblica su S3 le cloudlet attive del sistema.
         publishCloudletAddress.start();
     }
 
@@ -383,13 +416,19 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    /**
+     * Servizio RMI
+     * @return gli indirizzi dei Master conosciuti da questo master
+     */
     @Override
     public ArrayList<String> getMasterAddresses() {
-
-
         return masterAddresses;
     }
 
+    /**
+     * Servizio RMI
+     * @return indirizzi delle cloudlet gestite dal Master
+     */
     @Override
     public ArrayList<String> getCloudletAddresses(){
 
@@ -439,6 +478,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
 
+    /**
+     * Crea un instanza EC2 e ci avvia una cloudlet
+     */
     private static void createCloudLetInstance() {
         String arguments = address+","+systemProperties.getReplication_factory();
         ArrayList<String> newInstanceInfo=ec2InstanceFactory.createEC2Instance(NodeType.CloudLet,arguments);
@@ -452,7 +494,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             Util.writeOutput("CloudletIP "+newCloudLetIP + " "+startupMap.get(newCloudLetIP),file);
 
         }
-        //return newCloudLetIP;
     }
 
     /**
@@ -501,6 +542,14 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return newMasterIP;
     }
 
+    /**
+     * Restituisce la posizione della replica più aggiornata di un file
+     *
+     * @param filename nome del file da cercare
+     * @param operation tipo di operazione (lettura scrittura)
+     * @return la posizione trovata
+     * @throws FileNotFoundException ...
+     */
     public FileLocation getMostUpdatedFileLocation(String filename,String operation) throws FileNotFoundException {
         ArrayList<String> toContactMaster = new ArrayList<>(masterAddresses) ;
         toContactMaster.add(address);
@@ -543,11 +592,20 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return result;
     }
 
+    /**
+     * Servizio RMI ping per verificare stato di attività
+     */
     @Override
     public void ping() {
 
     }
 
+    /**
+     * Servizio RMI
+     * Cancella un file da TUTTO il sistema
+     * @param filename nome del file da cancellare
+     * @return riuscita dell'operazione
+     */
     @Override
     public boolean delete(String filename) {
         deleteFromMaster(filename);
@@ -563,6 +621,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return true;
     }
 
+    /**
+     * Servizio RMI
+     * Cancella un file dalla tabella di un master (e dai DataNode da lui gestiti)
+     * @param filename nome del file da cancellare
+     */
     @Override
     public void deleteFromMaster(String filename) {
         try {
@@ -579,6 +642,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
     }
 
+    /**
+     * Servizio RMI
+     * Una cloudlet comunica di essere in attesa di spegnimento e il Master ne termina l istanza EC2
+     * @param address indirizzo della cloudlet che è in attesa di spegnimento
+     */
     @Override
     public void shutdownCloudletSignal(String address)  {
         System.out.println("Cloudlet "+address+ "CANCELLATA");
@@ -590,6 +658,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         System.out.println("Uccisione Cloudlet " + ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(address)));
     }
 
+    /**
+     * Servizio RMI
+     * Un DataNode comunica di essere in attesa di spegnimento e il Master ne termina l istanza EC2
+     * @param address indirizzo del DataNode che è in attesa di spegnimento
+     */
     @Override
     public void shutdownDataNodeSignal(String address)  {
         System.out.println("DATA NODE "+address+" CANCELLATO ");
@@ -871,7 +944,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             usableCloudlet.remove(cloudletAddr);
             System.out.println("CloudLet "+cloudletAddr+ " BUSY ");
         }
-        else if(state.equals(State.NORMAL)){
+        else if(state.equals(State.NORMAL) || state.equals(State.FREE)){
             if(!usableCloudlet.contains(cloudletAddr))
                 usableCloudlet.add(cloudletAddr);
         }else if(state.equals(State.FREE) && usableCloudlet.size()>systemProperties.getStart_number_of_cloudlet_for_master()){
@@ -965,6 +1038,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    /**
+     * Verifica che un DataNode è ancora attivo "Pingandolo"
+     * @param dataNodeAddress DataNode da pingare
+     * @return riuscita del ping
+     */
     private static boolean getLifeSignal(String dataNodeAddress){
 
         try {
@@ -1078,6 +1156,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
     }
 
+    /**
+     * Monitora lo stato di vita di uno ShadowMaster ,creandone uno nuovo in caso di presunto crash
+     */
     private static Thread shadowLifeThread = new Thread("ShadowLifeThread"){
         @Override
         public void run() {
@@ -1162,6 +1243,9 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     };
 
 
+    /**
+     * Verifica lo stato di attività delle cloudlet,creandone di nuove in caso di numero esiguo
+     */
     private static Thread cloudletLifeThread =  new Thread("CloudletLifeThread"){
 
         @Override
@@ -1223,13 +1307,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     Util.writeOutput("Non cè bisogno di lanciare una cloudlet",file);
                     System.out.println("Non c'è bisogno di lanciare una cloudlet");
                 }
-                /*
-                int diff = Config.CLOUDLET_NUMBER - usableCloudlet.size()-launchedCloudlet;
-                System.out.println("DIFF "+diff);
-                writeOutput("DIFF "+diff);
-                for(int i = 0;i<diff;i++){
-                    createCloudLetInstance();
-                }*/
                 try{
                     sleep(Config.LIFE_THREAD_SLEEP_TIME);
                 }
@@ -1242,9 +1319,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
     /**
      * Il Thread si occupa di fare il bilanciamento dei file sui DataNode in base a:
-     *
-     *  - Dimensione dei file sui singoli DataNode.
-     *  - Numero di richieste ai singoli DataNode.
+     *    <ul>
+     *    <li>Dimensione dei file sui singoli DataNode.</li>
+     *    <li>Numero di richieste ai singoli DataNode.</li>
+     *    </ul>
      *
      */
     private static Thread balancingThread = new Thread("balancingThread") {
@@ -1325,6 +1403,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
 
+        /**
+         * Ricerca DataNode sottoutilizzati , un DataNode sottoutilizzato è cancellato
+         * se e solo se il Master gestisce più DataNode di quelli indicati in file di config
+         */
         private void searchUnderUsageDataNode(){
             if(dataNodeAddresses.size()<= systemProperties.getStart_number_of_data_node_for_master())
                 return;
@@ -1650,7 +1732,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     long timeInMillis = Util.getTimeInMillies();
                     // Invia al nuovo Master gli indirizzi dei DataNode che deve gestire:
                     while (!contactNewMaster(newMasterAddress, dataNode_addresses,cloudlet_addresses)) {
-                        if (Util.getTimeInMillies() - timeInMillis > Config.MAX_TIME_WAITING_FOR_INSTANCE_RUNNING) { // Aspetta che il Master sia attivo.
+                        if (Util.getTimeInMillies() - timeInMillis > Config.SYSTEM_STARTUP_TYME) { // Aspetta che il Master sia attivo.
                             Util.writeOutput("SEVERE: IMPOSSIBLE TO CONTACT New Master " + newMasterAddress,file);
                             LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT New Master " + newMasterAddress);
                             return;
@@ -1671,6 +1753,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             }
         }
 
+        /**
+         * Dopo che il Master ne ha creato uno con cui condividere il carico lo inizializza e gli invia parte
+         * delle proprie istanze gestite .
+         *
+         * @param newMasterAddress Indirizzi degli altri master del sistema
+         * @param dataNode_addresses DataNode che gestirà il nuovo Master
+         * @param cloudlet_address cloudlet che gestirà il nuovo Master
+         * @return riuscita dell'operazione
+         */
         private boolean contactNewMaster(String newMasterAddress, ArrayList<String> dataNode_addresses,ArrayList<String> cloudlet_address) {
 
             try {
@@ -1679,7 +1770,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 ArrayList<String> master_addresses = new ArrayList<>(masterAddresses);
                 master_addresses.add(address);
 
-                master.dataNodesToManage_AND_listOfMasters(dataNode_addresses, master_addresses,cloudlet_address);
+                master.initializationInformations(dataNode_addresses, master_addresses,cloudlet_address);
             }
             catch (Exception e) {
                 return false;
@@ -1690,16 +1781,17 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     };
 
     /**
+     * Servizio RMI
      * Metodo che:
      *
-     *  - Riceve una lista di indirizzi di DataNode ed esegue tutte le operazini per prendere in gestione quei DataNode.
-     *
-     *  - Riceve una lista di indirizzi di Master e li contatta per segnalargli la presenza del nuovo Master.
-     *
+     *    <ul>
+     *    <li>Riceve una lista di indirizzi di DataNode ed esegue tutte le operazini per prendere in gestione quei DataNode.</li>
+     *    <li>Riceve una lista di indirizzi di Master e li contatta per segnalargli la presenza del nuovo Master.</li>
+     *    <ul>
      * @param dataNode_addresses Indirizzi dei DataNode che il nuovo Master deve gestire.
      */
     @Override
-    public void dataNodesToManage_AND_listOfMasters(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses,ArrayList<String> cloudlet_addresses) {
+    public void initializationInformations(ArrayList<String> dataNode_addresses, ArrayList<String> master_addresses,ArrayList<String> cloudlet_addresses) {
 
         // Contatta i DataNode che deve prendersi in gestione:
         try {
@@ -1759,7 +1851,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         Util.writeOutput("Master Addresses: " + masterAddresses + ", " + address + "(io)\n",file);
     }
 
-
+    /**
+     * Servizio RMI
+     * Calcola la CloudLet più "vicina" a un indirizzo IP
+     * (Usato per cercare la cloudlet piu vicina a un dispositivo esterno)
+     * cercandola tra quelle di tutti i master noti.
+     *
+     * @param sourceIP Indirizzo del Dispositivo che richiede la cloudlet piu vicina
+     * @return restituisce l'indirizzo della cloudlet trovata
+     */
     @Override
     public String getMinorLatencyCloudlet(String sourceIP) {
         System.out.println("Ricerco latenza minore da "+sourceIP);
@@ -1802,6 +1902,12 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     }
 
 
+    /**
+     * Servizio RMI
+     * Cerca la cloudlet piu vicina a un indirizzo IP tra quelle gestite dal Master in esecuzione
+     * @param sourceIP indirizzo IP del dispositivo richiedente
+     * @return Indirizzo Ip della cloudlet trovata e latenza rispetto all'indirizzo passato come parametro.
+     */
     public ArrayList<String> getMinorLatencyLocalCloudlet(String sourceIP) {
         HashMap<String,Double> latencyMap = new HashMap<>();
         ArrayList<Thread> thArray = new ArrayList<>();
@@ -1833,6 +1939,11 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         return Util.extractMinFromMap(latencyMap);
     }
 
+    /**
+     * Servizio RMI
+     * Aggiunge una cloudlet a quelle gestite
+     * @param ipAddress indirizzo ip della cloudlet gestita
+     */
     @Override
     public void addCloudlet(String ipAddress) {
         if(!cloudletAddress.contains(ipAddress)) {
@@ -1849,6 +1960,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         System.out.println("Aggiungo "+ipAddress + " a "+cloudletAddress);
     }
 
+
+    /**
+     * Thread che pubblica su Amazon S3 gli indirizzi IP delle cloudlet attive gesite dal Master
+     */
     private static Thread publishCloudletAddress = new Thread("PublishCloudletAddress"){
         @Override
         public void run() {
@@ -1908,7 +2023,10 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
 
 
-
+        /**
+         * Contatta il Master "Monitorato" da una Shadow e si prende gli indirizzi di DataNode,Masters e CloudLet da lui gestiti
+         * @return
+         */
         private boolean contactMainMaster() {
 
             ArrayList<String> temp_dataNodes;

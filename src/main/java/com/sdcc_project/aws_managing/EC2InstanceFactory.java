@@ -14,12 +14,16 @@ import com.sdcc_project.util.Util;
 import org.apache.commons.codec.binary.Base64;
 import java.util.*;
 
+/**
+ * Classe che gestisce l'interazione con il servizio di Amazon EC2
+ */
 public class EC2InstanceFactory {
 
     private static AWSCredentials AWS_CREDENTIALS;
     private static EC2InstanceFactory istanza;
     private SystemProperties systemProperties;
     private AmazonEC2 amazonEC2Client;
+
 
     private EC2InstanceFactory(){
 
@@ -41,6 +45,12 @@ public class EC2InstanceFactory {
         return istanza;
     }
 
+    /**
+     * Richiede l'id dell'ami usata per il deploy del progetto.
+     *
+     * @param region regione di deploy del progetto
+     * @return l'id dell ami ottenuta
+     */
     private String getAmiID(Regions region){
         AmazonEC2 amazonEC2Client = AmazonEC2ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(AWS_CREDENTIALS))
@@ -60,6 +70,13 @@ public class EC2InstanceFactory {
         return ami;
     }
 
+    /**
+     * Crea un istanza EC2 avviandoci un nodo del sistema.
+     *
+     * @param nodeType tipo di nodo da avviare (Master,DataNode,Cloudlet)
+     * @param arguments argomenti per il running del sistema
+     * @return un array contenente l'id dell'istanza creata e il suo indirizzo IP pubblico
+     */
     public ArrayList<String> createEC2Instance(NodeType nodeType, String arguments){
         ArrayList<String> result = new ArrayList<>();
         String userData = getUserDataScript(nodeType,arguments);
@@ -96,6 +113,9 @@ public class EC2InstanceFactory {
         return result;
     }
 
+    /**
+     *  funzione che blocca il flusso di esecuzione per 1 secondo
+     */
     private  void waitFor(){
 
 
@@ -107,6 +127,12 @@ public class EC2InstanceFactory {
         }
     }
 
+    /**
+     * Richiede ad amazon lo stato di esecuzione di un istanza di ec2
+     *
+     * @param instanceId id dell'istanza da monitorare
+     * @return il codice che indica lo stato di esecuzione dell'istanza
+     */
     private  Integer getInstanceStatus(String instanceId) {
         try {
             DescribeInstancesRequest describeInstanceRequest = new DescribeInstancesRequest().withInstanceIds(instanceId);
@@ -119,6 +145,15 @@ public class EC2InstanceFactory {
         return -1;
     }
 
+
+    /**
+     * Crea uno script bash per l'esecuzione di istruzioni iniziali all'avvio di un istanza di ec2 (questo script
+     * è passato all'istanza come user data)
+     *
+     * @param nodeType nodo da avviare (Master,DataNode,Cloudlet)
+     * @param arguments parametri di avvio del sistema
+     * @return lo script bash creato
+     */
     private  String getUserDataScript(NodeType nodeType,String arguments){
         String command;
         ArrayList<String> lines = new ArrayList<>();
@@ -160,7 +195,7 @@ public class EC2InstanceFactory {
     }
 
     /**
-     * Termina l'instanza di un DataNode.
+     * Termina un'istanza di EC2
      *
      * @param instanceID ID dell'instanza da terminare.
      * @return Successo/Fallimento

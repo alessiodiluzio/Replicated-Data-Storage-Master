@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Classe di monitoraggio delle risorse del sistema.
+ *
+ */
 public class Monitor {
 
     private static Monitor instance;
@@ -32,6 +36,11 @@ public class Monitor {
         systemProperties = SystemProperties.getInstance();
     }
 
+    /**
+     * Esegue uno script BASH che calcola percentuale utilizzo di una risorsa HW
+     * @param component CPU o RAM
+     * @return percentuale di utilizzo
+     */
     private double getUsage(Components component){
         String command ;
         if(component.equals(Components.CPU))
@@ -48,6 +57,9 @@ public class Monitor {
         return -1;
     }
 
+    /**
+     * Thread che monitora l'uso di CPU e RAM e in caso segnala il sovra/sottoutilizzo delle risorse.
+     */
     private Thread monitorThread = new Thread("MonitorThread"){
         @Override
         public void run() {

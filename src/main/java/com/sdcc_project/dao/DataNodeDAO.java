@@ -10,7 +10,9 @@ import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
-
+/**
+ * Classe DAO per il DB locale a un DataNode
+ */
 public class DataNodeDAO {
 
     private static DataNodeDAO instance;
@@ -40,6 +42,13 @@ public class DataNodeDAO {
         return instance;
     }
 
+    /**
+     * Restituisce le informazioni su tutti i file presenti nella memoria del DataNode
+     *
+     * @param dataNodeAddress indirizzo pubblico del DataNode proprietario del DB
+     * @return [NomeFile,IndirizzoDelDataNode,Versione]
+     * @throws DataNodeException ...
+     */
     public ArrayList<ArrayList<String>> getAllFilesInformation(String dataNodeAddress)  throws DataNodeException {
 
         String query = "SELECT filename, version FROM DataNodeTable";
@@ -65,6 +74,11 @@ public class DataNodeDAO {
     }
 
 
+    /**
+     * Cancella un file dal DB
+     * @param fileName nome del file da cancellare
+     * @throws DataNodeException ...
+     */
     public void deleteFile(String fileName) throws DataNodeException{
 
         String deleteQuery = "DELETE FROM DataNodeTable WHERE filename = ?";
@@ -208,72 +222,25 @@ public class DataNodeDAO {
      *
      */
     private void loadDB() throws DataNodeException {
-
         try {
-            createDB(true);
-        } catch (Exception e) {
-            try {
-                createDB(false);
-            } catch (Exception e1) {
+            createDB();
+        } catch (Exception e1) {
                 e1.printStackTrace();
                 throw new DataNodeException("Impossible to create/load DB");
             }
         }
 
-    }
 
-    private void createDB(boolean restore) throws Exception {
+    /**
+     * Crea il DB locale al DataNode all'avvio del nodo.
+     * @throws Exception ...
+     */
+    private void createDB() throws Exception {
         String dbUri = "jdbc:derby:memory:" + dbName + ";create=true;user=" + "dataNode" + ";password=" + "dataNode";
-        if (restore)
-            dbUri = "jdbc:derby:memory:" + dbName + ";restoreFrom=db/" + dbName + " ;user=" + "dataNode" + ";password=" + "dataNode";
         DataSource dataSource = DataSource.getInstance();
         this.connection = dataSource.getConnection(dbUri);
-        if (!restore){
-            createTable();
-        }else loadStatistic();
+        createTable();
     }
 
-    /**
-     * All'avvio del data node vengono calcolate le statistiche sul peso dei file già presenti in memoria
-     *
-     */
-    private void loadStatistic(){
 
-        String query = "SELECT * FROM dataNodeTable";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                String filename = resultSet.getString(1);
-                Blob blobData = resultSet.getBlob(2);
-                String fileData = new String(blobData.getBytes(1L, (int) blobData.length()));
-                dataNodeStatistic.incrementSingleFileSize(filename,FileManager.getStringMemorySize(fileData));
-            }
-            resultSet.close();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("all")
-    /**
-     * Salva un backup del DB in memory
-     *
-     */
-    public synchronized void saveDB(){
-        // Get today's date as a string:
-        String backupdirectory = "db/" ;
-
-        try(CallableStatement cs = connection.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
-            cs.setString(1, backupdirectory);
-            cs.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Util.writeOutput(e.getMessage(),file);
-        }
-    }
-
-    /*
-    public void resetStatistic() {
-        dataNodeStatistic.resetRequest();
-    }*/
 }

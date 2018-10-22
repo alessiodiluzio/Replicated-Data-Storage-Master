@@ -3,7 +3,7 @@ package com.sdcc_project.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class DataSource {
+class DataSource {
 
     private static DataSource instance;
 
@@ -12,7 +12,7 @@ public class DataSource {
 
     }
 
-    public static DataSource getInstance(){
+    static DataSource getInstance(){
         if(instance==null)
             instance = new DataSource();
         return instance;

@@ -6,6 +6,9 @@ import com.sdcc_project.exception.MasterException;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Classe DAO per il DB locale a un Master
+ */
 public class MasterDAO {
 
     private static MasterDAO instance;
@@ -24,30 +27,12 @@ public class MasterDAO {
         return instance;
     }
 
-    public ArrayList<ArrayList<String>> getAllData()  throws MasterException {
-
-        String query = "SELECT * FROM MasterTable";
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
-
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            ResultSet set = preparedStatement.executeQuery();
-            while (set.next()){
-                ArrayList<String> row = new ArrayList<>();
-                row.add(set.getString(1)); // Filename
-                row.add(set.getString(2)); // Porta
-                row.add(set.getString(3)); // Versione
-
-                result.add(row);
-            }
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-            throw new MasterException("SQL ERROR");
-        }
-
-        return result;
-    }
-
+    /**
+     * Elimina la posizione di un file dal DB del Master
+     * @param filename nome del file
+     * @param address indirizzo IP della replica del file da rimuovere
+     * @throws MasterException ...
+     */
     public void deleteFilePosition(String filename, String address) throws MasterException {
 
         String deleteQuery = "DELETE FROM MasterTable WHERE filename=? AND dataNodeAddress=?";
@@ -62,6 +47,12 @@ public class MasterDAO {
         }
     }
 
+    /**
+     * Cancella la presenza di un file
+     *
+     * @param filename nome del file da cancellare
+     * @throws MasterException ...
+     */
     public void deleteFilePosition(String filename) throws MasterException {
 
         String deleteQuery = "DELETE FROM MasterTable WHERE filename=?";
@@ -79,7 +70,7 @@ public class MasterDAO {
      * Cancella tutte le informazioni relative all'indirizzo del DataNode passato.
      *
      * @param address Indirizzo del DataNode di cui si devono cancellare le informazioni.
-     * @throws MasterException
+     * @throws MasterException ...
      */
     public void deleteAllAddress(String address) throws MasterException {
 
@@ -94,6 +85,13 @@ public class MasterDAO {
         }
     }
 
+    /**
+     * Restituisce il nome di tutti i file contenuti in un DataNode
+     * @param address indirizzo IP del DataNode
+     * @return lista dei file contenuti nel DataNode passato come parametro
+     * @throws FileNotFoundException ...
+     * @throws MasterException ...
+     */
     public ArrayList<String> getServerFiles(String address) throws FileNotFoundException, MasterException {
 
         String query = "SELECT filename FROM MasterTable WHERE dataNodeAddress = ?";
@@ -115,6 +113,14 @@ public class MasterDAO {
 
     }
 
+    /**
+     * Restituisce la versione di una replica di un file
+     *
+     * @param filename nome del file
+     * @param address indirizzo IP della replica
+     * @return la versione del file
+     * @throws MasterException ...
+     */
     public int getFileVersion(String filename, String address) throws MasterException {
 
         String query = "SELECT version FROM MasterTable WHERE filename=? AND dataNodeAddress=?";
@@ -161,13 +167,21 @@ public class MasterDAO {
         return result;
     }
 
-    public boolean serverContainsFile(String filename, String port) throws MasterException {
+    /**
+     * Verifica la presenza di un file nel DB del Master in un dato DataNode
+     *
+     * @param filename nome del file
+     * @param address indirizzo IP del DataNode
+     * @return true se il DataNode contiene il file false altrimenti
+     * @throws MasterException ...
+     */
+    public boolean serverContainsFile(String filename, String address) throws MasterException {
 
         String query = "SELECT * FROM MasterTable WHERE filename=? AND dataNodeAddress=?";
         boolean result = false;
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1,filename);
-            preparedStatement.setString(2,port);
+            preparedStatement.setString(2,address);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next())
                 result = true;
@@ -213,7 +227,7 @@ public class MasterDAO {
      * @param dataNodeAdress indirizzo del datanode in cui è salvato il file
      * @param version versione del file
      */
-    public void insertFilePosition(String filename, String dataNodeAdress, int version) throws MasterException {
+    private void insertFilePosition(String filename, String dataNodeAdress, int version) throws MasterException {
 
         String updateQuery = "INSERT into MasterTable values (?,?,?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -255,56 +269,31 @@ public class MasterDAO {
 
 
     /**
-     * Funzione per chudere la connessione con MapDB.
-     */
-    /*
-    public void closeDBConnection() {
-
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /**
      * Ricarica dal disco il Database con le informazioni di posizione dei file.
      *
      */
     private void loadDB(String dbName) throws MasterException {
         try{
-            createDB(true, dbName);
+            createDB(dbName);
         }
         catch (Exception e) {
-            try {
-                createDB(false, dbName);
-            }
-            catch (Exception e1) {
-                e1.printStackTrace();
-                throw new MasterException("Impossible to load/create DB");
-            }
+            e.printStackTrace();
+            throw new MasterException("Impossible to load/create DB");
         }
+
     }
 
-    private void createDB(boolean restore, String dbName) throws Exception {
+    private void createDB(String dbName) throws Exception {
 
         String dbUri = "jdbc:derby:memory:" + dbName + ";create=true;user=" + "master" + ";password=" + "master";
-
-        if(restore) {
-            dbUri = "jdbc:derby:memory:" + dbName + ";restoreFrom=db/" + dbName + ";user="
-                    + "master" + ";password=" + "master";
-        }
         DataSource dataSource = DataSource.getInstance();
         this.connection = dataSource.getConnection(dbUri);
-        if(!restore){
-            createTable();
-        }
+        createTable();
+
     }
 
-    /**
-     * Funzione per il salvataggio delle informazioni del DB in-memory del Master nel DB persistente su disco.
-     */
-    @SuppressWarnings("all")
+
+    /*
     public void saveDB()  {
 
         String backupdirectory = "db/" ;
@@ -316,6 +305,6 @@ public class MasterDAO {
             e.printStackTrace();
 
         }
-    }
+    }*/
 
 }
