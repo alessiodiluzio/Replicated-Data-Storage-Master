@@ -230,6 +230,16 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
                     }
                 };
                 shutDown.start();
+                try {
+                    shutDown.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }finally {
+                    terminate();
+                    System.exit(1);
+                }
+                terminate();
+                System.exit(1);
 
             }
         } catch (DataNodeException e) {

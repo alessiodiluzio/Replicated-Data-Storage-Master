@@ -213,7 +213,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     for(String cAddr : usableCloudlet){
                         startupMap.put(cAddr,Util.getTimeInMillies());
                     }
-                    Util.writeOutput("Usable Cloudlet fine shadow thread "+usableCloudlet,file);
+                    Util.writeOutput("Usable Cloudlet fine shadow thread "+usableCloudlet+ " total cloudlet ",file);
                 }
                 catch (Exception e) {
                     Util.writeOutput("SHADOW MASTER SHUTDOWN: " + e.getMessage(),file);
@@ -933,7 +933,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
     @Override
     public void cloudletLifeSignal(String cloudletAddr, State state) {
 
-        boolean find = cloudletAddress.contains(cloudletAddr);
         synchronized (startupMapLock) {
             startupMap.remove(cloudletAddr);
         }
@@ -955,14 +954,13 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             if(!usableCloudlet.contains(cloudletAddr))
                 usableCloudlet.add(cloudletAddr);
         }
-        if(find){
-            synchronized (cloudletLifeSignalMapLock) {
-                cloudletLifeSignalMap.remove(cloudletAddr);
-                cloudletLifeSignalMap.put(cloudletAddr, Util.getTimeInMillies());
-            }
+        synchronized (cloudletLifeSignalMapLock) {
+            cloudletLifeSignalMap.remove(cloudletAddr);
+            cloudletLifeSignalMap.put(cloudletAddr, Util.getTimeInMillies());
         }
+
         System.out.println("Usable cloudlet "+usableCloudlet);
-        Util.writeOutput("Usable cloudlet "+usableCloudlet+ " " +cloudletAddress,file);
+        Util.writeOutput("Usable cloudlet "+usableCloudlet+ " total cloudlet " +cloudletAddress,file);
     }
 
     private void handleCloudletShutdown(String cloudletAddr) {
@@ -1265,6 +1263,15 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     if (timeInMillies - entry.getValue() > Config.MAX_TIME_NOT_RESPONDING_CLOUDLET) {
                         Util.writeOutput("Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()),file);
                         LOGGER.log(Level.INFO, "Cloudlet " + entry.getKey() + " NOT RESPONDING SINCE " + (timeInMillies - entry.getValue()));
+                        usableCloudlet.remove(entry.getKey());
+                        if(!cloudletAddress.contains(entry.getKey())) {
+                            usableCloudlet.remove(entry.getKey());
+                            cloudletLifeSignalMap.remove(entry.getKey());
+                            cloudletAddress.remove(entry.getKey());
+                            ec2InstanceFactory.terminateEC2Instance(cloudletInstanceIDMap.get(entry.getKey()));
+                            cloudletInstanceIDMap.remove(entry.getKey());
+                            continue;
+                        }
                         createCloudLetInstance();
                         usableCloudlet.remove(entry.getKey());
                         cloudletLifeSignalMap.remove(entry.getKey());
@@ -2029,7 +2036,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
         /**
          * Contatta il Master "Monitorato" da una Shadow e si prende gli indirizzi di DataNode,Masters e CloudLet da lui gestiti
-         * @return
+         * @return riuscita dell'operazione
          */
         private boolean contactMainMaster() {
 
@@ -2061,7 +2068,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             cloudletAddress.addAll(temp_cloudlets);
             usableCloudlet.addAll(temp_cloudlets);
 
-            Util.writeOutput("Usable cloudlet " +usableCloudlet,file);
+            Util.writeOutput("Usable cloudlet " +usableCloudlet + " total cloudlet "+cloudletAddress,file);
 
 
             return true;
