@@ -45,7 +45,7 @@ public class Config {
      * Tempi di sleep per i thread che implementano funzionalità del sistema.
      */
     public static final int BALANCING_THREAD_SLEEP_TIME = 20000;
-    public static final int LIFE_THREAD_SLEEP_TIME = 10000;
+    public static final int LIFE_THREAD_SLEEP_TIME = 2000;
     public static final int SHADOW_THREAD_SLEEP_TIME = 2000;
     public static final int STATISTIC_THREAD_SLEEP_TIME = 20000;
     /**
