@@ -257,8 +257,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 try {
                     masterConfiguration("Splitting");
 
-                    // Creazione dello Shadow Master:
-                    createMasterInstance("Shadow");
+
 
                     Thread splitWaitThread = new Thread("SplitWaitThread"){
                         @Override
@@ -286,6 +285,8 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    // Creazione dello Shadow Master:
+                    createMasterInstance("Shadow");
 
                 }
                 catch (MasterException e) {
