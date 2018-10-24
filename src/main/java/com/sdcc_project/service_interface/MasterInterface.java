@@ -36,4 +36,8 @@ public interface MasterInterface extends Remote {
     void deleteFromMaster(String filename) throws RemoteException;
     void shutdownCloudletSignal(String address) throws RemoteException;
     void shutdownDataNodeSignal(String address) throws RemoteException;
+
+    String getRegenReplica(String filename) throws RemoteException;
+
+    String getNewReplica(String filename) throws RemoteException;
 }

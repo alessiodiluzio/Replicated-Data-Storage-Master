@@ -342,22 +342,39 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
 
                     MasterInterface master;
                     String replica_address = null;
+                    boolean newReplica = false;
 
                     try {
                         master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
                         replica_address = master.getDataNodeAddressForReplication(filename, updated_version);
                     }
-                    catch (RemoteException | NotBoundException | ImpossibleToFindDataNodeForReplication e) {
+                    catch (RemoteException | NotBoundException  e) {
                         writeOutput("SEVERE:" + e.getMessage() + " - File" + filename);
+                    } catch (ImpossibleToFindDataNodeForReplication e){
+                        try {
+                            master = (MasterInterface) registryLookup(masterAddress, Config.masterServiceName);
+                            replica_address = master.getRegenReplica(filename);
+
+                            newReplica = true;
+                        } catch (NotBoundException | RemoteException e1) {
+                            writeOutput(e1.getMessage());
+                        }
+
                     }
                     if (replica_address != null) {
                         try {
                             writeOutput("Invio Creazione/Aggiornamento di una Replica del File: " + filename + " - Sul DataNode: " + replica_address);
+                            String newData = data;
+                            if(newReplica) {
+                                Util.writeOutput("New File Replica "+replica_address,file);
+                                String newData64 = dataNodeDAO.getFileString(filename, false);
+                                newData = FileManager.decodeString(newData64);
+                            }
                             StorageInterface dataNode = (StorageInterface) registryLookup(replica_address, Config.dataNodeServiceName);
-                            dataNode.write(filename, data, updated_version, new_replication_factory);
+                            dataNode.write(filename, newData, updated_version, new_replication_factory);
                             writeOutput("Replica del File " + filename + " - Creata/Aggiornata sul DataNode: " + replica_address);
                         }
-                        catch (RemoteException | NotBoundException | DataNodeException e) {
+                        catch (RemoteException | NotBoundException | DataNodeException | FileNotFoundException e) {
                             writeOutput("SEVERE: Impossible to Contact DataNode for Replication " + replica_address);
                         }
                     }

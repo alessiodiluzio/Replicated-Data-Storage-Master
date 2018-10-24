@@ -564,7 +564,16 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
         if(fileLocations.isEmpty()){
             if(operation.equals("W")){
-                String dataNode = findReplicaPosition(filename,1);
+                String dataNode = null;
+                for(String addr : toContactMaster){
+                    try {
+                        MasterInterface masterInterface = (MasterInterface) registryLookup(addr,Config.masterServiceName);
+                        dataNode = masterInterface.findReplicaPosition(filename,1);
+                        if(dataNode!=null) break;
+                    } catch (RemoteException | NotBoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 result.setResult(true);
                 result.setFileVersion(1);
                 ArrayList<String> fPos = new ArrayList<>();
@@ -671,6 +680,48 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         }
         synchronized (lifeSignalMapLock){
             lifeSignalMap.remove(address);
+        }
+    }
+
+    /**
+     * Cerca la posizione per una nuova replica per un file tra tutti i master noti.
+     *
+     * @param filename ...
+     * @return la posizione di un DataNode disponibile per una nuova replica se esiste.
+     */
+    @Override
+    public String getRegenReplica(String filename) {
+        ArrayList<String> masterArrays = new ArrayList<>(masterAddresses);
+        masterArrays.add(address);
+        String newReplica;
+        for(String masterAddr : masterArrays){
+            try {
+                MasterInterface masterInterface = (MasterInterface) registryLookup(masterAddr,Config.masterServiceName);
+                newReplica = masterInterface.getNewReplica(filename);
+                if(newReplica!=null)
+                    return newReplica;
+            } catch (NotBoundException | RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Restituisce l'indirizzo di un DataNode se una replica di filename NON è gestita da questo MASTER
+     * @param filename file da replicare
+     * @return L'indirizzo di un DataNode disponibile per una nuova replica (Se esiste)
+     */
+    @Override
+    public String getNewReplica(String filename) {
+        try {
+            if(masterDAO.getFilePosition(filename)==null){
+                return getRandomAliveDataNode();
+            }
+            return null;
+        } catch (MasterException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -1056,11 +1107,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         ArrayList<String> files_to_recover ;
         MasterInterface master;
 
-        // Verifica nuovamente che il DataNode sia caduto:
-        if(getLifeSignal(address)) {
-            return;
-        }
-        System.out.println("!!! ::::: HANDLE DATA NODE CRASH "+address+" ::::: !!!");
+        System.out.println("!!! :::: DATA NODE "+address+" SUSPECTED TO BE DEATH :::: !!!");
 
         synchronized (startupMapLock) {
             startupMap.remove(address);
@@ -1074,6 +1121,22 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
         synchronized (lifeSignalMapLock) {
             lifeSignalMap.remove(address);
         }
+        // Verifica nuovamente che il DataNode sia caduto:
+        if(getLifeSignal(address)) {
+            synchronized (dataNodeAddressesLock){
+                dataNodeAddresses.add(address);
+            }
+            synchronized (statisticLock){
+                dataNodesStatisticMap.remove(address);
+            }
+            synchronized (lifeSignalMapLock) {
+                lifeSignalMap.put(address,Util.getTimeInMillies());
+            }
+            System.out.println("!!! :::: DATA NODE "+address+" IS ALIVE :::: !!!");
+            return;
+        }
+        System.out.println("!!! ::::: HANDLE DATA NODE CRASH "+address+" ::::: !!!");
+
         // Crea un DataNode su cui ripristinare i file del DataNode crashato:
         String replaced_dataNode = createDataNodeInstance();
         ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(address));
@@ -1275,7 +1338,7 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
                 for(Map.Entry<String,Long> entry : localStartupMap.entrySet()){
                     if(cloudletAddress.contains(entry.getKey())) {
                         if (Util.getTimeInMillies() - entry.getValue() < Config.SYSTEM_STARTUP_TYME) {
-                            System.out.println("La cloudlet "+entry.getKey()+" è in fase di startup");
+                            //System.out.println("La cloudlet "+entry.getKey()+" è in fase di startup");
                             launchedCloudlet++;
                         }
                         else {
