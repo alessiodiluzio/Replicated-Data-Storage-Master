@@ -308,7 +308,7 @@ public class DataNode extends UnicastRemoteObject implements StorageInterface {
             try {
                 old_base64 = dataNodeDAO.getFileString(filename, false);
                 String old_data = FileManager.decodeString(old_base64);
-                String updated_data = old_data + data + "\n";
+                String updated_data = old_data + data;
                 updated_base64 = FileManager.encodeString(updated_data);
             }
             catch (FileNotFoundException e){
