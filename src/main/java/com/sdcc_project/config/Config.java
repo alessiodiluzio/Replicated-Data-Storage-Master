@@ -48,11 +48,6 @@ public class Config {
     public static final int LIFE_THREAD_SLEEP_TIME = 2000;
     public static final int SHADOW_THREAD_SLEEP_TIME = 2000;
     public static final int STATISTIC_THREAD_SLEEP_TIME = 20000;
-    /**
-     * Intervallo di tempo massimo in cui un DataNode può essere vuoto ,scaduto il quale
-     * si procede alla cancellazione del nodo.
-     */
-    public static final int MAX_TIME_EMPTY_DATANODE = 6000000;
 
 
     /**

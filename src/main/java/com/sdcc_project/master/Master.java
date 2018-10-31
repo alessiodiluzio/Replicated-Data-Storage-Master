@@ -1387,9 +1387,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
 
             while (!exit) {
 
-                // Uccido i DataNode che sono vuoti da un lungo periodo di tempo:
-                deleteEmptyDataNode();
-
                 synchronized (statisticLock){
                     //Ad ogni ciclo la mappa delle statistiche è azzerata e popolata con le statistiche aggiornate
                     localStatisticMap.clear();
@@ -1658,64 +1655,6 @@ public class Master extends UnicastRemoteObject implements MasterInterface {
             //Ritorna i file non ricollocabili
             return buffer;
         }
-
-        /**
-         *  Uccide i DataNode che sono vuoti da un lungo periodo di tempo.
-         *
-         */
-        private void deleteEmptyDataNode()  {
-
-            HashMap<String, DataNodeStatistic> localStatsMap;
-
-            synchronized (statisticLock) {
-                localStatsMap = new HashMap<>(dataNodesStatisticMap);
-            }
-
-            for (Map.Entry<String, DataNodeStatistic> serverStat : localStatsMap.entrySet()) {
-
-                DataNodeStatistic stats = serverStat.getValue();
-
-                if(stats.getFileInfos().isEmpty() && stats.getMilliseconds_timer() > Config.MAX_TIME_EMPTY_DATANODE) {
-
-                    Util.writeOutput("\nEmpty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer()+"\n",file);
-                    System.out.println("\nEmpty DataNode: " + stats.getDataNodeAddress() + " - Timer: " + stats.getMilliseconds_timer()+"\n");
-                    // Rimuove dalla lista di indirizzi globale l'indirizzo del DataNode:
-                    synchronized (dataNodeAddressesLock) {
-                        dataNodeAddresses.remove(stats.getDataNodeAddress());
-                    }
-                    // Contatta il DataNode per verificare che le statistiche sia ancora vuote:
-                    boolean isEmpty = false;
-                    try {
-                        StorageInterface dataNode = (StorageInterface) registryLookup(stats.getDataNodeAddress(), Config.dataNodeServiceName);
-                        isEmpty = dataNode.isEmpty();
-                    }
-                    catch (NotBoundException | IOException e) {
-                        Util.writeOutput("SEVERE: IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress(),file);
-                        LOGGER.log(Level.SEVERE,"IMPOSSIBLE TO CONTACT DataNode "+ stats.getDataNodeAddress());
-                    }
-                    if(isEmpty){
-                        //String dataNode_instanceID = null;
-                        ec2InstanceFactory.terminateEC2Instance(dataNodeInstanceIDMap.get(stats.getDataNodeAddress()));
-                        // Rimuove le statistiche di quel DataNode:
-                        synchronized (statisticLock) {
-                            dataNodesStatisticMap.remove(stats.getDataNodeAddress());
-                        }
-                        synchronized (lifeSignalMapLock) {
-                            lifeSignalMap.remove(stats.getDataNodeAddress());
-                        }
-                    }
-                    // DataNode non vuoto:
-                    else {
-                        // Rinserisce l'indirizzo del DataNode in quelli globali:
-                        synchronized (dataNodeAddressesLock) {
-                            dataNodeAddresses.add(stats.getDataNodeAddress());
-                        }
-                        // Il DataNode non viene terminato.
-                    }
-                }
-            }
-        }
-
 
         /**
          * Controlla se è stato superato il limite massimo di DataNode gestibili dal Master, ed se necessario crea un nuovo Master
