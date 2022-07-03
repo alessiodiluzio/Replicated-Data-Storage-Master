@@ -1,42 +1,40 @@
 # Replicated Data Storage
 
-Lo scopo del progetto contenuto in questa repository è lo sviluppo di un sistema
-di Data Storage replicato, il cui deployment è stato eseguito con gli strumenti offerti da Amazon Web Services, in particolar modo EC2.
-Il linguaggio scelto per lo sviluppo è Java.
+The purpose of the project contained in this repository is the development 
+of replicated data storage, the deployment of which was performed on Amazon EC2 instances.
 
-## Architettura del sistema
+## System architecture
 
-Il sistema di Data Storage Replicato consta di tre tipologie di nodi:
+The Replicated Data Storage system consists of three types of nodes:
 
-* Master: gestisce il mapping tra nome di un file e posizione delle repliche. E’ responsabile del coordinamento degli altri nodi del sistema occupandosi di allocare e de-allocare istanze in modo elastico per rispondere alle variazioni del carico sul sistema.
-* DataNode: memorizza file e loro contenuto.
-* Cloudlet: nodo periferico del sistema, pensato per posizionarsi ai bordi della rete in vicinanza delle sorgenti di dati (Device Client, Sensori...). E’ il front- end del sistema essendo il nodo di interfaccia con il sistema per le operazioni supportate.
+* Master: Manages the mapping between a file name and location of replicas. It is responsible for coordinating the other nodes in the system by taking care of allocating and de-allocating instances elastically to respond to changes in the load on the system.
+* DataNode: Stores files and their contents.
+* Cloudlet: peripheral node of the system, designed to be located at the edges of the network in the vicinity of data sources (Device Clients, Sensors...).It is the front end of the system being the interface node with the system for supported operations.
 
-Il sistema ha un’architettura multi-Master in cui ogni singolo Master conosce e può contattare tutti gli altri e gestisce un sottoinsieme di DataNode e Cloudlet.
-Il numero di Master, DataNode e Cloudlet del sistema all’avvio, è pienamente configurabile.
+The system has a multi-Master architecture in which each individual Master knows and can contact all the others and manages a subset of DataNodes and Cloudlets.
+The number of Masters, DataNodes, and Cloudlets in the system at startup is fully configurable.
 
-In questa repository è contenuto il codice dei nodi Master e Data Node
+This repository contains the code of the Master and DataNodes
 
 
 ### Master
 
-Il Master riceve periodicamente segnali di vita e statistiche sull’utilizzo delle risorse dai propri nodi DataNode e Cloudlet. Sulla base di queste può decidere di allocare nuovi nodi o di rimuoverne, per rispondere rispettivamente a situazioni di sovrautilizzazione o sottoutilizzazione delle risorse monitorate (CPU e RAM). Viene rilevato anche il crash di un nodo DataNode o CloudLet a seguito del quale è
-attivata una procedura di sostituzione comprensiva di un fase di recovery di eventuali dati perduti.
-Il Master provvede al bilanciamento del carico spostando i file più acceduti o più grandi da DataNode sovraccarichi verso altri meno utilizzati o in assenza di questi verso nuovi nodi. 
+The Master receives periodic heartbeat consequently, it can decide to allocate new nodes or remove nodes to balance monitored resources (CPU and RAM). The crash of a DataNode or CloudLet node is also detected, and it triggers a recovery procedure including a recovery phase of any lost data.
+The Master provides load balancing by moving the most accessed or largest files from overloaded DataNodes to other less-used ones or in their absence to new nodes. 
 
-Il Master gestisce una tabella di mapping tra il nome di un file e la posizione di una replica se questa è su un DataNode da lui gestito, può comunque recuperare informazioni sul posizionamento dei file comunicando con gli altri Master.
+The Master manages a mapping table between a file name and a replica location if it is on a DataNode it manages; it can still retrieve information about file placement by communicating with other Masters.
 
 ### Data Node
 
-Il contenuto dei file è memorizzato nelle istanze di DataNode, gli aggiornamenti avvengono solamente attraverso operazioni di append e sono propagati da una replica alla successiva in modo non bloccante e asincrono rispetto all’operazione di scrittura.
+The contents of the files are stored in the DataNode instances, updates occur only through append operations, and are propagated from one replica to the next in a non-blocking and asynchronous manner with respect to the write operation.
 
 
-## Dettagli implementativi 
+## Implementation details 
 
+The System is deployed on AWS EC2 instances.
+The System is implemented in the Java language, communication between nodes in the system is done by exploiting Java RMI technology, and dependency management is done by the Maven tool.
+RMI communication is done using the public IP addresses of EC2 instances.
+The local tables in each node are stored in Apache Derby relational databases embedded in memory.
 
-Il Sistema è distribuito su istanze di AWS EC2.
-Il Sistema è implementato in linguaggio Java, la comunicazione tra i nodi del sistema avviene sfruttando la tecnologia Java RMI, la gestione delle dipendenze è affidata al tool Maven.
-La comunicazione RMI avviene usando gli indirizzi IP pubblici delle istanze EC2.
-Le tabelle locali presenti in ogni nodo sono salvate in database relazionali Apache Derby embedded in memory.
 
 
